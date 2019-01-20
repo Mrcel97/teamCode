@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./assets/themes/dark.scss";
+
+.container {
+  max-width: 100vw;
+  margin: 0 .1px 0 .1px;
+}
+
+.navbar {
+  padding-right: 0rem;
+  padding-left: .5rem;
+  background-color: $primary-color-variant;
+  color: $text-color;
+}
+
+.navbar-brand, .nav-link {
+  color: $text-color;
+}
+
+.navbar-brand:hover {
+  color: $text-color;
+}
+
+.nav-link:hover {
+  color: $accent-color !important;
+}

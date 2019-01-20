@@ -1,0 +1,40 @@
+@import "../../assets/themes/dark.scss";
+
+.highlight {
+  color: $accent-color;
+}
+
+.background {
+  background-image: url("../../assets/media/home.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  height: 100vh;
+
+  padding-top: 1em;
+}
+
+.website-info {
+  background-color: transparent;
+  top: 30vh;
+  user-select: none;
+
+  margin-top: -63vh;
+
+  color: $text-color;
+  text-align: center;
+}
+
+.website-subinfo {
+  margin-top: 2em;
+  user-select: none;
+
+  color: $text-color;
+  text-align: center;
+}
+
+h1, .h1 {
+  font-size: 6vh;
+}
