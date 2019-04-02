@@ -7,6 +7,8 @@ import { HomepageComponent } from './homepage/homepage.component';
 
 const routes: Routes = [
   {path: '', component: HomepageComponent},
+  {path: 'collaborators', component: HomepageComponent},
+  {path: 'public-projects', component: HomepageComponent},
 ];
 
 @NgModule({

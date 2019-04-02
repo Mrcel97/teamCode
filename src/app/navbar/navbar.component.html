@@ -5,15 +5,15 @@
     <links>
         <ul class="navbar-nav mr-auto mt-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="#" mdbWavesEffect>About us</a>
+                <a [ngClass]="{'active': checkActivePath('')}" class="nav-link" (click)="navigate('')" mdbWavesEffect>About us</a>
             </li>
             <li class="divider-vertical"></li>
             <li class="nav-item">
-                <a class="nav-link" href="#" mdbWavesEffect>Collaborators</a>
+                <a [ngClass]="{'active': checkActivePath('collaborators')}" class="nav-link" (click)="navigate('collaborators')" mdbWavesEffect>Collaborators</a>
             </li>
             <li class="divider-vertical"></li>
             <li class="nav-item">
-                <a class="nav-link" href="#" mdbWavesEffect>Public projects</a>
+                <a [ngClass]="{'active': checkActivePath('public-projects')}" class="nav-link" (click)="navigate('public-projects')" mdbWavesEffect>Public projects</a>
             </li>
         </ul>
 

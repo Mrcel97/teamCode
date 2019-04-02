@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarService } from '../services/navbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public navbarService: NavbarService) { }
 
   ngOnInit() {
   }
 
+  navigate(path: string) {
+    this.navbarService.navigate(path);
+  }
+
+  checkActivePath(path: string) {
+    return path === this.navbarService.section;
+  }
 }
