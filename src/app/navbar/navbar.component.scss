@@ -24,6 +24,10 @@ input[type=text]:focus:not([readonly]) {
   box-shadow: 0 1px 0 0 $accent-color !important; 
 }
 
+.active {
+  color: $accent-color !important;
+}
+
 @media (max-width: 991px) {
   .divider-vertical {
     display: none;
