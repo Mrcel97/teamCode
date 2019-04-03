@@ -8,12 +8,18 @@ import { NgModule } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { InterfaceComponent } from './interface/interface.component';
+import { ProjectsComponent } from './interface/projects/projects.component';
+import { ProjectPagesComponent } from './interface/project-pages/project-pages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    HomepageComponent
+    HomepageComponent,
+    InterfaceComponent,
+    ProjectsComponent,
+    ProjectPagesComponent
   ],
   imports: [
     BrowserModule,

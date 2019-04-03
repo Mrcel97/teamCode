@@ -1,0 +1,36 @@
+@import "../../../assets/themes/dark.scss";
+
+.projects-container {
+  border: solid $primary-color-variant 2px;
+  border-radius: 6px;
+
+  color: $text-color;
+
+  padding: 1em;
+  margin-top: -45vh;
+  margin-left: 3em;
+
+  max-width: 25em;
+
+  background-color: rgba($primary-color, .85);
+}
+
+.list-item {
+  background-color: #2b2b2b;
+  font-size: 16px;
+  padding: .5em;
+  margin-bottom: .5em;
+  transition: 0.5s;
+}
+
+.list-item:hover {
+  background-color: $primary-color-variant;
+  cursor: pointer;
+  color: $accent-color;
+}
+
+.no-dot {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
