@@ -3,15 +3,11 @@
 .projects-container {
   border: solid $primary-color-variant 2px;
   border-radius: 6px;
-
   color: $text-color;
-
   padding: 1em;
-  margin-top: -45vh;
   margin-left: 3em;
-
+  margin-bottom: 10em;
   max-width: 25em;
-
   background-color: rgba($primary-color, .85);
 }
 
@@ -27,6 +23,7 @@
   background-color: $primary-color-variant;
   cursor: pointer;
   color: $accent-color;
+  transform: scale(1.02);
 }
 
 .no-dot {

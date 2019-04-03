@@ -4,6 +4,15 @@
   color: $accent-color;
 }
 
+.content {
+  height: 100%;
+  width: 100%;
+}
+
+.welcome-text {
+  position: absolute;
+}
+
 .background {
   background-image: url("../../assets/media/home.jpg");
   background-attachment: fixed;
@@ -20,8 +29,6 @@
   background-color: transparent;
   top: 30vh;
   user-select: none;
-
-  margin-top: -63vh;
 
   color: $text-color;
   text-align: center;
