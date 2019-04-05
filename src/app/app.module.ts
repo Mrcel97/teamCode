@@ -11,6 +11,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { InterfaceComponent } from './interface/interface.component';
 import { ProjectsComponent } from './interface/projects/projects.component';
 import { ProjectPagesComponent } from './interface/project-pages/project-pages.component';
+import { FeedComponent } from './interface/feed/feed.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ProjectPagesComponent } from './interface/project-pages/project-pages.c
     HomepageComponent,
     InterfaceComponent,
     ProjectsComponent,
-    ProjectPagesComponent
+    ProjectPagesComponent,
+    FeedComponent
   ],
   imports: [
     BrowserModule,

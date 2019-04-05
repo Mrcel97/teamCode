@@ -5,8 +5,11 @@
 }
 
 .content {
-  height: 100%;
   width: 100%;
+}
+
+.bloquer {
+  min-height: 6em;
 }
 
 .welcome-text {
@@ -44,4 +47,8 @@
 
 h1, .h1 {
   font-size: 6vh;
+}
+
+.hidden {
+  display: none;
 }

@@ -1,18 +1,25 @@
 @import "../../../assets/themes/dark.scss";
 
 .projects-container {
+  min-width: 25em;
+  max-height: 552.4px;
   border: solid $primary-color-variant 2px;
   border-radius: 6px;
   color: $text-color;
   padding: 1em;
   margin-left: 3em;
-  margin-bottom: 10em;
-  max-width: 25em;
+  margin-right: 3em;
   background-color: rgba($primary-color, .85);
+  transition: ease all .5s;
+}
+
+.feed-content {
+  overflow-y: auto;
+  max-height: 450px;
 }
 
 .projects-container:hover {
-  .projects-title {
+  .feed-title {
     color: $accent-color;
   }
 }
@@ -28,8 +35,6 @@
 .list-item:hover {
   background-color: $primary-color-variant;
   cursor: pointer;
-  color: $accent-color;
-  transform: scale(1.02);
 }
 
 .no-dot {
