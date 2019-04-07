@@ -12,6 +12,7 @@ import { InterfaceComponent } from './interface/interface.component';
 import { ProjectsComponent } from './interface/projects/projects.component';
 import { ProjectPagesComponent } from './interface/project-pages/project-pages.component';
 import { FeedComponent } from './interface/feed/feed.component';
+import { StatisticsComponent } from './interface/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FeedComponent } from './interface/feed/feed.component';
     InterfaceComponent,
     ProjectsComponent,
     ProjectPagesComponent,
-    FeedComponent
+    FeedComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

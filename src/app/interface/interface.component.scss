@@ -16,6 +16,18 @@
   position: absolute;
 }
 
+@media only screen and (min-width: 868px) {
+  .limited {
+    max-width: 25em !important;
+  }
+}
+
+@media only screen and (max-width: 1317px) {
+  .unlimited {
+    flex: 1 1 auto !important;
+  }
+}
+
 .background {
   background-image: url("../../assets/media/home.jpg");
   background-attachment: fixed;
