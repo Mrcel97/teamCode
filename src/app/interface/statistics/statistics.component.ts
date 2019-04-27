@@ -28,7 +28,6 @@ export class StatisticsComponent implements OnInit {
       backgroundColor: 'rgba(105, 0, 132, .2)',
       borderColor: 'rgba(200, 99, 132, .7)',
       borderWidth: 2,
-      color: '#FFFFF'
     },
     {
       backgroundColor: 'rgba(0, 137, 132, .2)',
@@ -41,8 +40,8 @@ export class StatisticsComponent implements OnInit {
     responsive: true,
     legend: {
       labels: {
-          fontColor: '#b0bec5'
-      }
+        fontColor: '#b0bec5'
+      },
     }
   };
   public chartClicked(e: any): void { }

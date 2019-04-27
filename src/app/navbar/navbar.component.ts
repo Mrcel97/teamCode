@@ -7,6 +7,7 @@ import { NavbarService } from '../services/navbar.service';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
+  
 
   constructor(public navbarService: NavbarService) { }
 
