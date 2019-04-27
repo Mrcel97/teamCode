@@ -1,36 +1,56 @@
 // Components
 import { AppComponent } from './app.component';
-
-// Modules
-import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { NgModule } from '@angular/core';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { NavbarComponent } from './navbar/navbar.component';
+import { FeedComponent } from './interface/feed/feed.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { InterfaceComponent } from './interface/interface.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { ProjectsComponent } from './interface/projects/projects.component';
 import { ProjectPagesComponent } from './interface/project-pages/project-pages.component';
-import { FeedComponent } from './interface/feed/feed.component';
 import { StatisticsComponent } from './interface/statistics/statistics.component';
+
+// Modules
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFirestoreModule, FirestoreSettingsToken } from 'angularfire2/firestore';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ToastrModule } from 'ngx-toastr';
+
+// Configs
+import { firebaseConfig } from '../assets/configs/firebaseConfig';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
+    FeedComponent,
     HomepageComponent,
     InterfaceComponent,
+    NavbarComponent,
     ProjectsComponent,
     ProjectPagesComponent,
-    FeedComponent,
     StatisticsComponent
   ],
   imports: [
-    BrowserModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     AppRoutingModule,
-    MDBBootstrapModule.forRoot()
+    BrowserAnimationsModule,
+    BrowserModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    MDBBootstrapModule.forRoot(),
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  schemas: [ NO_ERRORS_SCHEMA ],
+  providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
