@@ -1,0 +1,39 @@
+<button *ngIf="user" (click)="showOptions()" class="dot-button animated fadeIn" size="sm" mdbBtn type="button" color="white" mdbWavesEffect></button>
+<div *ngIf="user && optionsOpen" class="animated fadeInRight">
+  <button (click)="showCollaboratorInput()" class="dot-button-sm load-collaborator-button" size="sm" mdbBtn type="button" color="white" mdbWavesEffect>
+    <i class="fas fa-share-alt fa-3x load-collaborator-icon"></i>
+  </button>
+  <input [(ngModel)]="collaboratorEmail" *ngIf="collaboratorInput" class="input-material-design collaborator-input" type="email" placeholder="Collaborator email">
+  <a *ngIf="collaboratorInput" class="submit submit-collaborator" (click)="loadCollaborator()"><i class="fas fa-arrow-right"></i></a>
+
+  <ng-template #fileInfo>
+    Import github files.
+    <br/><br/>
+    You need to provide the full URL.
+  </ng-template>
+
+  <div [mdbTooltip]="fileInfo" class="info-container2" placement="left">
+    <a class="info"><img class="info-icon" src="../../assets/media/info-solid.svg" style="user-select: none;"/></a>  
+  </div>
+  <button (click)="showFileInput()" class="dot-button-sm load-file-button" size="sm" mdbBtn type="button" color="white" mdbWavesEffect>
+    <i class="fas fa-file fa-3x load-file-icon"></i>
+  </button>
+  <input [(ngModel)]="fileURL" *ngIf="fileInput" class="input-material-design file-input" type="text" placeholder="Github File URL">
+  <a *ngIf="fileInput" class="submit submit-file" (click)="loadFile()"><i class="fas fa-arrow-right"></i></a>
+
+  <ng-template #webRepoInfo>
+    Import web application repositories.
+    <br/><br/>
+    Supports: Angular, React, Ionic, TS, RxJS and Svelte.
+  </ng-template>
+
+  <div [mdbTooltip]="webRepoInfo" class="info-container" placement="left">
+    <a class="info"><img class="info-icon" src="../../assets/media/info-solid.svg" style="user-select: none;"/></a>  
+  </div>
+  <button (click)="showRepositoryInput()" class="dot-button-sm" size="sm" mdbBtn type="button" color="white" mdbWavesEffect>
+    <i class="fas fa-globe fa-2x"></i>
+    <i class="fas fa-book fa-3x webRepo-icon"></i>
+  </button>
+  <input [(ngModel)]="repoURL" *ngIf="repositoryInput" class="input-material-design" type="text" placeholder="Username/repository">
+  <a *ngIf="repositoryInput" class="submit" (click)="loadWebRepo()"><i class="fas fa-arrow-right"></i></a>
+</div>

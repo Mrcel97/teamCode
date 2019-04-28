@@ -21,9 +21,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
+import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
+import { AuthComponent } from './auth/auth.component';
+import { GithubComponent } from './github/github.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,9 @@ import { firebaseConfig } from '../assets/configs/firebaseConfig';
     NavbarComponent,
     ProjectsComponent,
     ProjectPagesComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    AuthComponent,
+    GithubComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -43,11 +48,14 @@ import { firebaseConfig } from '../assets/configs/firebaseConfig';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    ButtonsModule,
     CommonModule,
     FormsModule,
     HttpClientModule,
     MDBBootstrapModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    TooltipModule,
+    WavesModule
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],

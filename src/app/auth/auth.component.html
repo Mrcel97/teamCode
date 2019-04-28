@@ -1,0 +1,18 @@
+<ul *ngIf="!user" class="navbar-nav mt-lg-0">
+  <li class="nav-item">
+      <a (click)="login()" class="nav-link" mdbWavesEffect>Sign in</a>
+  </li>
+  <li class="divider-vertical"></li>
+  <li class="nav-item">
+      <a (click)="login()" class="nav-link" mdbWavesEffect>Sign up</a>
+  </li>
+</ul>
+<ul *ngIf="user" class="navbar-nav mt-lg-0">
+  <li class="nav-item">
+      <a (click)="showOptions()" class="nav-link" mdbWavesEffect>Options</a>
+  </li>
+  <li class="divider-vertical"></li>
+  <li class="nav-item">
+      <a (click)="logout()" class="nav-link" mdbWavesEffect>Log Out</a>
+  </li>
+</ul>

@@ -1,9 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { NavbarService } from '../services/navbar.service';
-import { AuthService } from './../services/auth.service';
-
-import { FirebaseUser } from '../../assets/model/user';
 
 @Component({
   selector: 'app-navbar',
@@ -11,27 +8,26 @@ import { FirebaseUser } from '../../assets/model/user';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  user: FirebaseUser;
-  options: boolean = false;
-  @Output() options_notification: EventEmitter<boolean> = new EventEmitter<boolean>(false);
-  @Output() user_status: EventEmitter<boolean> = new EventEmitter<boolean>(false);
-  @Output() user_uid: EventEmitter<String> = new EventEmitter<String>();
-  @Output() user_credentials: EventEmitter<String[]> = new EventEmitter<String[]>();
-  @Output() user_data: EventEmitter<FirebaseUser> = new EventEmitter<FirebaseUser>();
+  public chatContent: string;
+  public message: string;
+  //public workspace: Workspace;
+  private roomID: string;
+  public options: boolean = false;
+  public requests: string[] = [];
+  userUID: string = '';
+  userEmail: string = '';
+  userStatus: boolean = false;
+  isWriter: boolean = false;
+  warningInterval;
+
+  //idle: Idle;
+  //notIdle: NotIdle;
 
   constructor(
-    public navbarService: NavbarService,
-    public authService: AuthService
+    public navbarService: NavbarService
     ) { }
 
   ngOnInit() {
-    this.authService.user$.subscribe( user => {
-      this.user = user;
-      this.user_status.emit(user ? true : false);
-      this.user_uid.emit(user ? user.uid : '');
-      this.user_credentials.emit(user ? [user.uid, user.email] : ['','']);
-      this.user_data.emit(user ? user : null);
-    } );
   }
 
   //// NAVIGATION SECTION ////
@@ -43,17 +39,22 @@ export class NavbarComponent implements OnInit {
     return path === this.navbarService.section;
   }
 
-  //// AUTH SECTION ////
-  login() {
-    this.authService.loginWithGithub();
+  //// AUTH DATA ////
+  showOptions(status: boolean) {
+    this.options = status;
   }
 
-  logout() {
-    this.authService.logout();
-  }
-
-  showOptions() {
-    this.options = (this.options) ? false : true;
-    this.options_notification.emit(this.options);
+  updateUserCredentials(status: string) {
+    this.userUID = status[0];
+    this.userEmail = status[1];
+    this.userStatus = this.userUID !== '' ? true : false;
+    /*this.chatService.setUserUID(this.userUID);
+    this.workspaceService.isWriter(this.userEmail, this.roomID).subscribe(
+      result => { 
+        if (result) {
+          this.getWriteRequests();
+        }
+      }
+    );*/
   }
 }

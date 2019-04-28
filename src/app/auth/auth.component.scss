@@ -15,11 +15,6 @@
   margin-right: 5em;
 }
 
-.fa-search:hover {
-  color: $accent-color;
-  cursor: pointer;
-}
-
 input[type=text]:focus:not([readonly]) + label {
   color: $accent-color !important; 
 }
@@ -40,11 +35,4 @@ input[type=text]:focus:not([readonly]) {
   .form-inline {
     display: none;
   }
-}
-
-app-github {
-  position: absolute;
-  right: .25em;
-  bottom: .25em;
-  z-index: 1;
 }

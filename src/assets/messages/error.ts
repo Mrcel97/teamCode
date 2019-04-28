@@ -1,0 +1,1 @@
+export const connectionError = 'Lost Connection with you Virtual Machine. You might experience some delay problems. We recommend you to save the changes and refresh the project.'

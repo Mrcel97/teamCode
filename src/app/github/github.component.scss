@@ -1,0 +1,151 @@
+@import "../../assets/themes/dark.scss";
+
+.dot-button-sm {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: black !important;
+  background-size: cover;
+
+  position: absolute;
+  bottom: 7em;
+  right: 1em;
+  height: 5em;
+  max-width: 5em;
+  max-height: 5em;
+  border-radius: 50%;
+  margin-left: -6em;
+  margin-top: -11em;
+}
+.webRepo-icon {
+  margin-left: -.32em;
+  margin-top: 2.35px;
+}
+.input-material-design {
+  border-radius: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  color: black;
+  background-color: $primary-color-variant;
+  border: solid .5px $accent-color;
+
+  position: absolute;
+  bottom: 5.5em;
+  right: 4.5em;
+  width: 15em;
+}
+.submit {
+  background-color: $accent-color;
+  padding: 1.5px 10px 10px 6px;
+  border-radius: 0px 20px 20px 0px;
+
+  position: absolute;
+  bottom: 5.5em;
+  right: 4.5em;
+  height: 28px;
+}
+.fas {
+  color: $primary-color-variant;
+}
+.fa-arrow-right  {
+  margin-left: -1px;
+}
+.fa-globe {
+  position: absolute;
+  right: 1.2em;
+}
+.info-container {
+  position: absolute;
+  bottom: 8.3em;
+  right: 2em;
+  user-select: none;
+
+  padding-left: 3.5em;
+  z-index: 3;
+}
+.info {
+  position: absolute;
+  user-select: none;
+
+  width: .9em;
+  height: .9em;
+  border-radius: 50%;
+  background-color: $accent-color;
+  z-index: 2;
+}
+.info-container2 {
+  position: absolute;
+  bottom: 12.1em;
+  right: 2em;
+
+  padding-left: 3.5em;
+  z-index: 3;
+}
+.info-icon {
+  position: absolute;
+  margin-left: .3em;
+  margin-top: 2px;
+  width: .25em;
+}
+.load-file-button {
+  bottom: 13em;
+  right: 1em;
+}
+.load-file-icon {
+  margin-left: -.32em;
+  margin-top: 0.3px;
+}
+.load-collaborator-button {
+  bottom: 19em;
+  right: 1em;
+}
+.load-collaborator-icon {
+  margin-left: -.5em;
+  margin-top: 0.3px;
+}
+.submit-file {
+  bottom: 9.5em;
+}
+.file-input {
+  bottom: 9.5em;
+}
+.submit-collaborator {
+  bottom: 13.5em;
+}
+.collaborator-input {
+  bottom: 13.5em;
+}
+
+.dot-button {
+  background: $primary-color-variant url(../../assets/media/github-brands.svg) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+
+  position: absolute;
+  bottom: .75em;
+  right: .75em;
+  height: 5em;
+  max-width: 5em;
+  max-height: 5em;
+  border-radius: 50%;
+  margin-left: -6em;
+  margin-top: -11em;
+}
+
+.logout {
+  position: absolute;
+  bottom: 3.5em;
+  right: 1em;
+
+  width: .9em;
+  height: .9em;
+  border-radius: 50%;
+  background-color: $primary-color-variant;
+  z-index: 2;
+}
+
+.cross-icon {
+  position: absolute;
+  width: 1em;
+}
