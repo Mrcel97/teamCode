@@ -1,15 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Workspace } from 'src/assets/model/workspace';
+import { FirebaseUser } from './../../../assets/model/user';
+import { File } from './../../../assets/model/file';
+
+import { WorkspaceService } from './../../services/workspace.service';
+import { AuthService } from './../../services/auth.service';
+
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss']
 })
 export class StatisticsComponent implements OnInit {
+  myUser: FirebaseUser;
+  allWorkspaces: Array<Workspace>;
 
-  constructor() { }
+  localFiles: Array<File[]> = [];
+  workspaceFilesLangs: Map<string, Array<string>> = new Map();
+
+  constructor(
+    public workspaceService:WorkspaceService,
+    public authService:AuthService
+  ) { }
 
   ngOnInit() {
+    this.workspaceService.localWorkspaces.subscribe(workspaces => {
+      this.allWorkspaces = workspaces;
+      this.organizeData();
+    });
   }
 
   // Hardcoded Example Data
@@ -46,4 +65,12 @@ export class StatisticsComponent implements OnInit {
   };
   public chartClicked(e: any): void { }
   public chartHovered(e: any): void { }
+
+  public organizeData() {
+    for (let workspace of this.allWorkspaces) {
+      this.localFiles.push(workspace.files)
+      this.workspaceFilesLangs.set(workspace.name, workspace.files.map(file => file.language && file.language));
+    }
+    console.log(this.workspaceFilesLangs);
+  }
 }
