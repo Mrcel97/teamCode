@@ -33,14 +33,25 @@
 }
 
 .list-item:hover {
-  background-color: $primary-color-variant;
   cursor: pointer;
-  color: $accent-color;
+  background-color: $primary-color-variant;
   transform: scale(1.02);
+}
+
+.list-info {
+  color: $accent-color;  
 }
 
 .no-dot {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.list-info {
+  display: inline;
+}
+
+.loading-item {
+  height: 120px;
 }

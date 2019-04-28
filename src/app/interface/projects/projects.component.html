@@ -1,33 +1,25 @@
 <div class="projects-container animated fadeInLeft" style="text-align: left">
   <h3 class="projects-title" style="transition: 0.5s;">Projects</h3>
   <hr style="background-color: whitesmoke">
-  <div class="list-item">
+  <div *ngFor="let workspace of visibleWorkspaces" class="list-item">
     <ul class="no-dot">
-      <li>Name: Sample</li>
-      <li>Owner: You</li>
-      <li>Collborators: 1</li>
+      <li><p class="list-info">Name: </p>{{workspace.name}}</li>
+      <li><p class="list-info">Owner:</p> {{workspace.owner.name}}</li>
+      <li><p class="list-info">Writer:</p> {{workspace.writer}}</li>
+      <li><p class="list-info">Collaborators: </p></li>
+        <ul>
+          <li *ngFor="let collaborator of workspace.collaborators">{{collaborator}}</li>
+        </ul>
     </ul>
   </div>
-  <div class="list-item">
-    <ul class="no-dot">
-      <li>Name: Sample</li>
-      <li>Owner: You</li>
-      <li>Collborators: 1</li>
-    </ul>
+  <div *ngIf="!allWorkspaces" class="list-item loading-item">
   </div>
-  <div class="list-item">
-    <ul class="no-dot">
-      <li>Name: Sample</li>
-      <li>Owner: You</li>
-      <li>Collborators: 1</li>
-    </ul>
+  <div *ngIf="!allWorkspaces" class="list-item loading-item">
   </div>
-  <div class="list-item">
-    <ul class="no-dot">
-      <li>Name: Sample</li>
-      <li>Owner: You</li>
-      <li>Collborators: 1</li>
-    </ul>
+  <div *ngIf="!allWorkspaces" class="list-item loading-item">
   </div>
-  <app-project-pages class="d-flex justify-content-center"></app-project-pages>
+  <app-project-pages  [workspacePages]="workspacePages" 
+                      (getMoreWorkspaces)="assignPagesMovement($event)" 
+                      (getSpecificWorkspace)="getSpecificWorkspace($event)"
+                      class="d-flex justify-content-center"></app-project-pages>
 </div>
