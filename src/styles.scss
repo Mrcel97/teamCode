@@ -1,7 +1,10 @@
 @import "./assets/themes/dark.scss";
 
-html {
-  background-color: transparent;
+html, body {
+  background-color: #3c3c3c;
+  min-height: 100vh;
+  height: auto;
+  margin: 0;
 }
 
 .container {
@@ -11,9 +14,21 @@ html {
 
 .navbar {
   padding-right: 0rem;
-  padding-left: .5rem;
+  padding-left: .3rem;
   background-color: $primary-color-variant;
   color: $text-color;
+}
+
+.navbar.scrolling-navbar {
+  padding-top: .1em;
+  padding-bottom: .1em;
+}
+
+@media (max-width: 993px) {
+  .navbar.scrolling-navbar {
+    padding-top: .45em;
+    padding-bottom: .45em;
+  }
 }
 
 .navbar-brand, .nav-link {
