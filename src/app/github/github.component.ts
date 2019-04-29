@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { StackBlitzService } from '../services/stack-blitz.service';
+import { GithubService } from '../services/github.service';
+
 @Component({
   selector: 'app-github',
   templateUrl: './github.component.html',
@@ -17,8 +20,8 @@ export class GithubComponent implements OnInit {
   collaboratorEmail: string;
   
   constructor(
-    /*public stackBlitzService: StackBlitzService, 
-    public githubService: GithubService*/
+    public stackBlitzService: StackBlitzService, 
+    public githubService: GithubService
   ) { }
 
   ngOnInit() { }
@@ -41,7 +44,7 @@ export class GithubComponent implements OnInit {
 
   loadWebRepo() {
     if (this.repoURL) {
-      /*this.stackBlitzService.loadGithubWorkspace(this.repoURL);*/
+      this.stackBlitzService.loadGithubWorkspace(this.repoURL);
     }
   }
 
@@ -49,11 +52,11 @@ export class GithubComponent implements OnInit {
     var githubUserName: string = 'MrceL97';
 
     if (this.fileURL) {
-      /*this.githubService.obtainGithubFile(this.fileURL).subscribe(
+      this.githubService.obtainGithubFile(this.fileURL).subscribe(
         file => {
           this.stackBlitzService.createFile(file.name, file.language, file.content);
         }
-      );*/
+      );
     }
   }
 

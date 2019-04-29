@@ -30,11 +30,16 @@
               "node_modules/font-awesome/scss/font-awesome.scss",
               "node_modules/angular-bootstrap-md/scss/bootstrap/bootstrap.scss",
               "node_modules/angular-bootstrap-md/scss/mdb-free.scss",
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
+              "./node_modules/jquery/dist/jquery.js",
               "node_modules/chart.js/dist/Chart.js",
-              "node_modules/hammerjs/hammer.min.js"
+              "node_modules/hammerjs/hammer.min.js",
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/froala-editor/js/froala_editor.pkgd.min.js"
             ]
           },
           "configurations": {

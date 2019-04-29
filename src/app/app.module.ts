@@ -27,6 +27,7 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
 import { AuthComponent } from './auth/auth.component';
 import { GithubComponent } from './github/github.component';
+import { IdeComponent } from './ide/ide.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { GithubComponent } from './github/github.component';
     ProjectPagesComponent,
     StatisticsComponent,
     AuthComponent,
-    GithubComponent
+    GithubComponent,
+    IdeComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
