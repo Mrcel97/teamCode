@@ -35,6 +35,10 @@ export class NavbarComponent implements OnInit {
     this.navbarService.navigate(path);
   }
 
+  homeNavigate() {
+    this.userStatus ? this.navbarService.navigate('interface') : this.navbarService.navigate('');
+  }
+
   checkActivePath(path: string) {
     return path === this.navbarService.section;
   }
@@ -47,7 +51,7 @@ export class NavbarComponent implements OnInit {
   updateUserCredentials(status: string) {
     this.userUID = status[0];
     this.userEmail = status[1];
-    this.userStatus = this.userUID !== '' ? true : false;
+    this.userStatus = (this.userUID !== '') ? true : false;
     /*this.chatService.setUserUID(this.userUID);
     this.workspaceService.isWriter(this.userEmail, this.roomID).subscribe(
       result => { 

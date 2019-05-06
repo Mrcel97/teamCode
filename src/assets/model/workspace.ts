@@ -22,7 +22,7 @@ export function workspaceSnapshotFactory(snapshot): Workspace {
   var owner = firebaseUserFactory(user_id, 'johndoe@gmail.com', 'John Doe', 'www.example.com', 1234567654) // TODO
 
   for(var file in snapshot) {
-    files.push(fileFactory(file, userFactory(user_id, owner.displayName), snapshot[file]));
+    files.push(fileFactory(file, userFactory(user_id, owner.name), snapshot[file]));
   }
   
   return new Workspace(workspace_name, owner, owner.uid, [owner.email], files, this.defaultWriterRequest(owner.uid, 0));

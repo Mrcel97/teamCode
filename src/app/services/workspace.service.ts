@@ -36,7 +36,7 @@ export class WorkspaceService {
       return; 
     }
     this.user = owner;
-    var ws = new Workspace(name, this.user, this.user.email, [this.user.email], [defaultFiles(new User(this.user.uid,this.user.displayName))], defaultWriterRequest(this.user.email, 0));
+    var ws = new Workspace(name, this.user, this.user.email, [this.user.email], [defaultFiles(new User(this.user.uid,this.user.name))], defaultWriterRequest(this.user.email, 0));
     console.log('Providing: ', ws);
     this.http.post<Workspace>(backendURL + '/api/workspaces', ws, httpOptions).subscribe(
       data => {
@@ -71,7 +71,7 @@ export class WorkspaceService {
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
     .subscribe( workspace => {
       this.localWorkspace.next(workspace);
-      this.setWorkingFile(workspace.files.filter(file => file.name == "README.md")[0].id);
+      //this.setWorkingFile(workspace.files.filter(file => file.name == "README.md")[0].id);
     });
   }
 

@@ -4,6 +4,7 @@ import { AuthService } from './../../services/auth.service';
 import { WorkspaceService } from './../../services/workspace.service';
 import { Component, OnInit } from '@angular/core';
 import { Workspace } from 'src/assets/model/workspace';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-projects',
@@ -20,7 +21,8 @@ export class ProjectsComponent implements OnInit {
   
   constructor(
     public workspaceService: WorkspaceService,
-    public authService: AuthService
+    public authService: AuthService,
+    public router: Router
   ) {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
       this.allWorkspaces = workspaces;
@@ -85,5 +87,9 @@ export class ProjectsComponent implements OnInit {
       return 5;
     }
     return Math.ceil(this.allWorkspaces.length/3);
+  }
+
+  public navigate(path: string, workspaceId: string) {
+    this.router.navigate([path, workspaceId]);
   }
 }

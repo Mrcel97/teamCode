@@ -1,13 +1,13 @@
+import { project } from './../../assets/projects/project-info';
 import { Injectable } from '@angular/core';
 import sdk from '@stackblitz/sdk'
 
 // Project Imports
-import { project } from '../../assets/projects/project-info';
 import { connectionError } from '../../assets/messages/error';
 import { Workspace, workspaceSnapshotFactory } from 'src/assets/model/workspace';
 import { Update, sampleUpdateClass } from 'src/assets/model/update';
 import { BehaviorSubject } from 'rxjs';
-import { VM } from '@stackblitz/sdk/typings/VM'
+import { VM } from '@stackblitz/sdk/typings/VM';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +20,12 @@ export class StackBlitzService {
     this.virtualMachine$ = new BehaviorSubject<VM>(null);
   }
 
-  createWorkspace() {
+  createWorkspace(project) {
     sdk.embedProject('editor', project, {
-      openFile: 'sampleProject.ts'
+      clickToLoad: false,
+      view: 'editor',
+      hideNavigation: false,
+      forceEmbedLayout: true
     }).then( vm => {
       this.virtualMachine$.next(vm);
     })
@@ -108,7 +111,7 @@ export class StackBlitzService {
 
   }
 
-  refresh() {
+  refresh(project) {
     sdk.embedProject('editor', project, {
       openFile: 'sampleProject.ts'
     }).then( vm => {

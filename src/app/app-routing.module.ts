@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'collaborators', component: HomepageComponent},
   {path: 'public-projects', component: HomepageComponent},
   {path: 'interface', component: InterfaceComponent},
-  {path: 'workspace/:workspace_id/:file_id', component: IdeComponent},
+  {path: 'workspace/:workspace_id', component: IdeComponent},
 ];
 
 @NgModule({
