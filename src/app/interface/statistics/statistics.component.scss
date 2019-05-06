@@ -1,0 +1,52 @@
+@import "../../../assets/themes/dark.scss";
+
+.projects-container {
+  min-width: 25em;
+  max-height: 552.4px;
+  border: solid $primary-color-variant 2px;
+  border-radius: 6px;
+  color: $text-color;
+  padding: 1em;
+  margin-left: 3em;
+  margin-right: 3em;
+  margin-bottom: 3em;
+  min-height: 552px;
+  background-color: rgba($primary-color, .85);
+  transition: ease all .5s;
+}
+
+@media only screen and (max-width: 1317px) {
+  .projects-container {
+    margin-top: 3em;
+  }
+}
+
+.feed-content {
+  overflow-y: auto;
+  max-height: 450px;
+}
+
+.projects-container:hover {
+  .feed-title {
+    color: $accent-color;
+  }
+}
+
+.list-item {
+  background-color: #2b2b2b;
+  font-size: 16px;
+  padding: .5em;
+  margin-bottom: .5em;
+  transition: 0.5s;
+}
+
+.list-item:hover {
+  background-color: $primary-color-variant;
+  cursor: pointer;
+}
+
+.no-dot {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,35 @@
+<div class="projects-container animated fadeInRight" style="text-align: left">
+  <div style="position: sticky">
+    <h3 class="feed-title" style="transition: 0.5s;">Statistics</h3>
+    <hr style="background-color: whitesmoke">
+  </div>
+  <div class="feed-content">
+    <div style="display: block; overflow: hidden;">
+      <canvas mdbChart
+          [chartType]="chartType"
+          [datasets]="chartDatasets"
+          [labels]="chartLabels"
+          [colors]="chartColors"
+          [options]="chartOptions"
+          [legend]="true"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)">
+      </canvas>
+      <br/>
+      <br/>
+      <br/>
+      <div style="display: block; overflow: hidden;">
+        <canvas mdbChart
+            [chartType]="chartType2"
+            [datasets]="chartDatasets"
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>

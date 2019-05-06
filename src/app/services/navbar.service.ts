@@ -11,7 +11,6 @@ export class NavbarService {
   constructor(public router: Router) {
     router.events.subscribe(event => {
       this.section = router.url.split("/")[1];
-      console.log(this.section)
     });
   }
 

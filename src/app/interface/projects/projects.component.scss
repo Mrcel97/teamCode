@@ -6,9 +6,22 @@
   color: $text-color;
   padding: 1em;
   margin-left: 3em;
-  margin-bottom: 10em;
+  margin-bottom: 3em;
   max-width: 25em;
   background-color: rgba($primary-color, .85);
+}
+
+.projects-container:hover {
+  .projects-title {
+    color: $accent-color;
+  }
+}
+
+@media only screen and (max-width: 868px) {
+  .projects-container {
+    margin-right: 3em;
+    max-width: none;
+  }
 }
 
 .list-item {
@@ -20,14 +33,25 @@
 }
 
 .list-item:hover {
-  background-color: $primary-color-variant;
   cursor: pointer;
-  color: $accent-color;
+  background-color: $primary-color-variant;
   transform: scale(1.02);
+}
+
+.list-info {
+  color: $accent-color;  
 }
 
 .no-dot {
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.list-info {
+  display: inline;
+}
+
+.loading-item {
+  height: 120px;
 }

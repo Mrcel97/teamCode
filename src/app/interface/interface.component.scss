@@ -5,12 +5,27 @@
 }
 
 .content {
-  height: 100%;
   width: 100%;
+}
+
+.bloquer {
+  min-height: 5em;
 }
 
 .welcome-text {
   position: absolute;
+}
+
+@media only screen and (min-width: 868px) {
+  .limited {
+    max-width: 25em !important;
+  }
+}
+
+@media only screen and (max-width: 1317px) {
+  .unlimited {
+    flex: 1 1 auto !important;
+  }
 }
 
 .background {
@@ -44,4 +59,8 @@
 
 h1, .h1 {
   font-size: 6vh;
+}
+
+.hidden {
+  display: none;
 }

@@ -1,4 +1,5 @@
 <div class="background" style="overflow: auto">
+  <div class="bloquer"></div>
   <div class="animated fadeOutUp" style="position: absolute; text-align: center; color: white; left:0; right:0; top:37.5vh; margin-left:auto; margin-right:auto; margin-top: auto">
     <h1 class="spaced">Welcome to Team<b class="highlight">Code</b></h1>
     <h2 class="spaced">Your online in real time codig tool</h2>
@@ -7,6 +8,8 @@
     </div>
   </div>
   <div class="content website-info d-flex justify-content-start align-content-center flex-wrap">
-    <app-projects></app-projects>
+    <app-projects class="flex-fill limited"></app-projects>
+    <app-feed class="flex-fill flex-grow-1"></app-feed>
+    <app-statistics class="unlimited"></app-statistics>    
   </div>
 </div>

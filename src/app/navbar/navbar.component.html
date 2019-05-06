@@ -1,6 +1,6 @@
 <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
     <mdb-navbar-brand>
-        <a class="navbar-brand" href="#">Team<b class="highlight">Code</b></a>
+        <a class="navbar-brand" (click)="homeNavigate()">Team<b class="highlight">Code</b></a>
     </mdb-navbar-brand><!-- Links -->
     <links>
         <ul class="navbar-nav mr-auto mt-lg-0">
@@ -23,14 +23,8 @@
             </div>
         </form>
 
-        <ul class="navbar-nav mt-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="#" mdbWavesEffect>Sign in</a>
-            </li>
-            <li class="divider-vertical"></li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" mdbWavesEffect>Sign up</a>
-            </li>
-        </ul>
+        <app-auth (options_notification)="showOptions($event)" (user_credentials)="updateUserCredentials($event)"></app-auth>
     </links>
 </mdb-navbar>
+
+<app-github [user]='userStatus' *ngIf="userStatus" (collaborator_email)="updateCollaborators($event)"></app-github>

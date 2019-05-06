@@ -1,0 +1,38 @@
+@import "../../assets/themes/dark.scss";
+
+.highlight {
+  color: $accent-color;
+  font-weight: 900;
+}
+
+.divider-vertical {
+  height: 30px;
+  margin: 5px 9px;
+  border-right: .5px solid #737374;
+}
+
+.spaced {
+  margin-right: 5em;
+}
+
+input[type=text]:focus:not([readonly]) + label {
+  color: $accent-color !important; 
+}
+
+input[type=text]:focus:not([readonly]) {
+  border-bottom: 1px solid $accent-color !important;
+  box-shadow: 0 1px 0 0 $accent-color !important; 
+}
+
+.active {
+  color: $accent-color !important;
+}
+
+@media (max-width: 991px) {
+  .divider-vertical {
+    display: none;
+  }
+  .form-inline {
+    display: none;
+  }
+}
