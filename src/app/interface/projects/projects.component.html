@@ -1,16 +1,31 @@
 <div class="projects-container animated fadeInLeft" style="text-align: left">
   <h3 class="projects-title" style="transition: 0.5s;">Projects</h3>
   <hr style="background-color: whitesmoke">
-  <div *ngFor="let workspace of visibleWorkspaces" class="list-item" (click)="navigate('workspace', workspace.id)">
-    <ul class="no-dot">
-      <li><p class="list-info">Name: </p>{{workspace.name}}</li>
-      <li><p class="list-info">Owner:</p> {{workspace.owner.name}}</li>
-      <li><p class="list-info">Writer:</p> {{workspace.writer}}</li>
-      <li><p class="list-info">Collaborators: </p></li>
-        <ul>
-          <li *ngFor="let collaborator of workspace.collaborators">{{collaborator}}</li>
-        </ul>
-    </ul>
+  <div *ngFor="let workspace of visibleWorkspaces" class="list-item">
+    <div *ngIf="workspace != null" class="d-flex justify-content-start">
+      <ul class="no-dot">
+        <li><p class="list-info">Name: </p>{{workspace.name}}</li>
+        <li><p class="list-info">Owner:</p> {{workspace.owner.name}}</li>
+        <li><p class="list-info">Writer:</p> {{workspace.writer}}</li>
+        <li><p class="list-info">Collaborators: </p></li>
+          <ul>
+            <li *ngFor="let collaborator of workspace.collaborators">{{collaborator}}</li>
+          </ul>
+      </ul>
+      <div class="d-flex align-items-end flex-column ml-auto p-2">
+        <div class="p-2" (click)="openModal(workspace.name)">
+          <section class="trash-icon-container">
+            <span class="trash">
+              <span></span>
+              <i></i>
+            </span>
+          </section>
+        </div>
+        <div class="mt-auto p-2">
+          <img class="load-workspace" src="../../../assets/media/play-solid.svg" alt="load_workspace" (click)="navigate('workspace', workspace.id)">
+        </div>
+      </div>
+    </div>
   </div>
   <div *ngIf="!allWorkspaces" class="list-item loading-item">
   </div>

@@ -1,10 +1,13 @@
-import { of } from 'rxjs';
 import { FirebaseUser } from './../../../assets/model/user';
 import { AuthService } from './../../services/auth.service';
 import { WorkspaceService } from './../../services/workspace.service';
 import { Component, OnInit } from '@angular/core';
 import { Workspace } from 'src/assets/model/workspace';
 import { Router } from '@angular/router';
+import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
+
+import { WorkspaceDeleteModalComponent } from './workspace-delete-modal/workspace-delete-modal.component';
+import { ModalService } from './workspace-delete-modal/modal-service/modal-service.service';
 
 @Component({
   selector: 'app-projects',
@@ -12,6 +15,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit {
+  modalRef: MDBModalRef;
+
   myUser: FirebaseUser;
   allWorkspaces: Array<Workspace>;
   workspacePages: number;
@@ -20,11 +25,14 @@ export class ProjectsComponent implements OnInit {
   projectsLoaded: boolean = false;
   
   constructor(
+    private MDBmodalService: MDBModalService,
+    private modalService: ModalService,
     public workspaceService: WorkspaceService,
     public authService: AuthService,
     public router: Router
   ) {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
+      if (workspaces == null) return;
       this.allWorkspaces = workspaces;
       this.workspacePages = this.getPagesValue();
       if (this.projectsLoaded == false) {
@@ -37,10 +45,14 @@ export class ProjectsComponent implements OnInit {
       this.myUser = user;
       this.workspaceService.loadWorkspaces(this.myUser.email);
     })
-    
   }
 
   ngOnInit() {
+  }
+
+  openModal(workspaceName: string) {
+    this.modalRef = this.MDBmodalService.show(WorkspaceDeleteModalComponent);
+    this.modalService.workspacename.next(workspaceName);
   }
 
   assignPagesMovement(movement: boolean) {

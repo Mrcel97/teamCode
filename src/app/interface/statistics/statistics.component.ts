@@ -26,6 +26,7 @@ export class StatisticsComponent implements OnInit {
 
   ngOnInit() {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
+      if (workspaces == null) return;
       this.allWorkspaces = workspaces;
       this.organizeData();
     });
@@ -71,6 +72,6 @@ export class StatisticsComponent implements OnInit {
       this.localFiles.push(workspace.files)
       this.workspaceFilesLangs.set(workspace.name, workspace.files.map(file => file.language && file.language));
     }
-    console.log(this.workspaceFilesLangs);
+    // console.log(this.workspaceFilesLangs);
   }
 }

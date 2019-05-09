@@ -1,0 +1,39 @@
+@import '../../../../assets/themes/dark.scss';
+
+/deep/ .modal-notify {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.modal-content {
+  border-radius: 10px !important;
+  background-color: $primary-color-variant !important;
+}
+
+.modal-header{
+  border-bottom: none;
+  background-color: #f1948a;
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.modal-body {
+  background-color: $primary-color-variant;
+}
+
+.modal-footer {
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  background-color: $primary-color-variant;
+}
+
+.form-label, p {
+  color: $text-color;
+}
+
+h5 {
+  font-weight: 1px;
+}
+
+/deep/ button.waves-light:nth-child(1) {
+  background-color: $accent-color;
+}
