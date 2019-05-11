@@ -32,9 +32,7 @@ export class ProjectsComponent implements OnInit {
     public router: Router
   ) {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
-      console.log('Trying to load workspaces...')
       if (workspaces == null || workspaces === this.allWorkspaces) return;
-      console.log('Loading workspaces...')
       this.allWorkspaces = workspaces;
       this.workspacePages = this.getPagesValue();
       if (this.projectsLoaded == false) {
@@ -45,10 +43,10 @@ export class ProjectsComponent implements OnInit {
 
     this.authService.user$.subscribe(user => {
       this.myUser = user;
-      console.log('User update found!');
-      console.log(this.myUser);
-      if (user == null) return;
-      console.log('User update validated, workspace reload...');
+      if (user == null) {
+        this.router.navigate(['']);
+        return;
+      }
       this.workspaceService.loadWorkspaces(this.myUser.email);
     })
   }
