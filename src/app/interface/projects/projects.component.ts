@@ -32,12 +32,14 @@ export class ProjectsComponent implements OnInit {
     public router: Router
   ) {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
-      if (workspaces == null || workspaces === this.allWorkspaces) return;
+      if (workspaces == null) return;
       this.allWorkspaces = workspaces;
       this.workspacePages = this.getPagesValue();
       if (this.projectsLoaded == false) {
         this.projectsLoaded = true;
         this.getNextWorkspaces();
+      } else {
+        this.partialReload();
       }
     });
 
@@ -54,9 +56,11 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {
   }
 
-  openModal(workspaceName: string) {
+  openModal(workspaceName: string, workspaceId: string) {
     this.modalRef = this.MDBmodalService.show(WorkspaceDeleteModalComponent);
-    this.modalService.workspacename.next(workspaceName);
+    this.modalService.workspaceName.next(workspaceName);
+    this.modalService.workspaceId.next(workspaceId);
+    this.modalService.workspaceOwner.next(this.myUser);
   }
 
   assignPagesMovement(movement: boolean) {
@@ -103,6 +107,13 @@ export class ProjectsComponent implements OnInit {
       return 5;
     }
     return Math.ceil(this.allWorkspaces.length/3);
+  }
+
+  partialReload() {
+    if (this.range != [-3,0]) {
+      this.range = [this.range[0]-3, this.range[1]-3];
+      this.getNextWorkspaces();
+    }
   }
 
   public navigate(path: string, workspaceId: string) {

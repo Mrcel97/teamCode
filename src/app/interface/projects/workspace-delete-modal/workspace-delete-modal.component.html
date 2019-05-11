@@ -3,7 +3,7 @@
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
-    <h5 class="modal-title w-100" id="myModalLabel">Delete Workspace: {{modalService.workspacename.getValue()}} ?</h5>
+    <h5 class="modal-title w-100" id="myModalLabel">Delete Workspace: {{modalService.workspaceName.getValue()}} ?</h5>
   </div>
   <div class="modal-body">
     <p>Please, insert here the Workspace name to proceed</p>
@@ -13,12 +13,13 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button class="back-button" type="button" mdbBtn class="waves-light" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Back</button>
-    <button [ngClass]="{'disabled': workspaceName != modalService.workspacename.getValue()}" 
+    <button type="button" mdbBtn class="waves-light back-button btn-sm" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Back</button>
+    <button [ngClass]="{'disabled': workspaceName != modalService.workspaceName.getValue()}" 
+            (click)="deleteWorkspace()"
             type="button" 
             mdbBtn 
             color="light" 
-            class="relative waves-light" 
+            class="relative waves-light btn-sm" 
             mdbWavesEffect>Delete</button>
   </div>
 </div>
