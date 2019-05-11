@@ -26,14 +26,27 @@
   background-color: $primary-color-variant;
 }
 
-.form-label, p {
+.form-control, .form-label, p {
   color: $text-color;
 }
 
 h5 {
-  font-weight: 1px;
+  font-weight: 1.5px;
 }
 
 /deep/ button.waves-light:nth-child(1) {
   background-color: $accent-color;
+}
+
+.md-form {
+  margin-bottom: 0;
+}
+
+.md-form input[type=text]:focus:not([readonly]) + label {
+  color: $accent-color; 
+}
+
+.md-form input[type=text]:focus:not([readonly]) {
+  box-shadow: 0 1px 0 0 $accent-color;
+  border-bottom: 1px solid $accent-color; 
 }

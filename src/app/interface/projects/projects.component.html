@@ -2,7 +2,7 @@
   <h3 class="projects-title" style="transition: 0.5s;">Projects</h3>
   <hr style="background-color: whitesmoke">
   <div *ngFor="let workspace of visibleWorkspaces" class="list-item">
-    <div *ngIf="workspace != null" class="d-flex justify-content-start">
+    <div *ngIf="workspace != null && myUser != null" class="d-flex justify-content-start">
       <ul class="no-dot">
         <li><p class="list-info">Name: </p>{{workspace.name}}</li>
         <li><p class="list-info">Owner:</p> {{workspace.owner.name}}</li>
@@ -27,13 +27,14 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!allWorkspaces" class="list-item loading-item">
+  <div *ngIf="!allWorkspaces || !myUser" class="list-item loading-item">
   </div>
-  <div *ngIf="!allWorkspaces" class="list-item loading-item">
+  <div *ngIf="!allWorkspaces || !myUser" class="list-item loading-item">
   </div>
-  <div *ngIf="!allWorkspaces" class="list-item loading-item">
+  <div *ngIf="!allWorkspaces || !myUser" class="list-item loading-item">
   </div>
-  <app-project-pages  [workspacePages]="workspacePages" 
+  <app-project-pages  *ngIf="visibleWorkspaces != null && myUser != null"
+                      [workspacePages]="workspacePages" 
                       (getMoreWorkspaces)="assignPagesMovement($event)" 
                       (getSpecificWorkspace)="getSpecificWorkspace($event)"
                       class="d-flex justify-content-center"></app-project-pages>
