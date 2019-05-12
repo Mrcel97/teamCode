@@ -74,6 +74,19 @@
 	background-color: $primary-color-variant;
 }
 
+.create-project {
+	background-color: $accent-color;
+	margin-top: -2px;
+}
+
+.add-button {
+	height: 15px;
+}
+
+.create-project {
+	padding: 10px 15px 10px 15px;
+}
+
 // Trash icon styles:
 .trash-icon-container {
   transform: scale(0.2, 0.2);

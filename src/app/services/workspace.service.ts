@@ -9,9 +9,9 @@ import { FirebaseUser } from '../../assets/model/user';
 import { httpOptions, httpWorkspaceOptions } from '../../assets/model/httpOptions'
 import { User } from '../../assets/model/user';
 import { File } from '../../assets/model/file';
-import { backendURL } from '../../assets/configs/backendConfig';
+// import { backendURL } from '../../assets/configs/backendConfig';
 
-// var backendURL = 'http://localhost:8080';
+var backendURL = 'http://localhost:8080';
 
 @Injectable({
   providedIn: 'root'

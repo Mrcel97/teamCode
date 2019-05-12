@@ -1,4 +1,4 @@
-@import '../../../../assets/themes/dark.scss';
+@import '../../../../../assets/themes/dark.scss';
 
 /deep/ .modal-notify {
   margin-top: 0 !important;
@@ -12,7 +12,7 @@
 
 .modal-header{
   border-bottom: none;
-  background-color: #f1948a;
+  background-color: $accent-color;
   border-radius: 10px 10px 0 0 !important;
 }
 

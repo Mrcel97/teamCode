@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { MDBModalRef } from 'angular-bootstrap-md';
 
-import { ModalService } from './modal-service/modal-service.service';
+import { ModalService } from '../modal-service/modal-service.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
-  selector: 'app-workspace-delete-modal',
-  templateUrl: './workspace-delete-modal.component.html',
-  styleUrls: ['./workspace-delete-modal.component.scss']
+  selector: 'app-workspace-create-modal',
+  templateUrl: './workspace-create-modal.component.html',
+  styleUrls: ['./workspace-create-modal.component.scss']
 })
-export class WorkspaceDeleteModalComponent {
+export class WorkspaceCreateModalComponent {
   workspaceName: string = '';
 
   constructor(
@@ -18,8 +18,8 @@ export class WorkspaceDeleteModalComponent {
     public workspaceService: WorkspaceService
   ) { }
 
-  deleteWorkspace() {
-    this.workspaceService.deleteWorkspace(this.modalService.workspaceId.getValue());
+  createWorkspace() {
+    this.workspaceService.createWorksapace(this.workspaceName, this.modalService.workspaceOwner.getValue());
     this.workspaceService.loadWorkspaces(this.modalService.workspaceOwner.getValue().email);
     this.modalRef.hide();
   }

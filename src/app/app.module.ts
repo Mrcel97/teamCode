@@ -7,7 +7,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ProjectsComponent } from './interface/projects/projects.component';
 import { ProjectPagesComponent } from './interface/project-pages/project-pages.component';
 import { StatisticsComponent } from './interface/statistics/statistics.component';
-import { WorkspaceDeleteModalComponent } from './interface/projects/workspace-delete-modal/workspace-delete-modal.component';
+import { WorkspaceDeleteModalComponent } from './interface/projects/modals/workspace-delete-modal/workspace-delete-modal.component';
+import { WorkspaceCreateModalComponent } from './interface/projects/modals/workspace-create-modal/workspace-create-modal.component';
 
 // Modules
 import { AngularFireModule } from 'angularfire2';
@@ -43,7 +44,8 @@ import { IdeComponent } from './ide/ide.component';
     AuthComponent,
     GithubComponent,
     IdeComponent,
-    WorkspaceDeleteModalComponent
+    WorkspaceDeleteModalComponent,
+    WorkspaceCreateModalComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -63,7 +65,7 @@ import { IdeComponent } from './ide/ide.component';
     ModalModule.forRoot()
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  entryComponents: [ WorkspaceDeleteModalComponent ],
+  entryComponents: [ WorkspaceDeleteModalComponent, WorkspaceCreateModalComponent ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })

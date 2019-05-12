@@ -6,7 +6,7 @@ describe('ModalServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ModalService = TestBed.get(ModalServiceService);
+    const service: ModalService = TestBed.get(ModalService);
     expect(service).toBeTruthy();
   });
 });

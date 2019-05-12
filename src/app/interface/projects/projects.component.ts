@@ -1,3 +1,4 @@
+import { WorkspaceCreateModalComponent } from './modals/workspace-create-modal/workspace-create-modal.component';
 import { FirebaseUser } from './../../../assets/model/user';
 import { AuthService } from './../../services/auth.service';
 import { WorkspaceService } from './../../services/workspace.service';
@@ -6,8 +7,8 @@ import { Workspace } from 'src/assets/model/workspace';
 import { Router } from '@angular/router';
 import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
 
-import { WorkspaceDeleteModalComponent } from './workspace-delete-modal/workspace-delete-modal.component';
-import { ModalService } from './workspace-delete-modal/modal-service/modal-service.service';
+import { WorkspaceDeleteModalComponent } from './modals/workspace-delete-modal/workspace-delete-modal.component';
+import { ModalService } from './modals/modal-service/modal-service.service';
 
 @Component({
   selector: 'app-projects',
@@ -32,9 +33,10 @@ export class ProjectsComponent implements OnInit {
     public router: Router
   ) {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
-      if (workspaces == null) return;
+      if (workspaces == null || workspaces.length == 0) return;
       this.allWorkspaces = workspaces;
       this.workspacePages = this.getPagesValue();
+      console.log('Nº of pages: ', this.workspacePages);
       if (this.projectsLoaded == false) {
         this.projectsLoaded = true;
         this.getNextWorkspaces();
@@ -56,7 +58,12 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {
   }
 
-  openModal(workspaceName: string, workspaceId: string) {
+  openCreateModal() {
+    this.modalRef = this.MDBmodalService.show(WorkspaceCreateModalComponent);
+    this.modalService.workspaceOwner.next(this.myUser);
+  }
+
+  openDeleteModal(workspaceName: string, workspaceId: string) {
     this.modalRef = this.MDBmodalService.show(WorkspaceDeleteModalComponent);
     this.modalService.workspaceName.next(workspaceName);
     this.modalService.workspaceId.next(workspaceId);
@@ -94,12 +101,14 @@ export class ProjectsComponent implements OnInit {
     for (var pos in array) {
       array[pos] = array[pos] + value;
     }
+    console.log('Actual range: ', this.range);
   }
 
   subToArrayValues(array: Array<number>, value: number) {
     for (var pos in array) {
       array[pos] = array[pos] - value;
     }
+    console.log('Actual range: ', this.range);
   }
 
   getPagesValue():number { // Future improvements: Add '...' between max_page_amount and total_pages_amount
