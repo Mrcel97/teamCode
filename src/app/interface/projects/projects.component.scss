@@ -9,6 +9,7 @@
   margin-bottom: 3em;
   max-width: 25em;
   background-color: rgba($primary-color, .85);
+  transition: 3s;
 }
 
 .projects-container:hover {
@@ -33,9 +34,9 @@
 }
 
 .list-item:hover {
-  cursor: pointer;
+  // cursor: pointer;
   background-color: $primary-color-variant;
-  transform: scale(1.02);
+  // transform: scale(1.02);
 }
 
 .list-info {
@@ -54,4 +55,122 @@
 
 .loading-item {
   height: 120px;
+}
+
+.load-workspace {
+  min-width: 15px;
+  min-height: 15px;
+  transition: .3s;
+}
+
+.load-workspace:hover {
+  cursor: pointer;
+  padding-left: 5px;
+  transform: scale(1.1, 1.1);
+}
+
+/deep/ .modal-dialog > div:nth-child(1) {
+	border-radius: 10px !important;
+	background-color: $primary-color-variant;
+}
+
+// Trash icon styles:
+.trash-icon-container {
+  transform: scale(0.2, 0.2);
+  margin-top: -1.8em;
+  margin-right: -1.6em;
+}
+
+.trash-icon-container:hover {
+  cursor: pointer;
+}
+
+.trash {
+	background:#ff6873;
+	width: 66px;
+	height: 80px;
+	display: inline-block;
+	margin:0 auto;
+	
+	position: relative;
+	-webkit-border-bottom-right-radius: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	border-bottom-right-radius: 6px;
+	border-bottom-left-radius: 6px;
+}
+
+.trash:after {
+	position: absolute;
+	left: -99px;
+	right: 0;
+	bottom: -50px;
+	width: 300px;
+}
+
+.trash span {
+	position: absolute;
+	height: 12px;
+	background: #ff6873;
+	top: -19px;
+	left: -10px;
+	right: -10px;
+	
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	transform: rotate(0deg);
+	transition: transform 250ms;
+	transform-origin: 19% 100%;
+}
+
+.trash span:after {
+	content: '';
+	position: absolute;
+	width: 27px;
+	height: 7px;
+	background: #ff6873;
+	top: -10px;
+	
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	transform: rotate(0deg);
+	transition: transform 250ms;
+	transform-origin: 19% 100%;
+	left: 27px;
+}
+
+.trash i {
+	position:relative;
+	width: 5px;
+	height: 50px;
+	background: $primary-color-variant;
+	display: block;
+	margin: 14px auto;
+	border-radius: 5px;
+}
+
+.trash i:after {
+	content: '';
+	width: 5px;
+	height: 50px;
+	background: $primary-color-variant;
+	position: absolute;
+	left: -18px;
+	border-radius: 5px;
+}
+
+.trash i:before {
+	content: '';
+	width: 5px;
+	height: 50px;
+	background: $primary-color-variant;
+	position: absolute;
+	right: -18px;
+	border-radius: 5px;
+}
+
+.trash:hover span {
+	transform: rotate(-45deg);
+	transition: transform 250ms;
 }

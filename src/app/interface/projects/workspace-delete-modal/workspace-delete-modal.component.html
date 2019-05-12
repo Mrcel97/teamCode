@@ -1,0 +1,25 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h5 class="modal-title w-100" id="myModalLabel">Delete Workspace: {{modalService.workspaceName.getValue()}} ?</h5>
+  </div>
+  <div class="modal-body">
+    <p>Please, insert here the Workspace name to proceed</p>
+    <div class="md-form">
+      <input [(ngModel)]="workspaceName" mdbInput type="text" id="form1" class="form-control">
+      <label for="form1" class="form-label">Workspace name</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn class="waves-light back-button btn-sm" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Back</button>
+    <button [ngClass]="{'disabled': workspaceName != modalService.workspaceName.getValue()}" 
+            (click)="deleteWorkspace()"
+            type="button" 
+            mdbBtn 
+            color="light" 
+            class="relative waves-light btn-sm" 
+            mdbWavesEffect>Delete</button>
+  </div>
+</div>

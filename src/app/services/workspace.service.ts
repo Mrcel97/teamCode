@@ -17,7 +17,7 @@ import { backendURL } from '../../assets/configs/backendConfig';
   providedIn: 'root'
 })
 export class WorkspaceService {
-  localWorkspaces: Subject<Array<Workspace>> = new Subject();
+  localWorkspaces: BehaviorSubject<Array<Workspace>> = new BehaviorSubject(null);
   localWorkspace: BehaviorSubject<Workspace> = new BehaviorSubject(null);
   localCollaborators: Subject<Array<string>> = new Subject();
   localWriteRequests: Subject<Map<string, Number>> = new Subject();
@@ -85,6 +85,16 @@ export class WorkspaceService {
 
   loadWorkspace(id: string) {
     this.router.navigate(['chat', id]);
+  }
+
+  deleteWorkspace(workspaceId: string) {
+    console.log('Deleting workspace: ' + workspaceId);
+    var tmpWorkspaces:Array<Workspace> = this.localWorkspaces.getValue().filter(workspace => workspace.id != workspaceId);
+
+    if(tmpWorkspaces.length >= this.localWorkspaces.getValue().length) return;
+    this.http.delete<Workspace>(backendURL + '/api/workspaces/' + workspaceId, httpWorkspaceOptions).subscribe( _ => {
+      this.localWorkspaces.next(tmpWorkspaces);
+    });
   }
 
   isWriter(userEmail: string, workspaceID: string): BehaviorSubject<boolean> {

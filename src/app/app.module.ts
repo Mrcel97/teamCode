@@ -7,6 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ProjectsComponent } from './interface/projects/projects.component';
 import { ProjectPagesComponent } from './interface/project-pages/project-pages.component';
 import { StatisticsComponent } from './interface/statistics/statistics.component';
+import { WorkspaceDeleteModalComponent } from './interface/projects/workspace-delete-modal/workspace-delete-modal.component';
 
 // Modules
 import { AngularFireModule } from 'angularfire2';
@@ -18,7 +19,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
 import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
@@ -41,7 +42,8 @@ import { IdeComponent } from './ide/ide.component';
     StatisticsComponent,
     AuthComponent,
     GithubComponent,
-    IdeComponent
+    IdeComponent,
+    WorkspaceDeleteModalComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -57,9 +59,11 @@ import { IdeComponent } from './ide/ide.component';
     MDBBootstrapModule.forRoot(),
     ToastrModule.forRoot(),
     TooltipModule,
-    WavesModule
+    WavesModule,
+    ModalModule.forRoot()
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
+  entryComponents: [ WorkspaceDeleteModalComponent ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
