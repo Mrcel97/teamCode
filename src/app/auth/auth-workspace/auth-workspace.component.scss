@@ -1,0 +1,14 @@
+@import "../../../assets/themes/dark.scss";
+
+.dropdown-menu {
+  background-color: $primary-color-variant;
+
+}
+
+a.dropdown-item {
+  color: $text-color
+}
+
+a.dropdown-item:hover {
+  background-color: $secondary-color;
+}

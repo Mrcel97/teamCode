@@ -81,7 +81,7 @@ export class StackBlitzService {
     this.virtualMachine$.value.getFsSnapshot().then(
       snapshot => {
         this.workspace = workspaceSnapshotFactory(snapshot);
-        console.log(this.workspace);
+        // console.log(this.workspace);
       }
     );
   }
@@ -99,7 +99,7 @@ export class StackBlitzService {
       return console.error('Unexpected error!')
     }
 
-    console.log('Update file:', update.files[0].name, 'Adding content: ', update.files[0].content);
+    // console.log('Update file:', update.files[0].name, 'Adding content: ', update.files[0].content);
 
     this.virtualMachine$.value.applyFsDiff({
       create: {

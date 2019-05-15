@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { StackBlitzService } from '../services/stack-blitz.service';
 import { GithubService } from '../services/github.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-github',
@@ -18,13 +19,26 @@ export class GithubComponent implements OnInit {
   repoURL: string;
   fileURL: string;
   collaboratorEmail: string;
+
+  // Workspace Component Filters
+  insideWorkspace: Boolean = false;
+  regexp = /\/\bworkspace\/\b.*/g;
   
   constructor(
+    public router: Router,
     public stackBlitzService: StackBlitzService, 
     public githubService: GithubService
-  ) { }
+  ) {
+    this.router.events.subscribe( event => {
+      if (event instanceof NavigationEnd) {
+        this.insideWorkspace = this.regexp.test(this.router.url) ? true : false;
+      }
+    });
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.insideWorkspace = this.regexp.test(this.router.url) ? true : false;
+  }
 
   showOptions() {
     this.optionsOpen = this.optionsOpen ? false : true;

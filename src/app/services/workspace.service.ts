@@ -9,9 +9,9 @@ import { FirebaseUser } from '../../assets/model/user';
 import { httpOptions, httpWorkspaceOptions } from '../../assets/model/httpOptions'
 import { User } from '../../assets/model/user';
 import { File } from '../../assets/model/file';
-// import { backendURL } from '../../assets/configs/backendConfig';
+import { backendURL } from '../../assets/configs/backendConfig';
 
-var backendURL = 'http://localhost:8080';
+// var backendURL = 'http://localhost:8080';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +37,7 @@ export class WorkspaceService {
     }
     this.user = owner;
     var ws = new Workspace(name, this.user, this.user.email, [this.user.email], [defaultFiles(new User(this.user.uid,this.user.name))], defaultWriterRequest(this.user.email, 0));
-    console.log('Providing: ', ws);
+    //console.log('Providing: ', ws);
     this.http.post<Workspace>(backendURL + '/api/workspaces', ws, httpOptions).subscribe(
       data => {
         console.log('Workspace successfully created ', data);
@@ -66,7 +66,7 @@ export class WorkspaceService {
   }
 
   loadLocalWorkspace(workspaceID: string) {
-    console.log("Downloading workspace: " + workspaceID);
+    // console.log("Downloading workspace: " + workspaceID);
 
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
     .subscribe( workspace => {

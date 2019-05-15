@@ -36,7 +36,7 @@ export class ProjectsComponent implements OnInit {
       if (workspaces == null || workspaces.length == 0) return;
       this.allWorkspaces = workspaces;
       this.workspacePages = this.getPagesValue();
-      console.log('Nº of pages: ', this.workspacePages);
+      // console.log('Nº of pages: ', this.workspacePages);
       if (this.projectsLoaded == false) {
         this.projectsLoaded = true;
         this.getNextWorkspaces();
@@ -101,14 +101,14 @@ export class ProjectsComponent implements OnInit {
     for (var pos in array) {
       array[pos] = array[pos] + value;
     }
-    console.log('Actual range: ', this.range);
+    // console.log('Actual range: ', this.range);
   }
 
   subToArrayValues(array: Array<number>, value: number) {
     for (var pos in array) {
       array[pos] = array[pos] - value;
     }
-    console.log('Actual range: ', this.range);
+    // console.log('Actual range: ', this.range);
   }
 
   getPagesValue():number { // Future improvements: Add '...' between max_page_amount and total_pages_amount

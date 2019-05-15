@@ -42,7 +42,7 @@ export class IdeComponent implements OnInit {
 
   loadWorkspace(workspaceId: string) {
     // Inform about the workspace is going to try to load
-    console.log("Trying to load workspace: " + workspaceId);
+    // console.log("Trying to load workspace: " + workspaceId);
 
     // Load workspace using workspaceService and catch the result of the call.
     this.workspaceService.loadLocalWorkspace(workspaceId);
@@ -60,7 +60,7 @@ export class IdeComponent implements OnInit {
   }
 
   createFile() {
-    console.log('Creating File');
+    // console.log('Creating File');
     var name = 'sampleFile' // TODO
     var language = 'ts' // TODO
 
@@ -88,8 +88,8 @@ export class IdeComponent implements OnInit {
   }
 
   private buildProject(workspace: Workspace) {
-    console.log("\nStarting to build Workspace object...");
-    console.log(workspace.owner);
+    // "\nStarting to build Workspace object...");
+    // console.log(workspace.owner);
     var fileStack: { [path: string]: string } = {};
     
     this.appendFilesToFilestack(workspace.files, fileStack)

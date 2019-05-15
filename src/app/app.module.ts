@@ -9,6 +9,10 @@ import { ProjectPagesComponent } from './interface/project-pages/project-pages.c
 import { StatisticsComponent } from './interface/statistics/statistics.component';
 import { WorkspaceDeleteModalComponent } from './interface/projects/modals/workspace-delete-modal/workspace-delete-modal.component';
 import { WorkspaceCreateModalComponent } from './interface/projects/modals/workspace-create-modal/workspace-create-modal.component';
+import { AuthComponent } from './auth/auth.component';
+import { GithubComponent } from './github/github.component';
+import { IdeComponent } from './ide/ide.component';
+import { AuthWorkspaceComponent } from './auth/auth-workspace/auth-workspace.component';
 
 // Modules
 import { AngularFireModule } from 'angularfire2';
@@ -27,9 +31,6 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
-import { AuthComponent } from './auth/auth.component';
-import { GithubComponent } from './github/github.component';
-import { IdeComponent } from './ide/ide.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { IdeComponent } from './ide/ide.component';
     GithubComponent,
     IdeComponent,
     WorkspaceDeleteModalComponent,
-    WorkspaceCreateModalComponent
+    WorkspaceCreateModalComponent,
+    AuthWorkspaceComponent
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
