@@ -65,3 +65,4 @@ src/assets/configs/firebaseConfig.ts
 
 ### Backend ###
 src/assets/configs/backendConfig.ts
+src/assets/js/iframeBypass.js

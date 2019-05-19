@@ -4,6 +4,7 @@ import sdk from '@stackblitz/sdk'
 
 // Project Imports
 import { connectionError } from '../../assets/messages/error';
+import { File } from '../../assets/model/file';
 import { Workspace, workspaceSnapshotFactory } from 'src/assets/model/workspace';
 import { Update, sampleUpdateClass } from 'src/assets/model/update';
 import { BehaviorSubject } from 'rxjs';
@@ -14,6 +15,7 @@ import { VM } from '@stackblitz/sdk/typings/VM';
 })
 export class StackBlitzService {
   virtualMachine$: BehaviorSubject<VM>;
+  localFiles$: BehaviorSubject<Array<File>> = new BehaviorSubject<Array<File>>(null);
   workspace: Workspace;
 
   constructor() {
@@ -41,6 +43,7 @@ export class StackBlitzService {
 
   vmReady() {
     if (this.virtualMachine$.value == null) {
+      console.error("Your Virtualmachine is undefined, refresh the website")
       throw new TypeError;
     }
   }
@@ -77,11 +80,17 @@ export class StackBlitzService {
       }
       return console.error('Unexpected error!');
     }
-    
     this.virtualMachine$.value.getFsSnapshot().then(
       snapshot => {
-        this.workspace = workspaceSnapshotFactory(snapshot);
-        // console.log(this.workspace);
+        var files: File[] = [];
+        var language: string;
+
+        for(var file in snapshot) {
+          // console.log(file, snapshot[file], files);
+          language = file.split('.').length > 1 ? file.split('.')[1] : 'None';
+          files.push(new File(file, undefined, language, snapshot[file]));
+        }
+        this.localFiles$.next(files);
       }
     );
   }

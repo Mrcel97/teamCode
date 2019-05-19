@@ -1,3 +1,4 @@
+import { StackBlitzService } from './stack-blitz.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -23,12 +24,18 @@ export class WorkspaceService {
   localWriteRequests: Subject<Map<string, Number>> = new Subject();
   localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
   workingFile: BehaviorSubject<File> = new BehaviorSubject(null);
+  filesLog: Array<File> = [];
   private user: FirebaseUser;
 
   constructor(
     private router: Router,
     public http: HttpClient,
-  ) { }
+    private ideService: StackBlitzService
+  ) {
+    this.ideService.localFiles$.subscribe(files => {
+      this.findModifications(files);
+    })
+  }
 
   createWorksapace(name: string, owner: FirebaseUser) {
     if (!owner) { 
@@ -70,6 +77,26 @@ export class WorkspaceService {
 
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
     .subscribe( workspace => {
+      console.log("Loading new Workspace...");
+      /* 
+      TODO: 
+        1) [Optional?] add parameter WorkspaceSnapshot
+        2) [Optional?] store in localWorkspaceSnapshot variable
+        3) create new function:
+          var solution: {string, string};
+          compareVersions(WorkspaceSnapshot newSnapshot) {
+            newSnapshot.getKeys().foreach(key => {
+              if (newSnapshot[key].compareTo(workspace.files.get(key)) != 0) {
+                solution = {newSnapshot[key], key};
+              }
+            });
+          }
+        4) Update localWorkspace fileId = solution[1] with content = solution[0];
+        5) return solution;
+        6) [Caller] {changes, fileId} = compareVersions(vm.getSnapshot());
+           [Caller] chatService.send(roomId, fileId, changes);
+      */
+
       this.localWorkspace.next(workspace);
       //this.setWorkingFile(workspace.files.filter(file => file.name == "README.md")[0].id);
     });
@@ -163,6 +190,14 @@ export class WorkspaceService {
       this.localWriteRequests.next(workspace.writerRequests);
     });
     return this.localWriteRequests;
+  }
+
+  private findModifications(files: Array<File>) {
+    // Compare with localCopy (exist changes?) [Yes: continue | No: return]
+
+    // Make new copy (localCopy = files)
+
+    // For each file:
   }
 }
 

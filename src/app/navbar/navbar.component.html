@@ -23,7 +23,7 @@
             </div>
         </form>
 
-        <app-auth (options_notification)="showOptions($event)" (user_credentials)="updateUserCredentials($event)"></app-auth>
+        <app-auth (user_credentials)="updateUserCredentials($event)"></app-auth> <!--(options_notification)="showOptions($event)"-->
     </links>
 </mdb-navbar>
 

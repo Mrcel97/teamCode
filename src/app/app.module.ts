@@ -27,7 +27,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MDBBootstrapModule, ModalModule } from 'angular-bootstrap-md';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
-import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
+import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md';
 
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';

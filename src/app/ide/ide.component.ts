@@ -2,24 +2,32 @@ import { File } from './../../assets/model/file';
 import { Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
-import { StackBlitzService } from '../services/stack-blitz.service';
-import { WorkspaceService } from './../services/workspace.service';
+import { BehaviorSubject } from 'rxjs';
+
+import * as $ from 'jquery';
 
 // Project Imports
+import { StackBlitzService } from '../services/stack-blitz.service';
+import { WorkspaceService } from './../services/workspace.service';
 import { Workspace } from 'src/assets/model/workspace';
 import { IProject } from 'src/assets/model/IProject';
-
 
 @Component({
   selector: 'app-ide',
   templateUrl: './ide.component.html',
-  styleUrls: ['./ide.component.scss']
+  styleUrls: ['./ide.component.scss'],
+  host: {
+    '(document:keypress)': 'handleKeyboardEvent($event)'
+  }
 })
 export class IdeComponent implements OnInit {
   workspace: Workspace = null;
   project: IProject = null;
   options: boolean = false;
   userStatus: boolean = false;
+  snapshot: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  timer: number = 0;
 
   constructor(
     public ideService: StackBlitzService,
@@ -27,17 +35,21 @@ export class IdeComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute
   ) {
-    // If workspace change, IDE change
-    
+
+    this.ideService.virtualMachine$.subscribe( vm => {
+      this.vmListener();
+    });
   }
 
   ngOnInit() {
-    //Create project
-
-    // Send project
+    //Create and send project
     this.route.paramMap.subscribe( params => {
       this.loadWorkspace(params.get("workspace_id"));
-    })
+    });
+  }
+
+  handleKeyboardEvent() {
+    alert("ourwv9uwbvw0rov");
   }
 
   loadWorkspace(workspaceId: string) {
@@ -45,6 +57,7 @@ export class IdeComponent implements OnInit {
     // console.log("Trying to load workspace: " + workspaceId);
 
     // Load workspace using workspaceService and catch the result of the call.
+    console.log("Workspace opened!");
     this.workspaceService.loadLocalWorkspace(workspaceId);
     this.workspaceService.localWorkspace.subscribe( workspace => {
       if (workspace != null) {
@@ -55,8 +68,11 @@ export class IdeComponent implements OnInit {
 
     // Once we have the result of the call (Workspace), build the project object.
 
-
     // Call stackBlitzService with project object as a parameter
+  }
+
+  public registerWrite() {
+    console.log("Detected write action, starting file detection process...")
   }
 
   createFile() {
@@ -110,5 +126,9 @@ export class IdeComponent implements OnInit {
         fileStack[file.name] = file.content;
       });
     }
+  }
+
+  private vmListener() {
+    // setInterval(this.ideService.getSnapshot.bind(this.ideService), 5000, this.ideService.virtualMachine$);
   }
 }
