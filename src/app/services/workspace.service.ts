@@ -1,9 +1,11 @@
-import { StackBlitzService } from './stack-blitz.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+
+import { ModificationsService } from './modifications.service';
+import { StackBlitzService } from './stack-blitz.service';
 
 import { Workspace, defaultFiles, defaultWriterRequest } from '../../assets/model/workspace';
 import { FirebaseUser } from '../../assets/model/user';
@@ -24,16 +26,21 @@ export class WorkspaceService {
   localWriteRequests: Subject<Map<string, Number>> = new Subject();
   localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
   workingFile: BehaviorSubject<File> = new BehaviorSubject(null);
-  filesLog: Array<File> = [];
   private user: FirebaseUser;
+
+  private localWorkspaceCopy: Workspace;
 
   constructor(
     private router: Router,
     public http: HttpClient,
-    private ideService: StackBlitzService
+    private ideService: StackBlitzService,
+    private modificationsService: ModificationsService
   ) {
     this.ideService.localFiles$.subscribe(files => {
-      this.findModifications(files);
+      var content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>};
+      
+      content = files != null ? this.modificationsService.findModifications(files) : null;
+      this.contentModification(content);
     })
   }
 
@@ -96,8 +103,9 @@ export class WorkspaceService {
         6) [Caller] {changes, fileId} = compareVersions(vm.getSnapshot());
            [Caller] chatService.send(roomId, fileId, changes);
       */
-
+      this.localWorkspaceCopy = workspace;
       this.localWorkspace.next(workspace);
+      this.modificationsService.loadWorkspaceFiles(this.localWorkspace.getValue());
       //this.setWorkingFile(workspace.files.filter(file => file.name == "README.md")[0].id);
     });
   }
@@ -192,15 +200,51 @@ export class WorkspaceService {
     return this.localWriteRequests;
   }
 
-  private findModifications(files: Array<File>) {
-    // Compare with localCopy (exist changes?) [Yes: continue | No: return]
+  contentModification(content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>}) {
+    if (content == null) return;
 
-    // Make new copy (localCopy = files)
+    let addition: boolean = false;
+    let supresion: boolean = false;
+    let update: boolean = false;
 
-    // For each file:
+    // Files to create? (additions)
+    if (content.additions.length >= 1) {
+      console.log('Found additions');
+      addition = true;
+      content.additions.forEach(fileAddition => {
+        this.localWorkspaceCopy.files.push(fileAddition);
+      });
+    }
+
+    // Files to delete? (supresions)
+    if (content.supresions.length >= 1) {
+      console.log('Found supresions');
+      supresion = true;
+      content.supresions.forEach(fileSupresion => {
+        const index = this.localWorkspaceCopy.files.indexOf(fileSupresion, 0);
+        if (index > -1) {
+          this.localWorkspaceCopy.files.splice(index, 1);
+        }
+      });
+    }
+
+    // Files to update? (contentUpdate)
+    if (content.contentUpdated.length >= 1) {
+      console.log('Found updates');
+      update = true;
+      content.contentUpdated.forEach(newFile => {
+        this.localWorkspaceCopy.files.find(oldFile => newFile.name == oldFile.name).content = newFile.content;
+      });
+    }
+
+    // PATCH server version using "localWorkspaceCopy"
+    if (addition || supresion || update) {
+      console.log('PATCH to Server version, uploading: ', this.localWorkspaceCopy);
+    }
   }
 }
 
+// Class to PATCH Workspace userEmail
 class WorkspaceData {
   workspace: Workspace;
   userEmail: String;
@@ -210,3 +254,5 @@ class WorkspaceData {
     this.userEmail = userEmail;
   }
 }
+
+// Class to PATCH Workspace Files

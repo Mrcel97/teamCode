@@ -1,32 +1,28 @@
-import { File } from './../../assets/model/file';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-
-import * as $ from 'jquery';
 
 // Project Imports
 import { StackBlitzService } from '../services/stack-blitz.service';
 import { WorkspaceService } from './../services/workspace.service';
 import { Workspace } from 'src/assets/model/workspace';
 import { IProject } from 'src/assets/model/IProject';
+import { File } from './../../assets/model/file';
 
 @Component({
   selector: 'app-ide',
   templateUrl: './ide.component.html',
-  styleUrls: ['./ide.component.scss'],
-  host: {
-    '(document:keypress)': 'handleKeyboardEvent($event)'
-  }
+  styleUrls: ['./ide.component.scss']
 })
-export class IdeComponent implements OnInit {
+export class IdeComponent implements OnInit, OnDestroy {
   workspace: Workspace = null;
   project: IProject = null;
   options: boolean = false;
   userStatus: boolean = false;
   snapshot: BehaviorSubject<any> = new BehaviorSubject(null);
 
+  interval: any = null;
   timer: number = 0;
 
   constructor(
@@ -48,8 +44,9 @@ export class IdeComponent implements OnInit {
     });
   }
 
-  handleKeyboardEvent() {
-    alert("ourwv9uwbvw0rov");
+  ngOnDestroy() {
+    console.log("Shutdown timer!")
+    clearInterval(this.interval);
   }
 
   loadWorkspace(workspaceId: string) {
@@ -129,6 +126,7 @@ export class IdeComponent implements OnInit {
   }
 
   private vmListener() {
-    // setInterval(this.ideService.getSnapshot.bind(this.ideService), 5000, this.ideService.virtualMachine$);
+    if (this.interval != null) return;
+    this.interval = setInterval(this.ideService.getSnapshot.bind(this.ideService), 5000, this.ideService.virtualMachine$);
   }
 }
