@@ -200,46 +200,71 @@ export class WorkspaceService {
     return this.localWriteRequests;
   }
 
-  contentModification(content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>}) {
+  private contentModification(content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>}) {
     if (content == null) return;
 
     let addition: boolean = false;
     let supresion: boolean = false;
-    let update: boolean = false;
 
     // Files to create? (additions)
-    if (content.additions.length >= 1) {
-      console.log('Found additions');
-      addition = true;
-      content.additions.forEach(fileAddition => {
-        this.localWorkspaceCopy.files.push(fileAddition);
-      });
-    }
+    addition = this.treatAddition(content.additions);
 
     // Files to delete? (supresions)
-    if (content.supresions.length >= 1) {
+    supresion = this.treatSupresion(content.supresions);
+
+    // Files to update? (contentUpdate)
+    this.treatContentUpdate(content.contentUpdated)
+
+    // PATCH server version using "localWorkspaceCopy"
+    if (addition || supresion) {
+      console.log('PATCH to Server version, uploading: ', this.localWorkspaceCopy);
+      this.http.patch(backendURL + '/api/workspaces/' + this.localWorkspaceCopy.id, this.localWorkspaceCopy, httpOptions).subscribe(
+        data => {
+          console.log('Success');
+        },
+        err => {
+          console.error('Error while patching... ', err);
+        }
+      );
+    }
+  }
+
+  private treatAddition(additions: Array<File>) {
+    if (additions.length >= 1) {
+      console.log('Found additions');
+      additions.forEach(fileAddition => {
+        this.localWorkspaceCopy.files.push(fileAddition);
+      });
+      return true;
+    }
+    return false;
+  }
+
+  private treatSupresion(supresions: Array<File>) {
+    if (supresions.length >= 1) {
       console.log('Found supresions');
-      supresion = true;
-      content.supresions.forEach(fileSupresion => {
-        const index = this.localWorkspaceCopy.files.indexOf(fileSupresion, 0);
+      supresions.forEach(fileSupresion => {
+        const index = this.localWorkspaceCopy.files.map(file => file.name).indexOf(fileSupresion.name);
         if (index > -1) {
           this.localWorkspaceCopy.files.splice(index, 1);
         }
       });
+      return true;
     }
+    return false;
+  }
 
-    // Files to update? (contentUpdate)
-    if (content.contentUpdated.length >= 1) {
+  private treatContentUpdate(contentUpdated: Array<File>) {
+    if (contentUpdated.length >= 1) {
       console.log('Found updates');
-      update = true;
-      content.contentUpdated.forEach(newFile => {
-        this.localWorkspaceCopy.files.find(oldFile => newFile.name == oldFile.name).content = newFile.content;
-      });
-    }
 
-    // PATCH server version using "localWorkspaceCopy"
-    if (addition || supresion || update) {
-      console.log('PATCH to Server version, uploading: ', this.localWorkspaceCopy);
+      // SLOW OPTION
+      // content.contentUpdated.forEach(newFile => {
+      //   this.localWorkspaceCopy.files.find(oldFile => newFile.name == oldFile.name).content = newFile.content;
+      // });
+
+      // Websockets:
+
     }
   }
 }
