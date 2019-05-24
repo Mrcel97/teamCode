@@ -1,3 +1,4 @@
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,6 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 // Project Imports
 import { StackBlitzService } from '../services/stack-blitz.service';
 import { WorkspaceService } from './../services/workspace.service';
+import { ChatService } from './../services/chat.service';
 import { Workspace } from 'src/assets/model/workspace';
 import { IProject } from 'src/assets/model/IProject';
 import { File } from './../../assets/model/file';
@@ -21,6 +23,11 @@ export class IdeComponent implements OnInit, OnDestroy {
   options: boolean = false;
   userStatus: boolean = false;
   snapshot: BehaviorSubject<any> = new BehaviorSubject(null);
+  roomID: string;
+
+  userUID: string = '';
+  userEmail: string = '';
+  isWriter: boolean = false;
 
   interval: any = null;
   timer: number = 0;
@@ -29,18 +36,23 @@ export class IdeComponent implements OnInit, OnDestroy {
     public ideService: StackBlitzService,
     public workspaceService: WorkspaceService,
     public router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public chatService: ChatService
   ) {
-
     this.ideService.virtualMachine$.subscribe( vm => {
       this.vmListener();
     });
   }
 
   ngOnInit() {
-    //Create and send project
+    // Create and send project
+    window.scrollTo(0, 0);
     this.route.paramMap.subscribe( params => {
       this.loadWorkspace(params.get("workspace_id"));
+    });
+
+    this.chatService.initializeWebSocketConnection().subscribe( (message) => {
+      console.log('Message modified! ', message);
     });
   }
 
@@ -55,6 +67,7 @@ export class IdeComponent implements OnInit, OnDestroy {
 
     // Load workspace using workspaceService and catch the result of the call.
     console.log("Workspace opened!");
+    this.chatService.setRoomID(workspaceId);
     this.workspaceService.loadLocalWorkspace(workspaceId);
     this.workspaceService.localWorkspace.subscribe( workspace => {
       if (workspace != null) {
@@ -66,10 +79,6 @@ export class IdeComponent implements OnInit, OnDestroy {
     // Once we have the result of the call (Workspace), build the project object.
 
     // Call stackBlitzService with project object as a parameter
-  }
-
-  public registerWrite() {
-    console.log("Detected write action, starting file detection process...")
   }
 
   createFile() {

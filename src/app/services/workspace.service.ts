@@ -1,3 +1,4 @@
+import { ChatService } from './chat.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -26,6 +27,7 @@ export class WorkspaceService {
   localWriteRequests: Subject<Map<string, Number>> = new Subject();
   localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
   workingFile: BehaviorSubject<File> = new BehaviorSubject(null);
+  workingFileContent: BehaviorSubject<Map<string, string>> = new BehaviorSubject(null);
   private user: FirebaseUser;
 
   private localWorkspaceCopy: Workspace;
@@ -34,7 +36,8 @@ export class WorkspaceService {
     private router: Router,
     public http: HttpClient,
     private ideService: StackBlitzService,
-    private modificationsService: ModificationsService
+    private modificationsService: ModificationsService,
+    private chatService: ChatService
   ) {
     this.ideService.localFiles$.subscribe(files => {
       var content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>};
@@ -257,14 +260,13 @@ export class WorkspaceService {
   private treatContentUpdate(contentUpdated: Array<File>) {
     if (contentUpdated.length >= 1) {
       console.log('Found updates');
-
-      // SLOW OPTION
-      // content.contentUpdated.forEach(newFile => {
-      //   this.localWorkspaceCopy.files.find(oldFile => newFile.name == oldFile.name).content = newFile.content;
-      // });
-
-      // Websockets:
-
+      contentUpdated.forEach( file => {
+        if (!file.content) {
+          this.chatService.sendMessage('\0', file.id)
+        } else {
+          this.chatService.sendMessage(file.content, file.name)
+        }
+      });
     }
   }
 }
