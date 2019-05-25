@@ -1,3 +1,4 @@
+import { ChatService } from './chat.service';
 import { project } from './../../assets/projects/project-info';
 import { Injectable } from '@angular/core';
 import sdk from '@stackblitz/sdk'
@@ -9,6 +10,7 @@ import { Workspace, workspaceSnapshotFactory } from 'src/assets/model/workspace'
 import { Update, sampleUpdateClass } from 'src/assets/model/update';
 import { BehaviorSubject } from 'rxjs';
 import { VM } from '@stackblitz/sdk/typings/VM';
+import { stringify } from '@angular/core/src/util';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +20,16 @@ export class StackBlitzService {
   localFiles$: BehaviorSubject<Array<File>> = new BehaviorSubject<Array<File>>(null);
   workspace: Workspace;
 
-  constructor() {
+  constructor(
+    private chatService: ChatService
+  ) {
     this.virtualMachine$ = new BehaviorSubject<VM>(null);
+    this.chatService.fileEmitter$.subscribe(message => {
+      if (message == null || message == undefined) return;
+      message.forEach((value: string, key: string) => {
+        this.updateFile(key, value);
+      })
+    })
   }
 
   createWorkspace(project) {
@@ -48,7 +58,7 @@ export class StackBlitzService {
     }
   }
 
-  createFile(name: string, language: string, content?: string) {
+  createFile(name: string, content?: string) {
     try {
       this.vmReady();
     } catch (error) {
@@ -58,14 +68,40 @@ export class StackBlitzService {
       return console.error('Unexpected error!')
     }
 
-    var file_name = name + '.' + language;
     if (!content) {
-      content = `// This file was generated in real time using the StackBlitz Virtual Machine.`;
+      content = '';
     }
 
     this.virtualMachine$.value.applyFsDiff({
       create: {
-        [file_name]: content
+        [name]: content
+      },
+      destroy: ['']
+    });
+  }
+
+  deleteFile(name: string) {
+    try {
+      this.vmReady();
+    } catch (error) {
+      if (error instanceof(TypeError)) {
+        return console.error(connectionError);
+      }
+      return console.error('Unexpected error!')
+    }
+
+    this.virtualMachine$.value.applyFsDiff({
+      create: { },
+      destroy: [name]
+    });
+  }
+
+  updateFile(fileId: string, content: string) {
+    console.log('Updating file: ', fileId, ' with new content: ', content);
+
+    this.virtualMachine$.value.applyFsDiff({ // Comprovar explicació a la documentació!
+      create: {
+        [fileId]: content
       },
       destroy: ['']
     });

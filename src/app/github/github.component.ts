@@ -68,7 +68,7 @@ export class GithubComponent implements OnInit {
     if (this.fileURL) {
       this.githubService.obtainGithubFile(this.fileURL).subscribe(
         file => {
-          this.stackBlitzService.createFile(file.name, file.language, file.content);
+          this.stackBlitzService.createFile(file.name + '.' + file.language, file.content);
         }
       );
     }

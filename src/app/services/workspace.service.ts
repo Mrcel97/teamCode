@@ -1,4 +1,3 @@
-import { ChatService } from './chat.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, BehaviorSubject } from 'rxjs';
@@ -7,15 +6,16 @@ import { map } from 'rxjs/operators';
 
 import { ModificationsService } from './modifications.service';
 import { StackBlitzService } from './stack-blitz.service';
+import { ChatService } from './chat.service';
 
 import { Workspace, defaultFiles, defaultWriterRequest } from '../../assets/model/workspace';
 import { FirebaseUser } from '../../assets/model/user';
 import { httpOptions, httpWorkspaceOptions } from '../../assets/model/httpOptions'
 import { User } from '../../assets/model/user';
 import { File } from '../../assets/model/file';
-import { backendURL } from '../../assets/configs/backendConfig';
+// import { backendURL } from '../../assets/configs/backendConfig';
 
-// var backendURL = 'http://localhost:8080';
+var backendURL = 'http://localhost:8080';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,11 @@ export class WorkspaceService {
       
       content = files != null ? this.modificationsService.findModifications(files) : null;
       this.contentModification(content);
+    });
+
+    this.chatService.actionEmitter$.subscribe(actionEmit => {
+      actionEmit.action == "create" ? this.ideService.createFile(actionEmit.file) : 
+        actionEmit.action == "delete" && this.ideService.deleteFile(actionEmit.file);
     })
   }
 
@@ -88,24 +93,6 @@ export class WorkspaceService {
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
     .subscribe( workspace => {
       console.log("Loading new Workspace...");
-      /* 
-      TODO: 
-        1) [Optional?] add parameter WorkspaceSnapshot
-        2) [Optional?] store in localWorkspaceSnapshot variable
-        3) create new function:
-          var solution: {string, string};
-          compareVersions(WorkspaceSnapshot newSnapshot) {
-            newSnapshot.getKeys().foreach(key => {
-              if (newSnapshot[key].compareTo(workspace.files.get(key)) != 0) {
-                solution = {newSnapshot[key], key};
-              }
-            });
-          }
-        4) Update localWorkspace fileId = solution[1] with content = solution[0];
-        5) return solution;
-        6) [Caller] {changes, fileId} = compareVersions(vm.getSnapshot());
-           [Caller] chatService.send(roomId, fileId, changes);
-      */
       this.localWorkspaceCopy = workspace;
       this.localWorkspace.next(workspace);
       this.modificationsService.loadWorkspaceFiles(this.localWorkspace.getValue());
@@ -236,7 +223,9 @@ export class WorkspaceService {
     if (additions.length >= 1) {
       console.log('Found additions');
       additions.forEach(fileAddition => {
+        if (this.getExcludedFiles(fileAddition) >= 1) return;
         this.localWorkspaceCopy.files.push(fileAddition);
+        this.chatService.sendMessage('', fileAddition.name, this.localWorkspaceCopy.writer, "create");
       });
       return true;
     }
@@ -247,14 +236,20 @@ export class WorkspaceService {
     if (supresions.length >= 1) {
       console.log('Found supresions');
       supresions.forEach(fileSupresion => {
+        if (this.getExcludedFiles(fileSupresion) >= 1) return;
         const index = this.localWorkspaceCopy.files.map(file => file.name).indexOf(fileSupresion.name);
         if (index > -1) {
           this.localWorkspaceCopy.files.splice(index, 1);
         }
+        this.chatService.sendMessage('', fileSupresion.name, this.localWorkspaceCopy.writer, "delete");
       });
       return true;
     }
     return false;
+  }
+
+  private getExcludedFiles(file: File) {
+    return file.name.split("/").filter(file => file.charAt(0) == '.').length;
   }
 
   private treatContentUpdate(contentUpdated: Array<File>) {
@@ -262,9 +257,9 @@ export class WorkspaceService {
       console.log('Found updates');
       contentUpdated.forEach( file => {
         if (!file.content) {
-          this.chatService.sendMessage('\0', file.id)
+          this.chatService.sendMessage('\0', file.id, this.localWorkspaceCopy.writer)
         } else {
-          this.chatService.sendMessage(file.content, file.name)
+          this.chatService.sendMessage(file.content, file.name, this.localWorkspaceCopy.writer)
         }
       });
     }
