@@ -12,3 +12,21 @@ a.dropdown-item {
 a.dropdown-item:hover {
   background-color: $secondary-color;
 }
+
+.nestedDropdown {
+  position: absolute; 
+  top: 6em; 
+  right: 10em;
+  max-width: 10em;
+
+  background-color: $primary-color-variant;
+  border-radius: 3px;
+
+  .nested-item:first-child {
+    border-radius: 3px 3px 0px 0px;
+  }
+
+  .nested-item:last-child {
+    border-radius: 0px 0px 3px 3px;
+  }
+}

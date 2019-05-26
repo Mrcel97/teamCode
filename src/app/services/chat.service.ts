@@ -29,8 +29,8 @@ export class ChatService {
   private localWriteRequests: Subject<Map<string, Number>> = new Subject();
 
   public fileEmitter$: BehaviorSubject<Map<string, string>> = new BehaviorSubject<Map<string, string>>(new Map()); // fileKey, fileContent
-  public actionEmitter$: BehaviorSubject<{file:string, action:string}> = 
-    new BehaviorSubject<{file:string, action:string}>({file: null, action: null}); // fileKey, fileAction
+  public actionEmitter$: BehaviorSubject<{file:string, action:string, content?:string}> = 
+    new BehaviorSubject<{file:string, action:string, content?:string}>({file: null, action: null, content:null}); // fileKey, fileAction
 
   constructor(
     public http: HttpClient,
@@ -130,7 +130,7 @@ export class ChatService {
   }
 
   private receiveActions(message) {
-    this.actionEmitter$.next({file:message.headers.file_id, action:message.headers.action});
+    this.actionEmitter$.next({file:message.headers.file_id, action:message.headers.action, content:message.body});
   }
 
   hearWriteRequestChanges() {

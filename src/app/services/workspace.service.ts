@@ -47,7 +47,7 @@ export class WorkspaceService {
     });
 
     this.chatService.actionEmitter$.subscribe(actionEmit => {
-      actionEmit.action == "create" ? this.ideService.createFile(actionEmit.file) : 
+      actionEmit.action == "create" ? this.ideService.createFile(actionEmit.file, actionEmit.content) : 
         actionEmit.action == "delete" && this.ideService.deleteFile(actionEmit.file);
     })
   }
@@ -225,7 +225,7 @@ export class WorkspaceService {
       additions.forEach(fileAddition => {
         if (this.getExcludedFiles(fileAddition) >= 1) return;
         this.localWorkspaceCopy.files.push(fileAddition);
-        this.chatService.sendMessage('', fileAddition.name, this.localWorkspaceCopy.writer, "create");
+        this.chatService.sendMessage(fileAddition.content, fileAddition.name, this.localWorkspaceCopy.writer, "create");
       });
       return true;
     }

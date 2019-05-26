@@ -21,8 +21,8 @@
           </ul>
       </ul>
       <div class="d-flex align-items-end flex-column ml-auto p-2">
-        <div class="p-2" (click)="openDeleteModal(workspace.name, workspace.id)">
-          <section class="trash-icon-container">
+        <div class="p-2">
+          <section class="trash-icon-container" (click)="openDeleteModal(workspace.name, workspace.id)">
             <span class="trash">
               <span></span>
               <i></i>
