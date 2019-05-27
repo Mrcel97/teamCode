@@ -2,7 +2,6 @@
 
 .dropdown-menu {
   background-color: $primary-color-variant;
-
 }
 
 a.dropdown-item {
@@ -29,4 +28,8 @@ a.dropdown-item:hover {
   .nested-item:last-child {
     border-radius: 0px 0px 3px 3px;
   }
+}
+
+/deep/ .modal-dialog > div:nth-child(1) {
+  background-color: transparent;
 }

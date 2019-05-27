@@ -5,8 +5,9 @@
   border-radius: 6px;
   color: $text-color;
   padding: 1em;
-  margin-left: 3em;
-  margin-bottom: 3em;
+	margin-left: 3em;
+	height: 100%;
+  // margin-bottom: 3em;
   max-width: 25em;
   background-color: rgba($primary-color, .85);
   transition: 3s;
@@ -18,11 +19,15 @@
   }
 }
 
-@media only screen and (max-width: 868px) {
+@media only screen and (max-width: 889px) {
   .projects-container {
     margin-right: 3em;
-    max-width: none;
-  }
+    max-width: none !important;
+	}
+	
+	.limited[_ngcontent-c5] {
+		max-width: none !important;
+	}
 }
 
 .list-item {

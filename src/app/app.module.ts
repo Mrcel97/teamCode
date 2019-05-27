@@ -31,6 +31,7 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
+import { AuthAddCollaboratorModalComponent } from './auth/auth-workspace/modals/auth-add-collaborator-modal/auth-add-collaborator-modal.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { firebaseConfig } from '../assets/configs/firebaseConfig';
     IdeComponent,
     WorkspaceDeleteModalComponent,
     WorkspaceCreateModalComponent,
-    AuthWorkspaceComponent
+    AuthWorkspaceComponent,
+    AuthAddCollaboratorModalComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -67,7 +69,7 @@ import { firebaseConfig } from '../assets/configs/firebaseConfig';
     ModalModule.forRoot()
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  entryComponents: [ WorkspaceDeleteModalComponent, WorkspaceCreateModalComponent ],
+  entryComponents: [ WorkspaceDeleteModalComponent, WorkspaceCreateModalComponent, AuthAddCollaboratorModalComponent ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })

@@ -5,22 +5,32 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 import { FirebaseUser } from '../../../assets/model/user';
 import { AuthService } from './../../services/auth.service';
 
+import { AuthAddCollaboratorModalComponent } from './modals/auth-add-collaborator-modal/auth-add-collaborator-modal.component';
+
+import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
+import { AuthModalService } from './modals/modal-service/modal-service.service';
+
 @Component({
   selector: 'app-auth-workspace',
   templateUrl: './auth-workspace.component.html',
   styleUrls: ['./auth-workspace.component.scss']
 })
 export class AuthWorkspaceComponent implements OnInit {
+  modalRef: MDBModalRef;
+  requests: Array<string> = [];
+
   // Workspace Component Filters
   insideWorkspace: Boolean = false;
   regexp = /\/\bworkspace\/\b.*/g;
-  requests: Array<string> = [];
   isWriter: boolean = false;
+  isOwner: boolean = false;
 
   public nestedDropdown: boolean = false;
 
   constructor(
     public router: Router,
+    private MDBmodalService: MDBModalService,
+    private authModalService: AuthModalService,
     private workspaceService: WorkspaceService,
     private authService: AuthService
   ) {
@@ -36,8 +46,13 @@ export class AuthWorkspaceComponent implements OnInit {
     });
 
     this.authService.user$.subscribe(user => {
-      console.log("Writer: ", this.workspaceService.localWorkspace.getValue().writer, " User: ", user.email);
-      this.isWriter = (this.workspaceService.localWorkspace.getValue().writer == user.email);
+      console.log("Owner: ", this.workspaceService.localWorkspace.getValue().owner.email, "Writer: ", this.workspaceService.localWorkspace.getValue().writer, " User: ", user.email);
+      this.workspaceService.localWorkspace.subscribe(workspace => {
+        if (user != null && workspace != null) {
+          this.isWriter = (workspace.writer == user.email);
+          this.isOwner = (workspace.owner.email == user.email);
+        }
+      });
     });
   }
 
@@ -47,5 +62,19 @@ export class AuthWorkspaceComponent implements OnInit {
 
   switchNestedDropdown() {
     this.nestedDropdown = this.nestedDropdown ? false : true;
+  }
+
+  openAddCollaboratorModal() {
+    this.workspaceService.localWorkspace.subscribe(workspace => {
+      if (workspace == null) return;
+      this.authModalService.workspaceID.next(workspace.id);
+    });
+
+    this.authService.user$.subscribe(user => {
+      if (user == null) return;
+      this.authModalService.userID.next(user.uid);
+    });
+
+    this.modalRef = this.MDBmodalService.show(AuthAddCollaboratorModalComponent);
   }
 }

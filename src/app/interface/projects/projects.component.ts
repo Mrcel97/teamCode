@@ -1,13 +1,14 @@
-import { WorkspaceCreateModalComponent } from './modals/workspace-create-modal/workspace-create-modal.component';
 import { FirebaseUser } from './../../../assets/model/user';
 import { AuthService } from './../../services/auth.service';
 import { WorkspaceService } from './../../services/workspace.service';
 import { Component, OnInit } from '@angular/core';
 import { Workspace } from 'src/assets/model/workspace';
 import { Router } from '@angular/router';
-import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
 
+import { WorkspaceCreateModalComponent } from './modals/workspace-create-modal/workspace-create-modal.component';
 import { WorkspaceDeleteModalComponent } from './modals/workspace-delete-modal/workspace-delete-modal.component';
+
+import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
 import { ModalService } from './modals/modal-service/modal-service.service';
 
 @Component({

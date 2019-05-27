@@ -2,7 +2,8 @@
 
 .projects-container {
   min-width: 25em;
-  max-height: 552.4px;
+  height: 100%;
+  //max-height: 552.4px;
   border: solid $primary-color-variant 2px;
   border-radius: 6px;
   color: $text-color;
@@ -18,9 +19,15 @@
   }
 }
 
+@media only screen and (max-width: 889px) {
+  .projects-container {
+    margin-top: 3em;
+  }
+}
+
 .feed-content {
   overflow-y: auto;
-  max-height: 450px;
+  max-height: 550px;
 }
 
 .projects-container:hover {

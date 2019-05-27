@@ -158,6 +158,7 @@ export class WorkspaceService {
   addCollaborator(userID: string, collaboratorEmail: string, workspaceID: string) {
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
       .subscribe( workspace => {
+        console.log(userID, workspace.owner.uid);
         if (userID != workspace.owner.uid) return console.error("Operation not allowed. Reason: User not owner.");
         workspace.collaborators.includes(collaboratorEmail) ? null : workspace.collaborators.push(collaboratorEmail);
         this.localCollaborators.next(workspace.collaborators);
