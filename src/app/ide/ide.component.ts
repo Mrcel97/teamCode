@@ -51,9 +51,7 @@ export class IdeComponent implements OnInit, OnDestroy {
       this.loadWorkspace(params.get("workspace_id"));
     });
 
-    this.chatService.initializeWebSocketConnection().subscribe( (message) => {
-      console.log('Message modified! ', message);
-    });
+    this.chatService.initializeWebSocketConnection();
   }
 
   ngOnDestroy() {

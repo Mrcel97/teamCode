@@ -23,7 +23,7 @@ var backendURL = 'http://localhost:8080';
 export class WorkspaceService {
   localWorkspaces: BehaviorSubject<Array<Workspace>> = new BehaviorSubject(null);
   localWorkspace: BehaviorSubject<Workspace> = new BehaviorSubject(null);
-  localCollaborators: Subject<Array<string>> = new Subject();
+  localCollaborators: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
   localWriteRequests: Subject<Map<string, Number>> = new Subject();
   localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
   workingFile: BehaviorSubject<File> = new BehaviorSubject(null);
@@ -112,6 +112,13 @@ export class WorkspaceService {
     this.router.navigate(['chat', id]);
   }
 
+  patchWorkspace(workspace: Workspace) {
+    if (workspace == null) return;
+    this.http.patch<Workspace>(backendURL + '/api/workspaces/' + workspace.id, workspace, httpOptions).subscribe( workspace => {
+      this.localCollaborators.next(workspace.collaborators);
+    });
+  }
+
   deleteWorkspace(workspaceId: string) {
     console.log('Deleting workspace: ' + workspaceId);
     var tmpWorkspaces:Array<Workspace> = this.localWorkspaces.getValue().filter(workspace => workspace.id != workspaceId);
@@ -158,7 +165,7 @@ export class WorkspaceService {
   addCollaborator(userID: string, collaboratorEmail: string, workspaceID: string) {
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
       .subscribe( workspace => {
-        console.log(userID, workspace.owner.uid);
+        if (workspace.collaborators.length >= 8) return alert("Reached max. amount of collaborators.");
         if (userID != workspace.owner.uid) return console.error("Operation not allowed. Reason: User not owner.");
         workspace.collaborators.includes(collaboratorEmail) ? null : workspace.collaborators.push(collaboratorEmail);
         this.localCollaborators.next(workspace.collaborators);
@@ -173,13 +180,21 @@ export class WorkspaceService {
       });
   }
 
-  getCollaborators(userID: string, workspaceID: string) {
+  getCollaborators(userID: string, workspaceID: string, collaboratorEmail?: string) {
+    if (userID == null || workspaceID == null) return;
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
       .subscribe( workspace => {
-        if (userID !== workspace.owner.uid) return console.error("Operation not allowed. Reason: User not owner.");
-        this.localCollaborators.next(workspace.collaborators);
+        if (userID === workspace.owner.uid || this.isCollaborator(workspace, collaboratorEmail)) {
+          this.localCollaborators.next(workspace.collaborators);
+        } else {
+          return console.error("Operation not allowed. Reason: User not owner. User not collaborator.");
+        }
       });
     return this.localCollaborators;
+  }
+
+  isCollaborator(workspace: Workspace, collaboratorEmail: string) {
+    return workspace.collaborators.includes(collaboratorEmail);
   }
 
   getWriteRequests(userEmail: string, workspaceID: string) {

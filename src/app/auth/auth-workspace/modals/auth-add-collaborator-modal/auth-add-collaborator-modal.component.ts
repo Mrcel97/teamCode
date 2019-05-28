@@ -23,7 +23,7 @@ export class AuthAddCollaboratorModalComponent implements OnInit {
   }
 
   submitCollaborators(){
-    this.parseCollaborators(this.collaboratorsEmail).forEach(collaboratorEmail => {
+    this.parseCollaborators(this.collaboratorsEmail.toLowerCase()).forEach(collaboratorEmail => {
       if (collaboratorEmail == null || collaboratorEmail == "" || !this.regexp.test(collaboratorEmail)) return;
       this.regexp.test(''); // Reset regex inside bucle
       this.workspaceService.addCollaborator(this.authModalService.userID.getValue(), collaboratorEmail, this.authModalService.workspaceID.getValue());

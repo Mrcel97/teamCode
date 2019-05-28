@@ -42,6 +42,45 @@ input[type=text]:focus:not([readonly]) {
   }
 }
 
+.workspace-info {
+  position: absolute;
+  top: 0.95em;
+  left: 50%;
+  transform: translateX(-50%);
+
+  color: $accent-color;
+  font-weight: bold;
+
+  z-index: 1040;
+}
+
+.workspace-info:hover {
+  cursor: default;
+  user-select: none;
+}
+
+@media (max-width: 1220px) {
+  .workspace-info {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .workspace-info {
+    display: block;
+  }
+}
+
+@media (max-width: 300px) {
+  .workspace-info {
+    display: none;
+  }
+}
+
+.notVisible {
+  display: none;
+}
+
 app-github {
   position: absolute;
   right: .25em;

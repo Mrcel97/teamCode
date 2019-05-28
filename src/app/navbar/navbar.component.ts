@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     public navbarService: NavbarService
-    ) { }
+  ) { }
 
   ngOnInit() {
   }
@@ -60,5 +60,13 @@ export class NavbarComponent implements OnInit {
         }
       }
     );*/
+  }
+
+  getWorkspaceName() {
+    return this.navbarService.workspace.getValue();
+  }
+
+  isWorkspaceRoute() {
+    return this.navbarService.section == 'workspace';
   }
 }

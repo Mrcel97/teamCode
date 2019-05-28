@@ -3,6 +3,7 @@
     <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>Options<span class="caret"></span></a> <!--(click)="showOptions()"-->
     <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
       <a *ngIf="isOwner" class="dropdown-item waves-light" mdbWavesEffect (click)="openAddCollaboratorModal()">Add collaborators</a>
+      <a class="dropdown-item waves-light" mdbWavesEffect (click)="openListCollaboratorModal()">List collaborators</a>
       <a *ngIf="!isWriter" class="dropdown-item waves-light" mdbWavesEffect href="#">Ask for write</a>
       <a *ngIf="isWriter" class="dropdown-item waves-light" mdbWavesEffect href="#" (mouseenter)="switchNestedDropdown()">Make writer</a>
       <div *ngIf="nestedDropdown" class="nestedDropdown animated fadeIn">

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { FirebaseUser } from '../../../assets/model/user';
 import { AuthService } from './../../services/auth.service';
 
 import { AuthAddCollaboratorModalComponent } from './modals/auth-add-collaborator-modal/auth-add-collaborator-modal.component';
+import { AuthCollaboratorsModalComponent } from './modals/auth-collaborators-modal/auth-collaborators-modal.component';
 
 import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
 import { AuthModalService } from './modals/modal-service/modal-service.service';
@@ -42,13 +42,14 @@ export class AuthWorkspaceComponent implements OnInit {
 
     this.workspaceService.localWriteRequests.subscribe(writeRequests => {
       if (writeRequests == null) return;
+      console.log(writeRequests);
       this.requests = Array.from(writeRequests.keys());
     });
 
     this.authService.user$.subscribe(user => {
-      console.log("Owner: ", this.workspaceService.localWorkspace.getValue().owner.email, "Writer: ", this.workspaceService.localWorkspace.getValue().writer, " User: ", user.email);
       this.workspaceService.localWorkspace.subscribe(workspace => {
         if (user != null && workspace != null) {
+          console.log("Owner: ", this.workspaceService.localWorkspace.getValue().owner.email, "Writer: ", this.workspaceService.localWorkspace.getValue().writer, " User: ", user.email);
           this.isWriter = (workspace.writer == user.email);
           this.isOwner = (workspace.owner.email == user.email);
         }
@@ -76,5 +77,23 @@ export class AuthWorkspaceComponent implements OnInit {
     });
 
     this.modalRef = this.MDBmodalService.show(AuthAddCollaboratorModalComponent);
+  }
+
+  openListCollaboratorModal() {
+    this.workspaceService.localWorkspace.subscribe(workspace => {
+      if (workspace == null) return;
+      this.authModalService.workspaceID.next(workspace.id);
+    });
+
+    this.authService.user$.subscribe(user => {
+      if (user == null) return;
+      if (this.isOwner) {
+        this.authModalService.userData.next({userID: user.uid});
+      } else {
+        this.authModalService.userData.next({userID: user.uid, userEmail: user.email});
+      }
+    });
+
+    this.modalRef = this.MDBmodalService.show(AuthCollaboratorsModalComponent);
   }
 }

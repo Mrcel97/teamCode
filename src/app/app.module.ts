@@ -13,6 +13,8 @@ import { AuthComponent } from './auth/auth.component';
 import { GithubComponent } from './github/github.component';
 import { IdeComponent } from './ide/ide.component';
 import { AuthWorkspaceComponent } from './auth/auth-workspace/auth-workspace.component';
+import { AuthAddCollaboratorModalComponent } from './auth/auth-workspace/modals/auth-add-collaborator-modal/auth-add-collaborator-modal.component';
+import { AuthCollaboratorsModalComponent } from './auth/auth-workspace/modals/auth-collaborators-modal/auth-collaborators-modal.component';
 
 // Modules
 import { AngularFireModule } from 'angularfire2';
@@ -31,7 +33,6 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
-import { AuthAddCollaboratorModalComponent } from './auth/auth-workspace/modals/auth-add-collaborator-modal/auth-add-collaborator-modal.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AuthAddCollaboratorModalComponent } from './auth/auth-workspace/modals/
     WorkspaceCreateModalComponent,
     AuthWorkspaceComponent,
     AuthAddCollaboratorModalComponent,
+    AuthCollaboratorsModalComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),
@@ -69,7 +71,7 @@ import { AuthAddCollaboratorModalComponent } from './auth/auth-workspace/modals/
     ModalModule.forRoot()
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  entryComponents: [ WorkspaceDeleteModalComponent, WorkspaceCreateModalComponent, AuthAddCollaboratorModalComponent ],
+  entryComponents: [ WorkspaceDeleteModalComponent, WorkspaceCreateModalComponent, AuthAddCollaboratorModalComponent, AuthCollaboratorsModalComponent ],
   providers: [{ provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
