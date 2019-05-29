@@ -42,7 +42,6 @@ export class AuthWorkspaceComponent implements OnInit {
 
     this.workspaceService.localWriteRequests.subscribe(writeRequests => {
       if (writeRequests == null) return;
-      console.log(writeRequests);
       this.requests = Array.from(writeRequests.keys());
     });
 
@@ -50,8 +49,16 @@ export class AuthWorkspaceComponent implements OnInit {
       this.workspaceService.localWorkspace.subscribe(workspace => {
         if (user != null && workspace != null) {
           console.log("Owner: ", this.workspaceService.localWorkspace.getValue().owner.email, "Writer: ", this.workspaceService.localWorkspace.getValue().writer, " User: ", user.email);
-          this.isWriter = (workspace.writer == user.email);
           this.isOwner = (workspace.owner.email == user.email);
+          this.workspaceService.isWriter(user.email, workspace.id).subscribe(
+            result => { 
+              if (result) {
+                this.getWriteRequests();
+              } else {
+                console.log('You are not the writer')
+              }
+            }
+          );
         }
       });
     });
@@ -59,6 +66,19 @@ export class AuthWorkspaceComponent implements OnInit {
 
   ngOnInit() {
     this.insideWorkspace = this.regexp.test(this.router.url) ? true : false;
+
+    this.workspaceService.localIsWriter.subscribe( status => {
+      this.isWriter = status;
+      // status ? this.loadUserMode() : null;  Idle system
+    });
+  }
+
+  askForWrite() { // Need to do a GET to work with updated data
+    this.workspaceService.askForWrite();
+  }
+
+  getWriteRequests() {
+    console.log('You are the writer, getting write requests...');
   }
 
   switchNestedDropdown() {

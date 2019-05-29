@@ -13,6 +13,7 @@ import { FirebaseUser } from '../../assets/model/user';
 import { httpOptions, httpWorkspaceOptions } from '../../assets/model/httpOptions'
 import { User } from '../../assets/model/user';
 import { File } from '../../assets/model/file';
+import { WriteRequestData } from './../../assets/model/WriteRequestData';
 // import { backendURL } from '../../assets/configs/backendConfig';
 
 var backendURL = 'http://localhost:8080';
@@ -24,12 +25,13 @@ export class WorkspaceService {
   localWorkspaces: BehaviorSubject<Array<Workspace>> = new BehaviorSubject(null);
   localWorkspace: BehaviorSubject<Workspace> = new BehaviorSubject(null);
   localCollaborators: BehaviorSubject<Array<string>> = new BehaviorSubject([]);
-  localWriteRequests: Subject<Map<string, Number>> = new Subject();
-  localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  localWriteRequests: BehaviorSubject<Map<string, Number>> = new BehaviorSubject(new Map());
   workingFile: BehaviorSubject<File> = new BehaviorSubject(null);
   workingFileContent: BehaviorSubject<Map<string, string>> = new BehaviorSubject(null);
-  private user: FirebaseUser;
+  localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private user: FirebaseUser;
+  private userEmail: string;
   private localWorkspaceCopy: Workspace;
 
   constructor(
@@ -49,7 +51,9 @@ export class WorkspaceService {
     this.chatService.actionEmitter$.subscribe(actionEmit => {
       actionEmit.action == "create" ? this.ideService.createFile(actionEmit.file, actionEmit.content) : 
         actionEmit.action == "delete" && this.ideService.deleteFile(actionEmit.file);
-    })
+    });
+
+    this.chatService.requestEmitter$.subscribe(request => this.parseRequest(request));
   }
 
   createWorksapace(name: string, owner: FirebaseUser) {
@@ -95,6 +99,7 @@ export class WorkspaceService {
       console.log("Loading new Workspace...");
       this.localWorkspaceCopy = workspace;
       this.localWorkspace.next(workspace);
+      this.localWriteRequests.next(new Map());
       this.modificationsService.loadWorkspaceFiles(this.localWorkspace.getValue());
       //this.setWorkingFile(workspace.files.filter(file => file.name == "README.md")[0].id);
     });
@@ -130,6 +135,8 @@ export class WorkspaceService {
   }
 
   isWriter(userEmail: string, workspaceID: string): BehaviorSubject<boolean> {
+    this.userEmail = userEmail;
+
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
     .subscribe( workspace => {
       if (workspace.writer == userEmail) {
@@ -141,25 +148,23 @@ export class WorkspaceService {
     return this.localIsWriter;
   }
 
-  askForWrite(userID: string, userEmail: string, workspaceID: string) {
-    this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
-      .subscribe( workspace => {
-        if (workspace.collaborators && !workspace.collaborators.includes(userEmail)) return console.error('Not allowed to write!');
-        (workspace.writerRequests[userEmail] == 0 || workspace.writerRequests[userEmail] == null) ? workspace.writerRequests[userEmail] = this.getTime() : null;
-        let worspaceData: WorkspaceData = new WorkspaceData(workspace, userEmail);
-        this.http.post(backendURL + '/api/workspaceAskToWrite/', worspaceData, httpOptions).subscribe(
-          data => {
-            console.log('Workspace successfully patched ', data);
-          },
-          err => {
-            console.error('Error while patching the resource ', err);
-          }
-        );
-      });
+  askForWrite() {
+    if (this.userEmail == null || this.localWorkspace.getValue() == null) return;
+    var workspace = this.localWorkspace.getValue();
+    
+    if (workspace.collaborators && !workspace.collaborators.includes(this.userEmail)) return console.error('Not allowed to write!');
+    this.chatService.sendWriteRequest(this.userEmail, (this.userEmail == this.localWorkspace.getValue().writer));
   }
 
   private getTime(): Number {
     return new Date().getTime();
+  }
+
+  parseRequest(writeRequestData: WriteRequestData) {
+    if (writeRequestData == null) return;
+    if (!writeRequestData.writer) {
+      this.localWriteRequests.next(this.localWriteRequests.getValue().set(writeRequestData.requesterEmail, this.getTime()));
+    }
   }
 
   addCollaborator(userID: string, collaboratorEmail: string, workspaceID: string) {
@@ -207,7 +212,7 @@ export class WorkspaceService {
   }
 
   private contentModification(content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>}) {
-    if (content == null) return;
+    if (content == null || !this.localIsWriter.getValue()) return console.info('Not allowed to send Data, you are not the Workspace writer');
 
     let addition: boolean = false;
     let supresion: boolean = false;

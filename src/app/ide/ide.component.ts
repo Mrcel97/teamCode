@@ -39,8 +39,13 @@ export class IdeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public chatService: ChatService
   ) {
-    this.ideService.virtualMachine$.subscribe( vm => {
-      this.vmListener();
+    // this.ideService.virtualMachine$.subscribe( vm => {
+    //   this.vmListener();
+    // });
+
+    this.workspaceService.localIsWriter.subscribe(status => {
+      if (status == null) return;
+      !status ? this.clearInterval() : this.vmListener();
     });
   }
 
@@ -135,5 +140,10 @@ export class IdeComponent implements OnInit, OnDestroy {
   private vmListener() {
     if (this.interval != null) return;
     this.interval = setInterval(this.ideService.getSnapshot.bind(this.ideService), 5000, this.ideService.virtualMachine$);
+  }
+
+  private clearInterval() {
+    clearInterval(this.interval);
+    this.interval = null;
   }
 }

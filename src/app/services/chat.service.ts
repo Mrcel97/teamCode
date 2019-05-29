@@ -1,4 +1,3 @@
-import { StackBlitzService } from './stack-blitz.service';
 import { AuthService } from './auth.service';
 import { Workspace } from '../../assets/model/workspace';
 import { HttpClient } from '@angular/common/http';
@@ -8,7 +7,10 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
-import { httpWorkspaceOptions } from '../..//assets/model/httpOptions';
+import { StackBlitzService } from './stack-blitz.service';
+
+import { WriteRequestData } from 'src/assets/model/WriteRequestData';
+import { httpWorkspaceOptions } from '../../assets/model/httpOptions';
 // import  { backendSocketURL, backendURL } from '../../assets/configs/backendConfig';
 
 var ENCODING = 'utf8';
@@ -28,6 +30,7 @@ export class ChatService {
   private writeRequests: Map<string, Number>;
   private localWriteRequests: Subject<Map<string, Number>> = new Subject();
 
+  public requestEmitter$: BehaviorSubject<WriteRequestData> = new BehaviorSubject<WriteRequestData>(null);
   public fileEmitter$: BehaviorSubject<Map<string, string>> = new BehaviorSubject<Map<string, string>>(new Map()); // fileKey, fileContent
   public actionEmitter$: BehaviorSubject<{file:string, action:string, content?:string}> = 
     new BehaviorSubject<{file:string, action:string, content?:string}>({file: null, action: null, content:null}); // fileKey, fileAction
@@ -52,7 +55,7 @@ export class ChatService {
     this.stompClient.connect({'UserID': this.userUID}, () => {
       this.stompClient.subscribe("/chat/" + this.roomID, (message) => { // TODO: Create a STOP MESSAGE Model
         if (message.body || message.body === "") {
-          message.headers.writeRequests === "true" ? this.receiveRequests(message) : 
+          (message.headers.writer) ? this.receiveRequests(message) : 
             (message.headers.UserID != this.userUID && message.headers.action) ? this.receiveActions(message) :  
               message.headers.UserID != this.userUID ? this.receiveMessage(message) : null;
         }
@@ -66,7 +69,7 @@ export class ChatService {
 
     this.messageContent = message;
     if(!message) message = '\0';
-    console.log(message, fileId);
+    console.log('New message, content: ', message, ' fileId: ', fileId);
     this.stompClient.send("/app/send/message", {
       'UserID':this.userUID, 
       'room_id':this.roomID, 
@@ -105,31 +108,30 @@ export class ChatService {
     // localStorage.setItem('rcvMessage', message);
   }
 
-  sendWriteRequest(requesterEmail: string, requesterID: string, requestedEmail:string, workspaceID: string){
-    this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
-      .subscribe( workspace => {
-        if (workspace.collaborators && !workspace.collaborators.includes(requesterEmail)) {
-          return console.error('Not allowed to write!');
-        }
-        var writer: boolean = (workspace.writer == requesterEmail) ? true : false; // true: new Writer, false: new WriteRequest
-        if (writer == false && requesterEmail != requestedEmail) {
-          return console.error('Not allowed. Reason: You are not the writer');
-        }
-        this.stompClient.send("/app/send/request", {
-          'UserID':this.userUID, 
-          'requester':requesterEmail, 
-          'room_id':this.roomID, 
-          'writer':writer
-        }, requestedEmail);
-      });
+  sendWriteRequest(requesterEmail: string, isWriter: boolean) {
+    console.log('Sending write request. requesterEmail: ', requesterEmail, ' isWriter: ', isWriter);
+    
+    var writeRequestData = isWriter ? '' : new WriteRequestData(requesterEmail, null); // What is is writer?
+
+    this.stompClient.send("/app/send/request", {
+      'UserID':this.userUID,
+      'room_id':this.roomID,
+      'writer':isWriter
+    }, JSON.stringify(writeRequestData));
   }
 
-  private receiveRequests(requests) {
-    var localRequests = JSON.parse(requests.body)
-    this.localWriteRequests.next(localRequests);
+  private receiveRequests(message) {
+    var writeRequestData: WriteRequestData = JSON.parse(message.body)
+    console.log('Received new request of user: ', writeRequestData.requesterEmail);
+
+    writeRequestData.writer = (message.headers.writer == "true") ? true : false;
+    this.requestEmitter$.next(writeRequestData);
+    // var localRequests = JSON.parse(requests.body)
+    // this.localWriteRequests.next(localRequests);
   }
 
   private receiveActions(message) {
+    console.log('Actions found...');
     this.actionEmitter$.next({file:message.headers.file_id, action:message.headers.action, content:message.body});
   }
 

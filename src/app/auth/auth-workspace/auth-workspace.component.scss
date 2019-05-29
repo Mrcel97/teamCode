@@ -10,13 +10,14 @@ a.dropdown-item {
 
 a.dropdown-item:hover {
   background-color: $secondary-color;
+  border-radius: 3px !important;
 }
 
 .nestedDropdown {
   position: absolute; 
   top: 6em; 
   right: 10em;
-  max-width: 10em;
+  max-width: 15em;
 
   background-color: $primary-color-variant;
   border-radius: 3px;
