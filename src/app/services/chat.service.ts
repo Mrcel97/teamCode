@@ -9,7 +9,7 @@ import * as SockJS from 'sockjs-client';
 
 import { StackBlitzService } from './stack-blitz.service';
 
-import { WriteRequestData } from 'src/assets/model/WriteRequestData';
+import { WriteRequestData, generateRequests } from 'src/assets/model/WriteRequestData';
 import { httpWorkspaceOptions } from '../../assets/model/httpOptions';
 // import  { backendSocketURL, backendURL } from '../../assets/configs/backendConfig';
 
@@ -27,8 +27,6 @@ export class ChatService {
   private userUID: String = 'None';
   private userEmail: String = 'Nonne';
   private roomID: String = '';
-  private writeRequests: Map<string, Number>;
-  private localWriteRequests: Subject<Map<string, Number>> = new Subject();
 
   public requestEmitter$: BehaviorSubject<WriteRequestData> = new BehaviorSubject<WriteRequestData>(null);
   public fileEmitter$: BehaviorSubject<Map<string, string>> = new BehaviorSubject<Map<string, string>>(new Map()); // fileKey, fileContent
@@ -64,12 +62,12 @@ export class ChatService {
     return this.message;
   }
 
-  sendMessage(message, fileId: string, writerId: string, action = '') {
-    if (this.userEmail != writerId) return console.log('Not allowed to send :(');
+  sendMessage(message, fileId: string, writer: boolean, action = '') {
+    if (!writer) return console.log('Not allowed to send :(');
 
     this.messageContent = message;
     if(!message) message = '\0';
-    console.log('New message, content: ', message, ' fileId: ', fileId);
+    // DEBUG: console.log('New message, content: ', message, ' fileId: ', fileId);
     this.stompClient.send("/app/send/message", {
       'UserID':this.userUID, 
       'room_id':this.roomID, 
@@ -97,46 +95,35 @@ export class ChatService {
   }
 
   private receiveMessage(message) {
-    console.log('Received: ', message);
-
     if (message !== this.messageContent) {
       this.message.next(message.body);
     }
     
     this.fileEmitter$.next(this.fileEmitter$.getValue().set(message.headers.file_id, message.body));
-    // TODO: Future control, check if the user stop writing to load received changes
-    // localStorage.setItem('rcvMessage', message);
   }
 
-  sendWriteRequest(requesterEmail: string, isWriter: boolean) {
-    console.log('Sending write request. requesterEmail: ', requesterEmail, ' isWriter: ', isWriter);
-    
-    var writeRequestData = isWriter ? '' : new WriteRequestData(requesterEmail, null); // What is is writer?
+  sendWriteRequest(writeRequestData: WriteRequestData) {
+    writeRequestData.requests && writeRequestData.generateJsonRequests();
 
     this.stompClient.send("/app/send/request", {
       'UserID':this.userUID,
       'room_id':this.roomID,
-      'writer':isWriter
+      'writer':writeRequestData.writer
     }, JSON.stringify(writeRequestData));
   }
 
   private receiveRequests(message) {
-    var writeRequestData: WriteRequestData = JSON.parse(message.body)
-    console.log('Received new request of user: ', writeRequestData.requesterEmail);
+    var writeRequestData: WriteRequestData = JSON.parse(message.body);
 
     writeRequestData.writer = (message.headers.writer == "true") ? true : false;
+    writeRequestData.requests = writeRequestData.jsonRequests && generateRequests(writeRequestData.jsonRequests);
     this.requestEmitter$.next(writeRequestData);
     // var localRequests = JSON.parse(requests.body)
     // this.localWriteRequests.next(localRequests);
   }
 
   private receiveActions(message) {
-    console.log('Actions found...');
     this.actionEmitter$.next({file:message.headers.file_id, action:message.headers.action, content:message.body});
-  }
-
-  hearWriteRequestChanges() {
-    return this.localWriteRequests;
   }
 
   private getMinY(map: Map<string, Number>) {

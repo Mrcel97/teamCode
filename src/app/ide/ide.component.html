@@ -1,12 +1,4 @@
 <div style="overflow: hidden; scroll-behavior: inherit">
-  <div *ngIf="false" class="d-flex flex-row">
-    <button type="button" class="btn btn-outline-info go-back" mdbWavesEffect (click)="router.navigateByUrl('/')"><i class="fas fa-arrow-left"></i></button>
-    <h1 class="p-2">StackBlitz Editor Example:</h1>
-    <button class="btn blue" (click)="refresh()" mdbWavesEffect>refresh</button>
-    <button class="btn blue" (click)="receiveUpdates()" mdbWavesEffect>Receive Updates</button>
-    <button class="btn blue" (click)="createFile()" mdbWavesEffect>create file</button>
-    <button class="btn blue" (click)="getSnapshot()" mdbWavesEffect>get workspace</button>
-  </div>
   <div class="ide-container">
     <div #editor name='editor' id="editor"></div>
   </div>

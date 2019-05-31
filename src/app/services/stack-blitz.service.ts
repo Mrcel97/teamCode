@@ -45,7 +45,12 @@ export class StackBlitzService {
 
   loadGithubWorkspace(repositoryURL: string) {
     sdk.embedGithubProject('editor', repositoryURL, {
-      openFile: 'sampleProject.ts'
+      clickToLoad: false,
+      view: 'editor',
+      hideNavigation: false,
+      forceEmbedLayout: true,
+      openFile: 'README.md',
+      hideExplorer: false
     }).then( vm => {
       this.virtualMachine$.next(vm);
     })
@@ -97,8 +102,6 @@ export class StackBlitzService {
   }
 
   updateFile(fileId: string, content: string) {
-    console.log('Updating file: ', fileId, ' with new content: ', content);
-
     this.virtualMachine$.value.applyFsDiff({ // Comprovar explicació a la documentació!
       create: {
         [fileId]: content
@@ -122,7 +125,7 @@ export class StackBlitzService {
         var language: string;
 
         for(var file in snapshot) {
-          // console.log(file, snapshot[file], files);
+          // DEBUG: console.log(file, snapshot[file], files);
           language = file.split('.').length > 1 ? file.split('.')[1] : 'None';
           files.push(new File(file, undefined, language, snapshot[file]));
         }
@@ -144,7 +147,7 @@ export class StackBlitzService {
       return console.error('Unexpected error!')
     }
 
-    // console.log('Update file:', update.files[0].name, 'Adding content: ', update.files[0].content);
+    // DEBUG: console.log('Update file:', update.files[0].name, 'Adding content: ', update.files[0].content);
 
     this.virtualMachine$.value.applyFsDiff({
       create: {

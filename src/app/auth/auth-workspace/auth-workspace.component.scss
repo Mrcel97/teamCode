@@ -15,7 +15,7 @@ a.dropdown-item:hover {
 
 .nestedDropdown {
   position: absolute; 
-  top: 6em; 
+  top: 9em; 
   right: 10em;
   max-width: 15em;
 
@@ -31,6 +31,20 @@ a.dropdown-item:hover {
   }
 }
 
+.nestedDropdown-collaborator {
+  top: 6.7em; 
+}
+
 /deep/ .modal-dialog > div:nth-child(1) {
   background-color: transparent;
+}
+
+.dropdown-header {
+  text-align: center;
+  justify-content: center;
+  color: $text-color;
+}
+
+.dropdown-divider {
+  border-top: 1px solid $accent-color;
 }

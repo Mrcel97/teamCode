@@ -54,6 +54,18 @@ export class WorkspaceService {
     });
 
     this.chatService.requestEmitter$.subscribe(request => this.parseRequest(request));
+
+    this.modificationsService.seconds$.subscribe(seconds => {
+      var writeRequests = this.localWriteRequests.getValue();
+
+      if (seconds >= 540 && writeRequests != null && writeRequests.size >= 1) {
+        var mapKeys = writeRequests.keys();
+        var email = mapKeys.next().value;
+        email = (email == this.userEmail && writeRequests.size >=2) ? email = mapKeys.next().value : email;
+        email != this.userEmail && this.makeWriter(email);
+        this.modificationsService.seconds$.next(0); // Reset timer.
+      }
+    });
   }
 
   createWorksapace(name: string, owner: FirebaseUser) {
@@ -63,10 +75,9 @@ export class WorkspaceService {
     }
     this.user = owner;
     var ws = new Workspace(name, this.user, this.user.email, [this.user.email], [defaultFiles(new User(this.user.uid,this.user.name))], defaultWriterRequest(this.user.email, 0));
-    //console.log('Providing: ', ws);
     this.http.post<Workspace>(backendURL + '/api/workspaces', ws, httpOptions).subscribe(
       data => {
-        console.log('Workspace successfully created ', data);
+        console.log('Workspace successfully created');
         this.loadWorkspaces(this.user.uid);
       },
       err => {
@@ -92,8 +103,6 @@ export class WorkspaceService {
   }
 
   loadLocalWorkspace(workspaceID: string) {
-    // console.log("Downloading workspace: " + workspaceID);
-
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
     .subscribe( workspace => {
       console.log("Loading new Workspace...");
@@ -107,8 +116,6 @@ export class WorkspaceService {
 
   setWorkingFile(fileID: string) {
     if (this.localWorkspace.getValue().files.map(file => file.id).includes(fileID)) {
-      console.log("New workingFile: \n")
-      console.log(this.localWorkspace.getValue().files.find(file => file.id == fileID).name);
       this.workingFile.next(this.localWorkspace.getValue().files.find(file => file.id == fileID));
     }
   }
@@ -125,7 +132,6 @@ export class WorkspaceService {
   }
 
   deleteWorkspace(workspaceId: string) {
-    console.log('Deleting workspace: ' + workspaceId);
     var tmpWorkspaces:Array<Workspace> = this.localWorkspaces.getValue().filter(workspace => workspace.id != workspaceId);
 
     if(tmpWorkspaces.length >= this.localWorkspaces.getValue().length) return;
@@ -134,52 +140,74 @@ export class WorkspaceService {
     });
   }
 
-  isWriter(userEmail: string, workspaceID: string): BehaviorSubject<boolean> {
+  isWriter(userEmail: string): BehaviorSubject<boolean> {
     this.userEmail = userEmail;
 
-    this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
-    .subscribe( workspace => {
-      if (workspace.writer == userEmail) {
-        this.localIsWriter.next(true);
-      } else {
-        this.localIsWriter.next(false);
-      }
-    });
+    if (this.localWorkspace.getValue() == null) return;
+    var localWorkspace = this.localWorkspace.getValue();
+    
+    if (localWorkspace.writer == userEmail) {
+      this.localIsWriter.next(true);
+    } else {
+      this.localIsWriter.next(false);
+    }
     return this.localIsWriter;
   }
 
   askForWrite() {
-    if (this.userEmail == null || this.localWorkspace.getValue() == null) return;
-    var workspace = this.localWorkspace.getValue();
+    if (this.userEmail == null || this.localWorkspace.getValue() == null || this.localIsWriter.getValue() == null) return;
+    var localWorkspace = this.localWorkspace.getValue();
+
+    this.http.get<Workspace>(backendURL + '/api/workspaces/' + localWorkspace.id, httpWorkspaceOptions)
+    .subscribe( workspace => {
+      if (workspace.collaborators && !workspace.collaborators.includes(this.userEmail)) return alert('You are not a collaborator'); // Always check if collaborators changed before let ask.
+
+      this.chatService.sendWriteRequest(new WriteRequestData(this.userEmail, this.localIsWriter.getValue()));
+    });    
+  }
+
+  makeWriter(newWriterEmail: string) {
+    if (this.userEmail == null || this.localWorkspace.getValue() == null || newWriterEmail == null 
+      || newWriterEmail == '' || this.localIsWriter.getValue() == null) return;
     
-    if (workspace.collaborators && !workspace.collaborators.includes(this.userEmail)) return console.error('Not allowed to write!');
-    this.chatService.sendWriteRequest(this.userEmail, (this.userEmail == this.localWorkspace.getValue().writer));
+    if (this.localIsWriter.getValue()) {
+      this.chatService.sendWriteRequest(
+        new WriteRequestData(
+          this.userEmail, 
+          this.localIsWriter.getValue(),
+          this.localWriteRequests.getValue(),
+          newWriterEmail)
+        );
+        this.localIsWriter.next(false);
+    }
+  }
+
+  parseRequest(writeRequestData: WriteRequestData) {
+    if (this.userEmail == null || writeRequestData == null || this.localIsWriter.getValue() == null) return;
+
+    if (this.localIsWriter.getValue() && !writeRequestData.writer) {
+      this.localWriteRequests.next(this.localWriteRequests.getValue().set(writeRequestData.requesterEmail, this.getTime()));
+    } else if (writeRequestData.writer && writeRequestData.newWriterEmail == this.userEmail) {
+      this.localIsWriter.next(true);
+      this.localWriteRequests.next(writeRequestData.requests);
+    }
   }
 
   private getTime(): Number {
     return new Date().getTime();
   }
 
-  parseRequest(writeRequestData: WriteRequestData) {
-    if (writeRequestData == null) return;
-    if (!writeRequestData.writer) {
-      this.localWriteRequests.next(this.localWriteRequests.getValue().set(writeRequestData.requesterEmail, this.getTime()));
-    }
-  }
-
-  addCollaborator(userID: string, collaboratorEmail: string, workspaceID: string) {
+  addCollaborators(userID: string, collaboratorsEmail: Array<string>, workspaceID: string) {
     this.http.get<Workspace>(backendURL + '/api/workspaces/' + workspaceID, httpWorkspaceOptions)
       .subscribe( workspace => {
         if (workspace.collaborators.length >= 8) return alert("Reached max. amount of collaborators.");
         if (userID != workspace.owner.uid) return console.error("Operation not allowed. Reason: User not owner.");
-        workspace.collaborators.includes(collaboratorEmail) ? null : workspace.collaborators.push(collaboratorEmail);
+        collaboratorsEmail.forEach(collaboratorEmail => {
+          workspace.collaborators.includes(collaboratorEmail) ? null : workspace.collaborators.push(collaboratorEmail);
+        });
         this.localCollaborators.next(workspace.collaborators);
         this.http.patch(backendURL + '/api/workspaces/' + workspaceID, workspace, httpOptions).subscribe(
           data => {
-            console.log('Collaborator successfully added ', data);
-          },
-          err => {
-            console.error('Error while adding the collaborator ', err);
           }
         );
       });
@@ -228,11 +256,8 @@ export class WorkspaceService {
 
     // PATCH server version using "localWorkspaceCopy"
     if (addition || supresion) {
-      console.log('PATCH to Server version, uploading: ', this.localWorkspaceCopy);
       this.http.patch(backendURL + '/api/workspaces/' + this.localWorkspaceCopy.id, this.localWorkspaceCopy, httpOptions).subscribe(
-        data => {
-          console.log('Success');
-        },
+        data => { },
         err => {
           console.error('Error while patching... ', err);
         }
@@ -246,7 +271,7 @@ export class WorkspaceService {
       additions.forEach(fileAddition => {
         if (this.getExcludedFiles(fileAddition) >= 1) return;
         this.localWorkspaceCopy.files.push(fileAddition);
-        this.chatService.sendMessage(fileAddition.content, fileAddition.name, this.localWorkspaceCopy.writer, "create");
+        this.chatService.sendMessage(fileAddition.content, fileAddition.name, this.localIsWriter.getValue(), "create");
       });
       return true;
     }
@@ -262,7 +287,7 @@ export class WorkspaceService {
         if (index > -1) {
           this.localWorkspaceCopy.files.splice(index, 1);
         }
-        this.chatService.sendMessage('', fileSupresion.name, this.localWorkspaceCopy.writer, "delete");
+        this.chatService.sendMessage('', fileSupresion.name, this.localIsWriter.getValue(), "delete");
       });
       return true;
     }
@@ -277,10 +302,11 @@ export class WorkspaceService {
     if (contentUpdated.length >= 1) {
       console.log('Found updates');
       contentUpdated.forEach( file => {
+        if (this.getExcludedFiles(file) >= 1) return;
         if (!file.content) {
-          this.chatService.sendMessage('\0', file.id, this.localWorkspaceCopy.writer)
+          this.chatService.sendMessage('\0', file.id, this.localIsWriter.getValue())
         } else {
-          this.chatService.sendMessage(file.content, file.name, this.localWorkspaceCopy.writer)
+          this.chatService.sendMessage(file.content, file.name, this.localIsWriter.getValue())
         }
       });
     }

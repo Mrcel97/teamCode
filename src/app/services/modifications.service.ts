@@ -18,18 +18,22 @@ export class ModificationsService {
     var fileModifications: {additions: Array<File>, supresions: Array<File> };
     var fileContentUpdate: Array<File> = [];
 
-    // Idle notifications controller
-    this.seconds$.next(this.seconds$.getValue() + 1);
-
     // Case: File modifications: (create/delete/rename/reubicate)
     fileModifications = this.checkNewFiles(files);
 
     // Case: File content modification:
     fileContentUpdate = this.checkContentUpdate(files, fileModifications);
 
-    // console.log('File Modifications: \n', fileModifications);
-    // console.log('File Content Updates: \n', fileContentUpdate);
+    // DEBUG: console.log('File Modifications: \n', fileModifications); 
+    // DEBUG: console.log('File Content Updates: \n', fileContentUpdate);
     this.localFilesLog = files;
+
+    if (!this.existsChanges(fileModifications, fileContentUpdate)) {
+      // Idle notifications controller
+      this.seconds$.next(this.seconds$.getValue() + 1);
+    } else {
+      this.seconds$.next(0);
+    }
 
     return {
       additions: fileModifications.additions, 
@@ -40,7 +44,6 @@ export class ModificationsService {
 
   public loadWorkspaceFiles(localWorkspaceLog: Workspace) {
     if (localWorkspaceLog == null) return;
-    console.log('ModificationService: Workspace files dowloaded');
     // Reset
     this.localFilesLog = [];
     if (this.localWorkspaceLog != undefined) this.localWorkspaceLog.files = [];
@@ -48,7 +51,6 @@ export class ModificationsService {
     // Download Workspace Files
     this.localWorkspaceLog = localWorkspaceLog;
     this.localWorkspaceLog.files.forEach(file => this.localFilesLog.push(file));
-    // console.log(this.localFilesLog);
   }
 
   private checkNewFiles(files: Array<File>) {
@@ -69,5 +71,9 @@ export class ModificationsService {
     var oldFilesContents: Array<string> = this.localFilesLog.map(file => file.content);
     
     return files.filter(file => !oldFilesContents.includes(file.content) && !fileModifications.additions.includes(file));
+  }
+
+  private existsChanges(fileModifications: {additions: Array<File>, supresions: Array<File> }, fileContentUpdate: Array<File>): boolean {
+    return fileModifications.additions.length != 0 || fileModifications.supresions.length != 0 || fileContentUpdate.length != 0;
   }
 }

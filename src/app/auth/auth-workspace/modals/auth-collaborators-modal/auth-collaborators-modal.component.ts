@@ -3,6 +3,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MDBModalRef } from 'angular-bootstrap-md';
 import { AuthModalService } from './../modal-service/modal-service.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
+import { ToastrService } from 'ngx-toastr';
+
+import { ToasterMessages } from '../../../../../assets/messages/toasterMessages';
 
 @Component({
   selector: 'app-auth-collaborators-modal',
@@ -14,12 +17,15 @@ export class AuthCollaboratorsModalComponent implements OnInit, OnDestroy {
   public collaborator: string;
   public startDelete: boolean = false;
   public isOwner: boolean = false;
+  private toasterMessages: ToasterMessages = new ToasterMessages(this.toastr);
 
   constructor(
     public modalRef: MDBModalRef,
     public authModalService: AuthModalService,
-    private workspaceService: WorkspaceService
+    private workspaceService: WorkspaceService,
+    private toastr: ToastrService
   ) {
+    
     this.authModalService.userData.subscribe(userData => {
       if (userData == null) return;
       this.isOwner = (this.workspaceService.localWorkspace.getValue().owner.uid == userData.userID);
@@ -63,6 +69,7 @@ export class AuthCollaboratorsModalComponent implements OnInit, OnDestroy {
       workspace.collaborators = collaborators;
       this.workspaceService.patchWorkspace(workspace);
     }
+    this.toasterMessages.deleteCollaboratorInfo(collaborator);
     this.modalRef.hide();
   }
 }

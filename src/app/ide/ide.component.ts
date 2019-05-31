@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 import { StackBlitzService } from '../services/stack-blitz.service';
 import { WorkspaceService } from './../services/workspace.service';
 import { ChatService } from './../services/chat.service';
+
 import { Workspace } from 'src/assets/model/workspace';
 import { IProject } from 'src/assets/model/IProject';
 import { File } from './../../assets/model/file';
@@ -60,14 +61,10 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("Shutdown timer!")
     clearInterval(this.interval);
   }
 
   loadWorkspace(workspaceId: string) {
-    // Inform about the workspace is going to try to load
-    // console.log("Trying to load workspace: " + workspaceId);
-
     // Load workspace using workspaceService and catch the result of the call.
     console.log("Workspace opened!");
     this.chatService.setRoomID(workspaceId);
@@ -78,18 +75,6 @@ export class IdeComponent implements OnInit, OnDestroy {
         this.ideService.createWorkspace(project);
       }
     })
-
-    // Once we have the result of the call (Workspace), build the project object.
-
-    // Call stackBlitzService with project object as a parameter
-  }
-
-  createFile() {
-    // console.log('Creating File');
-    var name = 'sampleFile' // TODO
-    var language = 'ts' // TODO
-
-    this.ideService.createFile(name, language);
   }
 
   getSnapshot() {
@@ -113,8 +98,6 @@ export class IdeComponent implements OnInit, OnDestroy {
   }
 
   private buildProject(workspace: Workspace) {
-    // "\nStarting to build Workspace object...");
-    // console.log(workspace.owner);
     var fileStack: { [path: string]: string } = {};
     
     this.appendFilesToFilestack(workspace.files, fileStack)

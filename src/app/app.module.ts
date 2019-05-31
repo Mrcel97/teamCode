@@ -33,6 +33,7 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
+import { toasterConfig } from './../assets/configs/toasterConfig';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,7 @@ import { firebaseConfig } from '../assets/configs/firebaseConfig';
     FormsModule,
     HttpClientModule,
     MDBBootstrapModule.forRoot(),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot(toasterConfig),
     TooltipModule,
     WavesModule,
     ModalModule.forRoot()

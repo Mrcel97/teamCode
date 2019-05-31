@@ -37,4 +37,4 @@
     <p>{{getWorkspaceName()}}</p>
 </div>
 
-<app-github [user]='userStatus' *ngIf="userStatus" (collaborator_email)="updateCollaborators($event)"></app-github>
+<app-github [user]='userStatus' *ngIf="userStatus && isWriter" (collaborator_email)="updateCollaborators($event)"></app-github>
