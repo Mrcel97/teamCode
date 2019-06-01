@@ -19,8 +19,9 @@ export class WorkspaceDeleteModalComponent {
   ) { }
 
   deleteWorkspace() {
+    console.log('Deleting: ', this.modalService.workspaceId.getValue())
     this.workspaceService.deleteWorkspace(this.modalService.workspaceId.getValue());
-    this.workspaceService.loadWorkspaces(this.modalService.workspaceOwner.getValue().email);
+    // this.workspaceService.loadWorkspaces(this.modalService.workspaceOwner.getValue().email);
     this.modalRef.hide();
   }
 }

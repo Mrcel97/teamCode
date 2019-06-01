@@ -1,5 +1,5 @@
 <button *ngIf="user && insideWorkspace" (click)="showOptions()" class="dot-button animated fadeIn" size="sm" mdbBtn type="button" color="white" mdbWavesEffect></button>
-<div *ngIf="user && optionsOpen" class="animated fadeInRight">
+<div *ngIf="user && optionsOpen && insideWorkspace" class="animated fadeInRight">
   <button (click)="showCollaboratorInput()" class="dot-button-sm load-collaborator-button" size="sm" mdbBtn type="button" color="white" mdbWavesEffect>
     <i class="fas fa-share-alt fa-3x load-collaborator-icon"></i>
   </button>

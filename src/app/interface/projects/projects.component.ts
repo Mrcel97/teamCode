@@ -4,6 +4,8 @@ import { WorkspaceService } from './../../services/workspace.service';
 import { Component, OnInit } from '@angular/core';
 import { Workspace } from 'src/assets/model/workspace';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+
 
 import { WorkspaceCreateModalComponent } from './modals/workspace-create-modal/workspace-create-modal.component';
 import { WorkspaceDeleteModalComponent } from './modals/workspace-delete-modal/workspace-delete-modal.component';
@@ -21,7 +23,7 @@ export class ProjectsComponent implements OnInit {
 
   myUser: FirebaseUser;
   allWorkspaces: Array<Workspace>;
-  workspacePages: number;
+  workspacePages: BehaviorSubject<number> = new BehaviorSubject(null);
   visibleWorkspaces: Array<Workspace>;
   range: Array<number> = [-3,0];
   projectsLoaded: boolean = false;
@@ -36,7 +38,7 @@ export class ProjectsComponent implements OnInit {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
       if (workspaces == null || workspaces.length == 0) return;
       this.allWorkspaces = workspaces;
-      this.workspacePages = this.getPagesValue();
+      this.workspacePages.next(this.getPagesValue());
       // console.log('Nº of pages: ', this.workspacePages);
       if (this.projectsLoaded == false) {
         this.projectsLoaded = true;

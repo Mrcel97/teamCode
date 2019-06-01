@@ -20,7 +20,6 @@ export class WorkspaceCreateModalComponent {
 
   createWorkspace() {
     this.workspaceService.createWorksapace(this.workspaceName, this.modalService.workspaceOwner.getValue());
-    this.workspaceService.loadWorkspaces(this.modalService.workspaceOwner.getValue().email);
     this.modalRef.hide();
   }
 }

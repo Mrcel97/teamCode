@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import { FirebaseUser } from '../../assets/model/user';
 import { httpOptions, httpWorkspaceOptions } from '../../assets/model/httpOptions'
 import { User } from '../../assets/model/user';
 import { File } from '../../assets/model/file';
-import { WriteRequestData } from './../../assets/model/WriteRequestData';
+import { WriteRequestData } from './../../assets/model/writeRequestData';
 // import { backendURL } from '../../assets/configs/backendConfig';
 
 var backendURL = 'http://localhost:8080';
@@ -78,7 +78,7 @@ export class WorkspaceService {
     this.http.post<Workspace>(backendURL + '/api/workspaces', ws, httpOptions).subscribe(
       data => {
         console.log('Workspace successfully created');
-        this.loadWorkspaces(this.user.uid);
+        this.loadWorkspaces(this.user.email);
       },
       err => {
         console.error('Error while creating the resource ', err);
@@ -136,6 +136,7 @@ export class WorkspaceService {
 
     if(tmpWorkspaces.length >= this.localWorkspaces.getValue().length) return;
     this.http.delete<Workspace>(backendURL + '/api/workspaces/' + workspaceId, httpWorkspaceOptions).subscribe( _ => {
+      console.log(tmpWorkspaces);
       this.localWorkspaces.next(tmpWorkspaces);
     });
   }
@@ -206,7 +207,7 @@ export class WorkspaceService {
           workspace.collaborators.includes(collaboratorEmail) ? null : workspace.collaborators.push(collaboratorEmail);
         });
         this.localCollaborators.next(workspace.collaborators);
-        this.http.patch(backendURL + '/api/workspaces/' + workspaceID, workspace, httpOptions).subscribe(
+        this.http.patch(backendURL + '/api/workspaceAddCollaborator', workspace, httpOptions).subscribe(
           data => {
           }
         );

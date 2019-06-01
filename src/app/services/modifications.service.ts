@@ -62,8 +62,6 @@ export class ModificationsService {
 
     additions = files.filter(file => !oldLog.includes(file.name));
     supresions = this.localFilesLog.filter(file => !newLog.includes(file.name));
-
-    // console.log('Additions: ', additions, 'Supresions: ', supresions);
     return {additions: additions, supresions: supresions};
   }
 

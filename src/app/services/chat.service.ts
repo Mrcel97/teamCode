@@ -9,7 +9,7 @@ import * as SockJS from 'sockjs-client';
 
 import { StackBlitzService } from './stack-blitz.service';
 
-import { WriteRequestData, generateRequests } from 'src/assets/model/WriteRequestData';
+import { WriteRequestData, generateRequests } from 'src/assets/model/writeRequestData';
 import { httpWorkspaceOptions } from '../../assets/model/httpOptions';
 // import  { backendSocketURL, backendURL } from '../../assets/configs/backendConfig';
 

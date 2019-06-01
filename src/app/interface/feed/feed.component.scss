@@ -54,3 +54,13 @@
   margin: 0;
   padding: 0;
 }
+
+.not-interactive:hover {
+  cursor: auto !important;
+}
+
+.list-info {
+  color: $accent-color;
+  display: inline-block;
+  margin-bottom: 0;
+}
