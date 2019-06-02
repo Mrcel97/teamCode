@@ -2,7 +2,8 @@
 
 .projects-container {
   min-width: 25em;
-  max-height: 552.4px;
+  height: 100%;
+  //max-height: 552.4px;
   border: solid $primary-color-variant 2px;
   border-radius: 6px;
   color: $text-color;
@@ -12,15 +13,21 @@
   transition: ease all .5s;
 }
 
-@media only screen and (max-width: 1317px) {
+@media only screen and (max-width: 1418px) {
   .projects-container {
     margin-right: 3em;
   }
 }
 
+@media only screen and (max-width: 889px) {
+  .projects-container {
+    margin-top: 3em;
+  }
+}
+
 .feed-content {
   overflow-y: auto;
-  max-height: 450px;
+  max-height: 550px;
 }
 
 .projects-container:hover {
@@ -46,4 +53,14 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.not-interactive:hover {
+  cursor: auto !important;
+}
+
+.list-info {
+  color: $accent-color;
+  display: inline-block;
+  margin-bottom: 0;
 }

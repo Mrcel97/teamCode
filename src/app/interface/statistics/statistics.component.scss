@@ -2,7 +2,8 @@
 
 .projects-container {
   min-width: 25em;
-  max-height: 552.4px;
+  height: 100%;
+  // max-height: 552.4px;
   border: solid $primary-color-variant 2px;
   border-radius: 6px;
   color: $text-color;
@@ -15,15 +16,21 @@
   transition: ease all .5s;
 }
 
-@media only screen and (max-width: 1317px) {
+@media only screen and (max-width: 1418px) {
   .projects-container {
-    margin-top: 3em;
+    margin-top: 2em;
+  }
+}
+
+@media only screen and (max-width: 889px) {
+  .projects-container {
+    margin-top: 6em;
   }
 }
 
 .feed-content {
   overflow-y: auto;
-  max-height: 450px;
+  max-height: 550px;
 }
 
 .projects-container:hover {
@@ -49,4 +56,26 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+/deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > canvas:nth-child(2) {
+  width: 445px !important;
+  max-width: 445px !important;
+}
+
+/deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > div:nth-child(6) > canvas:nth-child(2) {
+  width: 445px !important;
+  max-width: 445px !important;
+}
+
+@media only screen and (max-width: 1418px) {
+  /deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > canvas:nth-child(2) {
+    width: unset !important;
+    max-width: unset !important;
+  }
+
+  /deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > div:nth-child(6) > canvas:nth-child(2) {
+    width: unset !important;
+    max-width: unset !important;
+  }
 }

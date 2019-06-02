@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ModalService } from './modal-service.service';
+import { ModificationsService } from './modifications.service';
 
-describe('ModalServiceService', () => {
+describe('ModificationsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ModalService = TestBed.get(ModalServiceService);
+    const service: ModificationsService = TestBed.get(ModificationsService);
     expect(service).toBeTruthy();
   });
 });

@@ -4,11 +4,11 @@
     <hr style="background-color: whitesmoke">
   </div>
   <div class="feed-content">
-    <div style="display: block; overflow: hidden;">
+    <div style="overflow: hidden;">
       <canvas mdbChart
           [chartType]="chartType"
-          [datasets]="chartDatasets"
-          [labels]="chartLabels"
+          [datasets]="chartFilesDataset"
+          [labels]="filesNames"
           [colors]="chartColors"
           [options]="chartOptions"
           [legend]="true"
@@ -18,11 +18,11 @@
       <br/>
       <br/>
       <br/>
-      <div style="display: block; overflow: hidden;">
+      <div style="overflow: hidden;">
         <canvas mdbChart
             [chartType]="chartType2"
-            [datasets]="chartDatasets"
-            [labels]="chartLabels"
+            [datasets]="chartLanguagesDataset"
+            [labels]="languagesNames"
             [colors]="chartColors"
             [options]="chartOptions"
             [legend]="true"

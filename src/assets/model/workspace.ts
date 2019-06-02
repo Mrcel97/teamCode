@@ -1,6 +1,8 @@
 import { FirebaseUser, firebaseUserFactory, userFactory, User } from "./user";
 import { File, fileFactory } from "./file";
 
+import { tutorialMessage } from './../messages/tutorialMessage';
+
 export class Workspace {
   
   constructor(
@@ -29,7 +31,7 @@ export function workspaceSnapshotFactory(snapshot): Workspace {
 }
 
 export function defaultFiles(owner: User) { // Default file that will exist on every project
-  return new File("README.md", owner, ".md", "");
+  return new File("README.md", owner, ".md", tutorialMessage);
 }
 
 export function defaultWriterRequest(userID: string, requestTime: Number) {

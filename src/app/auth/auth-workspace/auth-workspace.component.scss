@@ -1,0 +1,50 @@
+@import "../../../assets/themes/dark.scss";
+
+.dropdown-menu {
+  background-color: $primary-color-variant;
+}
+
+a.dropdown-item {
+  color: $text-color
+}
+
+a.dropdown-item:hover {
+  background-color: $secondary-color;
+  border-radius: 3px !important;
+}
+
+.nestedDropdown {
+  position: absolute; 
+  top: 9em; 
+  right: 10em;
+  max-width: 15em;
+
+  background-color: $primary-color-variant;
+  border-radius: 3px;
+
+  .nested-item:first-child {
+    border-radius: 3px 3px 0px 0px;
+  }
+
+  .nested-item:last-child {
+    border-radius: 0px 0px 3px 3px;
+  }
+}
+
+.nestedDropdown-collaborator {
+  top: 6.7em; 
+}
+
+/deep/ .modal-dialog > div:nth-child(1) {
+  background-color: transparent;
+}
+
+.dropdown-header {
+  text-align: center;
+  justify-content: center;
+  color: $text-color;
+}
+
+.dropdown-divider {
+  border-top: 1px solid $accent-color;
+}

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MDBModalRef } from 'angular-bootstrap-md';
 
-import { ModalService } from './modal-service/modal-service.service';
+import { ModalService } from '../modal-service/modal-service.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
 @Component({
@@ -19,8 +19,9 @@ export class WorkspaceDeleteModalComponent {
   ) { }
 
   deleteWorkspace() {
+    console.log('Deleting: ', this.modalService.workspaceId.getValue())
     this.workspaceService.deleteWorkspace(this.modalService.workspaceId.getValue());
-    this.workspaceService.loadWorkspaces(this.modalService.workspaceOwner.getValue().email);
+    // this.workspaceService.loadWorkspaces(this.modalService.workspaceOwner.getValue().email);
     this.modalRef.hide();
   }
 }

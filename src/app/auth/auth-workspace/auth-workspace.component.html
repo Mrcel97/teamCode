@@ -1,0 +1,19 @@
+<div>
+  <li *ngIf="insideWorkspace" class="nav-item dropdown" dropdown (click)="nestedDropdown && switchNestedDropdown()">
+    <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>Options<span class="caret"></span></a> <!--(click)="showOptions()"-->
+    <div *dropdownMenu class="dropdown-menu dropdown dropdown-primary" role="menu">
+      <h6 class="dropdown-header">Status: {{isWriter ? 'Writer' : 'Auditor'}}</h6>
+      <div class="divider dropdown-divider"></div>
+      <a *ngIf="isOwner" class="dropdown-item waves-light" mdbWavesEffect (click)="openAddCollaboratorModal()">Add collaborators</a>
+      <a class="dropdown-item waves-light" mdbWavesEffect (click)="openListCollaboratorModal()">List collaborators</a>
+      <a *ngIf="!isWriter" class="dropdown-item waves-light" mdbWavesEffect (click)="askForWrite()">Ask for write</a>
+      <a *ngIf="isWriter" class="dropdown-item waves-light" mdbWavesEffect (mouseenter)="switchNestedDropdown()">Make writer</a>
+      <div *ngIf="nestedDropdown" [ngClass]="{'nestedDropdown-collaborator': !isOwner}" class="nestedDropdown animated fadeIn">
+        <li class="nav-item dropdown" dropdown>
+          <a *ngFor="let request of requests" class="dropdown-item nested-item waves-light" mdbWavesEffect (click)="makeWriter(request)">{{request.length>20 ? (request | slice:0:20)+'...' : request}}</a>
+        </li>
+      </div>
+    </div>
+  </li>
+</div>
+<li class="divider-vertical"></li>

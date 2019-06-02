@@ -4,10 +4,14 @@ import { WorkspaceService } from './../../services/workspace.service';
 import { Component, OnInit } from '@angular/core';
 import { Workspace } from 'src/assets/model/workspace';
 import { Router } from '@angular/router';
-import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
+import { BehaviorSubject } from 'rxjs';
 
-import { WorkspaceDeleteModalComponent } from './workspace-delete-modal/workspace-delete-modal.component';
-import { ModalService } from './workspace-delete-modal/modal-service/modal-service.service';
+
+import { WorkspaceCreateModalComponent } from './modals/workspace-create-modal/workspace-create-modal.component';
+import { WorkspaceDeleteModalComponent } from './modals/workspace-delete-modal/workspace-delete-modal.component';
+
+import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
+import { ModalService } from './modals/modal-service/modal-service.service';
 
 @Component({
   selector: 'app-projects',
@@ -19,7 +23,7 @@ export class ProjectsComponent implements OnInit {
 
   myUser: FirebaseUser;
   allWorkspaces: Array<Workspace>;
-  workspacePages: number;
+  workspacePages: BehaviorSubject<number> = new BehaviorSubject(null);
   visibleWorkspaces: Array<Workspace>;
   range: Array<number> = [-3,0];
   projectsLoaded: boolean = false;
@@ -32,9 +36,10 @@ export class ProjectsComponent implements OnInit {
     public router: Router
   ) {
     this.workspaceService.localWorkspaces.subscribe(workspaces => {
-      if (workspaces == null) return;
+      if (workspaces == null || workspaces.length == 0) return;
       this.allWorkspaces = workspaces;
-      this.workspacePages = this.getPagesValue();
+      this.workspacePages.next(this.getPagesValue());
+      // console.log('Nº of pages: ', this.workspacePages);
       if (this.projectsLoaded == false) {
         this.projectsLoaded = true;
         this.getNextWorkspaces();
@@ -56,7 +61,12 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {
   }
 
-  openModal(workspaceName: string, workspaceId: string) {
+  openCreateModal() {
+    this.modalRef = this.MDBmodalService.show(WorkspaceCreateModalComponent);
+    this.modalService.workspaceOwner.next(this.myUser);
+  }
+
+  openDeleteModal(workspaceName: string, workspaceId: string) {
     this.modalRef = this.MDBmodalService.show(WorkspaceDeleteModalComponent);
     this.modalService.workspaceName.next(workspaceName);
     this.modalService.workspaceId.next(workspaceId);
@@ -94,12 +104,14 @@ export class ProjectsComponent implements OnInit {
     for (var pos in array) {
       array[pos] = array[pos] + value;
     }
+    // console.log('Actual range: ', this.range);
   }
 
   subToArrayValues(array: Array<number>, value: number) {
     for (var pos in array) {
       array[pos] = array[pos] - value;
     }
+    // console.log('Actual range: ', this.range);
   }
 
   getPagesValue():number { // Future improvements: Add '...' between max_page_amount and total_pages_amount

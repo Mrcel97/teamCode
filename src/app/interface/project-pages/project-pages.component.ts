@@ -1,5 +1,5 @@
-import { Workspace } from 'src/assets/model/workspace';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-project-pages',
@@ -9,7 +9,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 export class ProjectPagesComponent implements OnInit {
   @Output() getMoreWorkspaces: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() getSpecificWorkspace: EventEmitter<number> = new EventEmitter<number>();
-  @Input() workspacePages:number;
+  @Input() workspacePages:BehaviorSubject<number>;
 
   actualPage = 1;
 
@@ -28,16 +28,17 @@ export class ProjectPagesComponent implements OnInit {
     this.getSpecificWorkspace.emit(page);
   }
 
-  createRange(number){
+  createRange(number: BehaviorSubject<number>){
     var items: number[] = [];
-    for(var i = 1; i <= number; i++){
+    for(var i = 1; i <= number.getValue(); i++){
        items.push(i);
     }
     return items;
   }
 
   forward() {
-    this.actualPage < this.workspacePages ? this.actualPage += 1 : null;
+    var pages = this.workspacePages.getValue();
+    pages != null && this.actualPage < pages ? this.actualPage += 1 : null;
   }
 
   backward() {

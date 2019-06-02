@@ -3,7 +3,7 @@
         <a class="navbar-brand" (click)="homeNavigate()">Team<b class="highlight">Code</b></a>
     </mdb-navbar-brand><!-- Links -->
     <links>
-        <ul class="navbar-nav mr-auto mt-lg-0">
+        <ul [ngClass]="{'notVisible': isWorkspaceRoute()}" class="navbar-nav mr-auto mt-lg-0">
             <li class="nav-item">
                 <a [ngClass]="{'active': checkActivePath('')}" class="nav-link" (click)="navigate('')" mdbWavesEffect>About us</a>
             </li>
@@ -17,14 +17,24 @@
             </li>
         </ul>
 
+        <ul [ngClass]="{'notVisible': !isWorkspaceRoute()}" class="navbar-nav mr-auto mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" (click)="navigate('interface')" mdbWavesEffect>My interface</a>
+            </li>
+        </ul>
+
         <form class="form-inline waves-light spaced" mdbWavesEffect>
             <div class="md-form my-0">
                 <input class="form-control mr-sm-2" type="text" placeholder="Search for a Project..."><i class="fas fa-search"></i>
             </div>
         </form>
 
-        <app-auth (options_notification)="showOptions($event)" (user_credentials)="updateUserCredentials($event)"></app-auth>
+        <app-auth (user_credentials)="updateUserCredentials($event)"></app-auth> <!--(options_notification)="showOptions($event)"-->
     </links>
 </mdb-navbar>
 
-<app-github [user]='userStatus' *ngIf="userStatus" (collaborator_email)="updateCollaborators($event)"></app-github>
+<div *ngIf="getWorkspaceName() && isWorkspaceRoute()" class="workspace-info">
+    <p>{{getWorkspaceName()}}</p>
+</div>
+
+<app-github [user]='userStatus' *ngIf="userStatus && isWriter" (collaborator_email)="updateCollaborators($event)"></app-github>

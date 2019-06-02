@@ -1,23 +1,35 @@
+import { ChatService } from './chat.service';
 import { project } from './../../assets/projects/project-info';
 import { Injectable } from '@angular/core';
 import sdk from '@stackblitz/sdk'
 
 // Project Imports
 import { connectionError } from '../../assets/messages/error';
+import { File } from '../../assets/model/file';
 import { Workspace, workspaceSnapshotFactory } from 'src/assets/model/workspace';
 import { Update, sampleUpdateClass } from 'src/assets/model/update';
 import { BehaviorSubject } from 'rxjs';
 import { VM } from '@stackblitz/sdk/typings/VM';
+import { stringify } from '@angular/core/src/util';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StackBlitzService {
   virtualMachine$: BehaviorSubject<VM>;
+  localFiles$: BehaviorSubject<Array<File>> = new BehaviorSubject<Array<File>>(null);
   workspace: Workspace;
 
-  constructor() {
+  constructor(
+    private chatService: ChatService
+  ) {
     this.virtualMachine$ = new BehaviorSubject<VM>(null);
+    this.chatService.fileEmitter$.subscribe(message => {
+      if (message == null || message == undefined) return;
+      message.forEach((value: string, key: string) => {
+        this.updateFile(key, value);
+      })
+    })
   }
 
   createWorkspace(project) {
@@ -33,7 +45,12 @@ export class StackBlitzService {
 
   loadGithubWorkspace(repositoryURL: string) {
     sdk.embedGithubProject('editor', repositoryURL, {
-      openFile: 'sampleProject.ts'
+      clickToLoad: false,
+      view: 'editor',
+      hideNavigation: false,
+      forceEmbedLayout: true,
+      openFile: 'README.md',
+      hideExplorer: false
     }).then( vm => {
       this.virtualMachine$.next(vm);
     })
@@ -41,11 +58,12 @@ export class StackBlitzService {
 
   vmReady() {
     if (this.virtualMachine$.value == null) {
+      console.error("Your Virtualmachine is undefined, refresh the website")
       throw new TypeError;
     }
   }
 
-  createFile(name: string, language: string, content?: string) {
+  createFile(name: string, content?: string) {
     try {
       this.vmReady();
     } catch (error) {
@@ -55,14 +73,38 @@ export class StackBlitzService {
       return console.error('Unexpected error!')
     }
 
-    var file_name = name + '.' + language;
     if (!content) {
-      content = `// This file was generated in real time using the StackBlitz Virtual Machine.`;
+      content = '';
     }
 
     this.virtualMachine$.value.applyFsDiff({
       create: {
-        [file_name]: content
+        [name]: content
+      },
+      destroy: ['']
+    });
+  }
+
+  deleteFile(name: string) {
+    try {
+      this.vmReady();
+    } catch (error) {
+      if (error instanceof(TypeError)) {
+        return console.error(connectionError);
+      }
+      return console.error('Unexpected error!')
+    }
+
+    this.virtualMachine$.value.applyFsDiff({
+      create: { },
+      destroy: [name]
+    });
+  }
+
+  updateFile(fileId: string, content: string) {
+    this.virtualMachine$.value.applyFsDiff({ // Comprovar explicació a la documentació!
+      create: {
+        [fileId]: content
       },
       destroy: ['']
     });
@@ -77,11 +119,17 @@ export class StackBlitzService {
       }
       return console.error('Unexpected error!');
     }
-    
     this.virtualMachine$.value.getFsSnapshot().then(
       snapshot => {
-        this.workspace = workspaceSnapshotFactory(snapshot);
-        console.log(this.workspace);
+        var files: File[] = [];
+        var language: string;
+
+        for(var file in snapshot) {
+          // DEBUG: console.log(file, snapshot[file], files);
+          language = file.split('.').length > 1 ? file.split('.')[1] : 'None';
+          files.push(new File(file, undefined, language, snapshot[file]));
+        }
+        this.localFiles$.next(files);
       }
     );
   }
@@ -99,7 +147,7 @@ export class StackBlitzService {
       return console.error('Unexpected error!')
     }
 
-    console.log('Update file:', update.files[0].name, 'Adding content: ', update.files[0].content);
+    // DEBUG: console.log('Update file:', update.files[0].name, 'Adding content: ', update.files[0].content);
 
     this.virtualMachine$.value.applyFsDiff({
       create: {

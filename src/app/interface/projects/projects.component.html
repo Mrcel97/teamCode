@@ -1,20 +1,28 @@
 <div class="projects-container animated fadeInLeft" style="text-align: left">
-  <h3 class="projects-title" style="transition: 0.5s;">Projects</h3>
+  <div class="d-flex flex-row justify-content-between">
+    <h3 class="projects-title" style="transition: 0.5s;">Projects</h3>
+    <button class="create-project" mdbBtn type="button" size="sm" mdbWavesEffect (click)="openCreateModal()">
+      <img class="add-button" src="../../../assets/media/plus-solid.svg" alt="create_project">
+    </button>
+  </div>
   <hr style="background-color: whitesmoke">
   <div *ngFor="let workspace of visibleWorkspaces" class="list-item">
     <div *ngIf="workspace != null && myUser != null" class="d-flex justify-content-start">
       <ul class="no-dot">
-        <li><p class="list-info">Name: </p>{{workspace.name}}</li>
-        <li><p class="list-info">Owner:</p> {{workspace.owner.name}}</li>
-        <li><p class="list-info">Writer:</p> {{workspace.writer}}</li>
+        <li><p class="list-info">Name: </p> {{(workspace.name.length>21)? (workspace.name | slice:0:21)+'...':(workspace.name)}}</li>
+        <li><p class="list-info">Owner:</p> 
+          {{(workspace.owner.name != null) && (workspace.owner.name.length>21) ? (workspace.owner.name | slice:0:21)+'...':(workspace.owner.name)}}
+          {{workspace.owner.name == null ? "None" : null}}
+        </li>
+        <li><p class="list-info">Writer:</p> {{(workspace.writer.length>21)? (workspace.writer | slice:0:21)+'...':(workspace.writer)}}</li>
         <li><p class="list-info">Collaborators: </p></li>
           <ul>
-            <li *ngFor="let collaborator of workspace.collaborators">{{collaborator}}</li>
+            <li *ngFor="let collaborator of workspace.collaborators">{{(collaborator.length>21)? (collaborator | slice:0:21)+'...':(collaborator)}}</li>
           </ul>
       </ul>
       <div class="d-flex align-items-end flex-column ml-auto p-2">
-        <div class="p-2" (click)="openModal(workspace.name, workspace.id)">
-          <section class="trash-icon-container">
+        <div class="p-2">
+          <section class="trash-icon-container" (click)="openDeleteModal(workspace.name, workspace.id)">
             <span class="trash">
               <span></span>
               <i></i>

@@ -1,0 +1,27 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h5 class="modal-title w-100" id="myModalLabel">Add collaborators</h5>
+  </div>
+  <div class="modal-body">
+    <p>Insert here the email of the Collaborator you want to add to proceed. </p>
+    <p>You can also submit more than one collaborator by adding a comma "," between the emails.</p>
+    <form class="md-form" autocomplete="off">
+      <input [(ngModel)]="collaboratorsEmail" mdbInput type="text" id="form1" class="form-control" name="collaborators">
+      <label for="form1" class="form-label">Collaborator email</label>
+
+      <button style="display: none" type="submit" (click)="submitCollaborators()"></button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" mdbBtn class="waves-light back-button btn-sm" aria-label="Close" color="light" (click)="modalRef.hide()" mdbWavesEffect>Back</button>
+    <button [ngClass]="{'disabled': collaboratorsEmail == ''}" 
+            (click)="submitCollaborators()"
+            type="submit" 
+            mdbBtn
+            class="relative waves-light btn-sm" 
+            mdbWavesEffect>Add</button>
+  </div>
+</div>

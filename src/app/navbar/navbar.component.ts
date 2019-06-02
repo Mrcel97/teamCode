@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { NavbarService } from '../services/navbar.service';
+import { WorkspaceService } from './../services/workspace.service';
 
 @Component({
   selector: 'app-navbar',
@@ -24,8 +25,11 @@ export class NavbarComponent implements OnInit {
   //notIdle: NotIdle;
 
   constructor(
-    public navbarService: NavbarService
-    ) { }
+    public navbarService: NavbarService,
+    private workspaceService: WorkspaceService
+  ) {
+    this.workspaceService.localIsWriter.subscribe(isWriter => isWriter != null ? this.isWriter = isWriter : null);
+  }
 
   ngOnInit() {
   }
@@ -60,5 +64,17 @@ export class NavbarComponent implements OnInit {
         }
       }
     );*/
+  }
+
+  updateCollaborators(email: string) {
+    this.userEmail = email;
+  }
+
+  getWorkspaceName() {
+    return this.navbarService.workspace.getValue();
+  }
+
+  isWorkspaceRoute() {
+    return this.navbarService.section == 'workspace';
   }
 }
