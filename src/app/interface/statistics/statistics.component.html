@@ -7,8 +7,8 @@
     <div style="overflow: hidden;">
       <canvas mdbChart
           [chartType]="chartType"
-          [datasets]="chartDatasets"
-          [labels]="chartLabels"
+          [datasets]="chartFilesDataset"
+          [labels]="filesNames"
           [colors]="chartColors"
           [options]="chartOptions"
           [legend]="true"
@@ -21,8 +21,8 @@
       <div style="overflow: hidden;">
         <canvas mdbChart
             [chartType]="chartType2"
-            [datasets]="chartDatasets"
-            [labels]="chartLabels"
+            [datasets]="chartLanguagesDataset"
+            [labels]="languagesNames"
             [colors]="chartColors"
             [options]="chartOptions"
             [legend]="true"

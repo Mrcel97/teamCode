@@ -16,7 +16,7 @@
   transition: ease all .5s;
 }
 
-@media only screen and (max-width: 1317px) {
+@media only screen and (max-width: 1418px) {
   .projects-container {
     margin-top: 2em;
   }
@@ -56,4 +56,26 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+/deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > canvas:nth-child(2) {
+  width: 445px !important;
+  max-width: 445px !important;
+}
+
+/deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > div:nth-child(6) > canvas:nth-child(2) {
+  width: 445px !important;
+  max-width: 445px !important;
+}
+
+@media only screen and (max-width: 1418px) {
+  /deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > canvas:nth-child(2) {
+    width: unset !important;
+    max-width: unset !important;
+  }
+
+  /deep/ .fadeInRight > div:nth-child(2) > div:nth-child(1) > div:nth-child(6) > canvas:nth-child(2) {
+    width: unset !important;
+    max-width: unset !important;
+  }
 }

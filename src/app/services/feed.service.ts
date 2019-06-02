@@ -18,7 +18,7 @@ export class FeedService {
   feedRelated: BehaviorSubject<Map<string, FeedItem>> = new BehaviorSubject<Map<string, FeedItem>>(new Map());
 
   constructor(
-    public http: HttpClient,
+    public http: HttpClient
   ) { }
 
   getFeedElementsRelatedToUser(userId: string) {
