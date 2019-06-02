@@ -44,7 +44,9 @@ Every section aims to offer you control and traking in your projects. All this w
 
 Projects section introduce you intro the control of your projects. TeamCode works with Workspace Objects which will store all your changes, file data and user modifications to provide the best possible teamwork experience.
 
-![teamcode_projects](https://i.imgur.com/rhZGe6R.png?1)
+<p align="center">
+  <img src="https://i.imgur.com/rhZGe6R.png?1"/>
+</p>
 
 There are  4 possible interactions. Once you enter to TeamCode with a new account you'll only have one possible interaction. This will be the addition button "+". With this you'll be ble to create your firs TeamCode project.
 
@@ -56,8 +58,10 @@ Once you will have at least one TeamCode project you'll unlock the other 3 inter
 ### Project Collaborators
 Collaborator Object is used in teamCode as the role to give to all your teamates. This role allow them to visit your projet by sending them the URL. At firsst intance, only Collaborators and project Owner are allowed to see the Project and the project changes. Inside project "Options" dropdown you will find all the management tools.
 
-![project_tools1](https://i.imgur.com/jddkefY.png)
-![project_tools1](https://i.imgur.com/d01YcXN.png)
+<p align="center">
+  <img src="https://i.imgur.com/jddkefY.png"/>
+  <img src="https://i.imgur.com/d01YcXN.png"/>
+</p>
 
 These images allow you to see the Collaborators interactions which will have the Owner and Collaborators roles. Project Owner are the only one allowed to manage collaborators inside "List collaborators" tab. Project Owner is also the only one allowed to add more Collaborators to the project, using the "Add collaborators" tab. When a Collaborator access to "List collaborators" tab, only view options will be available, without any type of control over the rest of the Collaborators.
 
@@ -176,6 +180,9 @@ If you want to change any settings, you only have to uncomment the line (Ctrl + 
 This Feature is only available to the project Writer. The reason is because this feature grants write permissions over the project. We can access the GitHub toolbox by pressing the GitHub button on bottom-right corner of the TeamCode project view.
 
 ![GitHubTools](https://i.imgur.com/itbg1FK.png)
+<p align="center">
+  <img src="https://i.imgur.com/itbg1FK.png"/>
+</p>
 
 The first option allow us to load a Github file by uploading the URL of it. While the second Option allow us to **OVERWRITEN** the actual TeamCode project to load a Web-Framework project by providing the combination of:
 
