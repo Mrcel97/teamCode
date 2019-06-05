@@ -62,6 +62,7 @@ export class IdeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     clearInterval(this.interval);
+    this.chatService.disconnectWebSocket();
   }
 
   loadWorkspace(workspaceId: string) {

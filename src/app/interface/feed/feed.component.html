@@ -5,14 +5,14 @@
   </div>
   <div *ngIf="feedItems.length >= 1" class="feed-content">
     <div *ngFor="let feedItem of feedItems.reverse()" class="list-item">
-      <ul *ngIf="feedItem.type == 'writer'" class="no-dot">
+      <ul *ngIf="feedItem.type == 'writer'" class="no-dot" (click)="navigateToWokspace(feedItem.workspaceId)">
         <li><p class="list-info">Action:</p> Writer Role Updated</li>
         <li><p class="list-info">Status:</p> {{feedItem.userName}}</li>
         <li><p class="list-info">Workspace:</p> {{feedItem.workspaceName}}</li>
         <li><p class="list-info">Date:</p> {{feedItem.date | date:'medium'}}</li>
       </ul>
 
-      <ul *ngIf="feedItem.type == 'collaborator'" class="no-dot">
+      <ul *ngIf="feedItem.type == 'collaborator'" class="no-dot" (click)="navigateToWokspace(feedItem.workspaceId)">
         <li><p class="list-info">Action:</p> New Collaborators</li>
         <li><p class="list-info">User:</p> {{feedItem.userName}}</li>
         <li><p class="list-info">Workspace:</p> {{feedItem.workspaceName}}</li>

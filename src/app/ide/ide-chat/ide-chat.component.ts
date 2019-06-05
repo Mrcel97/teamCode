@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ChatService } from 'src/app/services/chat.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,13 +12,15 @@ import * as $ from 'jquery';
   templateUrl: './ide-chat.component.html',
   styleUrls: ['./ide-chat.component.scss']
 })
-export class IdeChatComponent implements OnInit {
+export class IdeChatComponent implements OnInit, OnDestroy {
   userEmail: string;
   messageFromMe = "<div class='messageMe'>";
   messageEnd =  "</div class='messageOthers'>";
   chatOpen = false;
   notifications = false;
   isCollaborator = false;
+  authServicesubscription: Subscription;
+  chatServicesubscription: Subscription;
 
   fromMeContainerStyle = 'flex-end';
   fromOthersContainerStyle = 'flex-start';
@@ -29,12 +32,11 @@ export class IdeChatComponent implements OnInit {
     private workspaceService: WorkspaceService,
     private chatService: ChatService
   ) {
-    this.authService.user$.subscribe(user => {
+    this.authServicesubscription = this.authService.user$.subscribe(user => {
       if (user == null) return;
       this.userEmail = user.email;
       this.workspaceService.localWorkspace.subscribe(workspace => {
         if (workspace == null || this.userEmail == null) return;
-        console.log('HEREEEE: ', workspace.collaborators, this.userEmail, workspace.collaborators.includes(this.userEmail));
         this.isCollaborator = workspace.collaborators.includes(this.userEmail);
       });
     });
@@ -45,8 +47,13 @@ export class IdeChatComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.authServicesubscription.unsubscribe();
+    this.chatServicesubscription.unsubscribe();
+  }
+
   private hearChatChanges() {
-    this.chatService.ideChatMessagesEmitter$.subscribe(chatMessage => {
+    this.chatServicesubscription = this.chatService.ideChatMessagesEmitter$.subscribe(chatMessage => {
       if (chatMessage == null) return;
 
       if (chatMessage.content) {
@@ -65,13 +72,12 @@ export class IdeChatComponent implements OnInit {
             </div>
           </div>`
         );
-        console.log(chatMessage.content);
       }
     });
   }
 
   sendMessage(message, event?){
-    if (event == null || event.keyCode == 13) {
+    if ((event == null || event.keyCode == 13) && message != null) {
       this.chatService.sendIdeChatMessage(message);
       $('#input').val('');
     }

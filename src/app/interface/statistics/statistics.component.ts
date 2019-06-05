@@ -47,8 +47,6 @@ export class StatisticsComponent implements OnInit {
         }
       });
       this.loadChartFilesData();
-      console.log('Files: ', this.filesAmount);
-      console.log('Files: ', this.filesNames);
     });
 
     this.statisticsService.languageStatistics.subscribe(languageStatistics => {
@@ -62,7 +60,6 @@ export class StatisticsComponent implements OnInit {
         }
       });
       this.loadChartlanguagesData();
-      console.log('Languages: ', this.languagesAmount);
     });
   }
 

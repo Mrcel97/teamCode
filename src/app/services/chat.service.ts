@@ -27,7 +27,7 @@ export class ChatService {
   private messageContent: string;
   private userUID: String = 'None';
   private userEmail: string = 'None';
-  private roomID: String = '';
+  public roomID: String = '';
 
   public requestEmitter$: BehaviorSubject<WriteRequestData> = new BehaviorSubject<WriteRequestData>(null);
   public ideChatMessagesEmitter$: BehaviorSubject<ChatMessage> = new BehaviorSubject<ChatMessage>(null);
@@ -49,6 +49,7 @@ export class ChatService {
 
   initializeWebSocketConnection() {
     let ws = new SockJS(backendSocketURL);
+    this.stompClient = null;
     this.stompClient = Stomp.over(ws);
     this.stompClient.debug = false;
 
@@ -151,6 +152,10 @@ export class ChatService {
 
   private notMyself(message): boolean {
     return message.headers.UserID != this.userUID;
+  }
+
+  disconnectWebSocket() {
+    this.stompClient.disconnect();
   }
 
   private getMinY(map: Map<string, Number>) {
