@@ -1,0 +1,109 @@
+@import '../../../assets/themes/dark.scss';
+
+h5 {
+  color: $text-color;
+}
+
+.chat-parent-container {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  bottom: 0;
+  right: 5em;
+  z-index: 100;
+  min-width: 20em;
+  background-color: #333333;
+  border: solid 1px $primary-color-variant;
+  border-bottom: none;
+  padding: .5em;
+  border-radius: 3px 3px 0 0;
+  transition: .2s;
+}
+
+.chat-parent-container-closed {
+  min-width: 2.5em;
+  text-align: center;
+}
+
+.chat{
+  text-align: left;
+  max-height: 40vh;
+  min-height: 20em;
+  border: 1px solid $primary-color-variant;
+  border-radius: 5px;
+  overflow-y: scroll;
+  margin: 0.5em 0.5em 0 0.5em;
+  color: $text-color;
+}
+
+.message {
+  background-color: red;
+  text-align: right;
+  padding: 0.5em;
+  border: solid 2px #009688;
+  border-radius: 5px;
+}
+
+.messageOthers {
+  justify-content: left;
+  padding-left: 0.5em;
+}
+
+.footer{
+  margin-bottom: 0.5em;
+}
+
+.send-section {
+  display: flex;
+  margin: auto 0.5em auto 0.5em;
+  align-items: center;
+}
+
+textarea {
+  flex-grow: 1;
+  height: 40px;
+  max-height: 600px;
+  border-radius: 5px;
+  border: solid 1px $primary-color-variant;
+  background-color: #AAAAAA;
+  padding: .5em;
+  margin-right: 0.5em;
+  overflow: hidden;
+}
+
+.send{
+  height: 20px;
+  width: 20px;
+  margin-left: 5px;
+  margin-bottom: 0.5em;
+  user-select: none;
+}
+
+.send:hover {
+  cursor: pointer;
+}
+
+p {
+  margin: 0 !important;
+}
+
+.close-chat {
+  width: 15px; 
+  margin-left: 2.5em;
+}
+
+.close-chat:hover {
+  cursor: pointer;
+}
+
+.open-chat {
+  width: 25px;
+}
+
+.open-chat:hover {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}

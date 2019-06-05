@@ -11,6 +11,7 @@ import { StackBlitzService } from './stack-blitz.service';
 
 import { WriteRequestData, generateRequests } from 'src/assets/model/writeRequestData';
 import { httpWorkspaceOptions } from '../../assets/model/httpOptions';
+import { ChatMessage } from 'src/assets/model/chatMessage';
 // import  { backendSocketURL, backendURL } from '../../assets/configs/backendConfig';
 
 var ENCODING = 'utf8';
@@ -25,10 +26,11 @@ export class ChatService {
   private message: BehaviorSubject<string> = new BehaviorSubject('');
   private messageContent: string;
   private userUID: String = 'None';
-  private userEmail: String = 'Nonne';
+  private userEmail: string = 'None';
   private roomID: String = '';
 
   public requestEmitter$: BehaviorSubject<WriteRequestData> = new BehaviorSubject<WriteRequestData>(null);
+  public ideChatMessagesEmitter$: BehaviorSubject<ChatMessage> = new BehaviorSubject<ChatMessage>(null);
   public fileEmitter$: BehaviorSubject<Map<string, string>> = new BehaviorSubject<Map<string, string>>(new Map()); // fileKey, fileContent
   public actionEmitter$: BehaviorSubject<{file:string, action:string, content?:string}> = 
     new BehaviorSubject<{file:string, action:string, content?:string}>({file: null, action: null, content:null}); // fileKey, fileAction
@@ -52,14 +54,19 @@ export class ChatService {
 
     this.stompClient.connect({'UserID': this.userUID}, () => {
       this.stompClient.subscribe("/chat/" + this.roomID, (message) => { // TODO: Create a STOP MESSAGE Model
-        if (message.body || message.body === "") {
-          (message.headers.writer) ? this.receiveRequests(message) : 
-            (message.headers.UserID != this.userUID && message.headers.action) ? this.receiveActions(message) :  
-              message.headers.UserID != this.userUID ? this.receiveMessage(message) : null;
-        }
+        this.redirectWebSocketMessage(message);
       });
     });
     return this.message;
+  }
+
+  private redirectWebSocketMessage(message) {
+    if (message.body || message.body === "") {
+      (message.headers.writer) ? this.receiveRequests(message) : 
+        (message.headers.ideChat) ? this.receiveIdeChatMessage(message) :
+          (this.notMyself(message) && message.headers.action) ? this.receiveActions(message) :  
+            this.notMyself(message) ? this.receiveMessage(message) : null;
+    }
   }
 
   sendMessage(message, fileId: string, writer: boolean, action = '') {
@@ -124,6 +131,26 @@ export class ChatService {
 
   private receiveActions(message) {
     this.actionEmitter$.next({file:message.headers.file_id, action:message.headers.action, content:message.body});
+  }
+
+  sendIdeChatMessage(message: string) {
+    if (this.userUID == null || this.userEmail == null) return;
+    var chatMessage: ChatMessage = new ChatMessage(this.userEmail, message, new Date().getTime());
+
+    this.stompClient.send("/app/send/chat", {
+      'UserID':this.userUID,
+      'room_id':this.roomID,
+      'ideChat':true
+    }, JSON.stringify(chatMessage));
+  }
+
+  private receiveIdeChatMessage(message) {
+    var chatMessage: ChatMessage = JSON.parse(message.body);
+    this.ideChatMessagesEmitter$.next(chatMessage);
+  }
+
+  private notMyself(message): boolean {
+    return message.headers.UserID != this.userUID;
   }
 
   private getMinY(map: Map<string, Number>) {
