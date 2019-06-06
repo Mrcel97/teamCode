@@ -1,5 +1,6 @@
 import { Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { FeedService } from '../../services/feed.service';
@@ -18,6 +19,7 @@ export class FeedComponent implements OnInit {
   private userStatus: string = 'Undefined';
 
   constructor(
+    private router: Router,
     private authService: AuthService,
     private feedService: FeedService,
     private workspaceService: WorkspaceService
@@ -61,5 +63,9 @@ export class FeedComponent implements OnInit {
         }
       });
     });
+  }
+
+  public navigateToWokspace(roomId: string) {
+    this.router.navigateByUrl('/workspace/' + roomId);
   }
 }

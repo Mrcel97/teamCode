@@ -1,0 +1,30 @@
+<div *ngIf="userEmail && isCollaborator" [ngClass]="{'chat-parent-container-closed': !chatOpen}" class="chat-parent-container">
+  <div [ngClass]="{'hidden': !chatOpen}" style="text-align:center">
+    <div style="display: flex; justify-content: start">
+      <h5 style="text-align:left">
+        Project Chat
+      </h5>
+      <img class="close-chat" src="../../../assets/media/angle-double-down-solid.svg" alt="close-chat" (click)="swapChat()">
+    </div>
+    
+    <div class="chat-container">
+      <div class="chat">
+      </div>
+    </div>
+  </div>
+  
+  <div [ngClass]="{'hidden': !chatOpen}" class="footer">
+      <hr style="background-color: whitesmoke">
+    <div class="send-section">
+      <textarea id="input" type="text" #textarea (keypress)="sendMessage(textarea.value, $event)"></textarea>
+      <div class="send" (click)="sendMessage(textarea.value)">
+        <img src="../../../assets/media/play-solid.svg" alt="send-button">
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!chatOpen">
+    <div *ngIf="notifications" style="position: absolute; height: 10px; width: 10px; background-color: #009688; border-radius: 50%; right: .5em" (click)="swapChat()"></div>
+    <img class="open-chat" src="../../../assets/media/comments-solid.svg" alt="open-chat" (click)="swapChat()">
+  </div>
+</div>

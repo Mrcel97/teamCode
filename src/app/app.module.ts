@@ -34,6 +34,9 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 // Configs
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
 import { toasterConfig } from './../assets/configs/toasterConfig';
+import { IdeChatComponent } from './ide/ide-chat/ide-chat.component';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { toasterConfig } from './../assets/configs/toasterConfig';
     AuthWorkspaceComponent,
     AuthAddCollaboratorModalComponent,
     AuthCollaboratorsModalComponent,
+    IdeChatComponent,
+    ProjectsListComponent,
+    AboutUsComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 
 import { WorkspaceService } from 'src/app/services/workspace.service';
@@ -16,17 +16,20 @@ import { ToasterMessages } from '../../../assets/messages/toasterMessages';
   templateUrl: './auth-workspace.component.html',
   styleUrls: ['./auth-workspace.component.scss']
 })
-export class AuthWorkspaceComponent implements OnInit {
+export class AuthWorkspaceComponent implements OnInit, OnDestroy {
   modalRef: MDBModalRef;
   requests: Array<string> = [];
   userEmail: string = '';
+  userId: string;
   toasterMessages: ToasterMessages = new ToasterMessages(this.toastr);
+  workspaceId: string;
 
   // Workspace Component Filters
   insideWorkspace: Boolean = false;
   regexp = /\/\bworkspace\/\b.*/g;
   isWriter: boolean = false;
   isOwner: boolean = false;
+  isPrivate: boolean;
 
   public nestedDropdown: boolean = false;
 
@@ -41,15 +44,25 @@ export class AuthWorkspaceComponent implements OnInit {
     this.hearRoute();
     this.hearWriteRequests();
     this.hearUser();
+    this.workspaceId = this.router.url.split('/')[2];
   }
 
   ngOnInit() {
     this.insideWorkspace = this.regexp.test(this.router.url) ? true : false;
+    this.workspaceId = this.router.url.split('/')[2];
 
     this.workspaceService.localIsWriter.subscribe( status => {
       this.isWriter = status;
       // status ? this.loadUserMode() : null;  Idle system
     });
+    this.isPrivate = null;
+    this.workspaceService.localIsPrivate.subscribe(privacy => {
+      this.isPrivate = privacy;
+    });
+  }
+
+  ngOnDestroy() {
+    this.isPrivate = null;
   }
 
   askForWrite() { // Need to do a GET to work with updated data
@@ -58,6 +71,14 @@ export class AuthWorkspaceComponent implements OnInit {
 
   makeWriter(newWriterEmail: string) {
     this.workspaceService.makeWriter(newWriterEmail);
+  }
+
+  swapWorkspacePrivacy() {
+    if (this.userEmail == null) return;
+    var workspaceId = this.router.url.split('/')[2];
+
+    this.workspaceService.swapWorkspacePrivacy(workspaceId, this.userId);
+    this.toasterMessages.swapWorkspacePrivacy(!this.isPrivate);
   }
 
   getWriteRequests() {
@@ -93,6 +114,7 @@ export class AuthWorkspaceComponent implements OnInit {
           console.log("Owner: ", this.workspaceService.localWorkspace.getValue().owner.email, "Writer: ", this.workspaceService.localWorkspace.getValue().writer, " User: ", user.email);
           this.isOwner = (workspace.owner.email == user.email);
           this.userEmail = user.email;
+          this.userId = user.uid;
           this.workspaceService.isWriter(user.email).subscribe(
             result => { 
               if (result) {

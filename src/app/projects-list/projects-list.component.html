@@ -1,0 +1,28 @@
+<div class="background" style="overflow: auto">
+  <div class="bloquer"></div>
+  <div class="main-title">
+    <h1 class="inline">Team<p class="inline title-highlight">Code</p> projects:</h1>
+    <br/>
+  </div>
+  <div class="content website-info d-flex justify-content-around align-content-top flex-wrap">
+    <div class="project-card" *ngFor="let workspace of workspaces" (click)="navigateToWokspace(workspace.id)">
+      <h4>{{workspace.name}}</h4>
+      <hr style="background-color: whitesmoke; margin-bottom: 1.25em">
+      <h6 class="inline item">Owner:</h6><p class="inline"> {{workspace.owner.name}}</p>
+      <br/>
+      <h6 class="inline item">Writer:</h6><p class="inline"> {{workspace.writer}}</p>
+      <br/>
+      <h6 class="inline item">Collabortors:</h6>
+      <ul>
+        <li *ngFor="let collaborator of workspace.collaborators">{{collaborator}}</li>
+      </ul>
+    </div>
+    <div class="info-card" *ngIf="workspaces.length == 0" style="text-align: center">
+      <h5>No public projects were found :(</h5>
+      <div style="margin-top: 1.5em">
+        <img src="../../assets/media/pacman.svg" alt="no-projects-found" style="height: 150px; margin-top: 1em">
+        <img src="../../assets/media/signo-de-interrogacion.svg" alt="question-mark" style="position: absolute; height: 40px">
+      </div>
+    </div>
+  </div>
+</div>

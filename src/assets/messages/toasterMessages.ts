@@ -42,4 +42,9 @@ export class ToasterMessages {
   alertInnactivity() {
     this.toastr.warning('Detected innactivity, in 2min the Writer status will be given to the first writer request.', 'Innactivity Alert');
   }
+
+  swapWorkspacePrivacy(privacy: boolean) {
+    var projectPrivacy = privacy ? 'Private' : 'Public';
+    this.toastr.info('Your Project privacy was updated, now your Project is: ' + projectPrivacy, 'Privacy Update')
+  }
 }

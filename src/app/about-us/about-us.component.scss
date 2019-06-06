@@ -1,0 +1,163 @@
+@import "../../assets/themes/dark.scss";
+
+.highlight {
+  color: $accent-color;
+}
+
+.main-title {
+  color: $text-color;
+  margin-left: 2em;
+  margin-top: -1em;
+  h1 {
+    font-size: 40px;
+  }
+}
+
+.title-highlight {
+  color: $accent-color;
+  font-weight: 400;
+}
+
+.content {
+  width: 100%;
+}
+
+.bloquer {
+  min-height: 5em;
+}
+
+.welcome-text {
+  position: absolute;
+}
+
+.background {
+  background-image: url("../../assets/media/home.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  height: 100vh;
+  min-width: 944px;
+
+  padding-top: 1em;
+}
+
+.website-info {
+  background-color: transparent;
+  top: 30vh;
+  user-select: none;
+
+  color: $text-color;
+  text-align: center;
+}
+
+.website-subinfo {
+  margin-top: 2em;
+  user-select: none;
+
+  color: $text-color;
+  text-align: center;
+}
+
+h1, .h1 {
+  font-size: 6vh;
+}
+
+.hidden {
+  display: none;
+}
+
+.basic-bubble {
+  padding: 1.5em;
+  border: solid $primary-color-variant 2px;
+  border-radius: 50%;
+  height: 30em;
+  width: 30em;
+  background-color: rgba($primary-color, .85);
+  transition: .2s;
+  text-align: center;
+}
+
+.bubble1 {
+  margin-left: 15vw;
+
+  h1 {
+    font-size: 40px;
+    margin-top: 1.5em;
+  }
+}
+
+.bubble2 {
+  margin-top: -5em;
+  margin-right: 15vw;
+
+  h1 {
+    font-size: 40px;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+}
+
+.bubble1:hover, .bubble2:hover, .bubble3:hover {
+  background-color: rgba($primary-color, .95);
+  border: solid #777777 2px;
+  transform: scale(1.05);
+}
+
+.inline {
+  display: inline-block;
+}
+
+.bubble3 {
+  height: 20em;
+  width: 20em;
+  margin-top: -15em;
+  margin-left: 10vw;
+
+  h1 {
+    font-size: 40px;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+}
+
+.github-icon:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 1108px) {
+  .bubble1 {
+    margin-left: 10vw;
+  }
+  .bubble2 {
+    margin-right: 10vw;
+  }
+  .bubble3 {
+    margin-left: 5vw;
+  }
+}
+
+@media (max-width: 975px) {
+  .bubble1 {
+    margin-left: 5vw;
+  }
+  .bubble2 {
+    margin-right: 5vw;
+  }
+  .bubble3 {
+    margin-left: 2.5vw;
+  }
+}
+
+@media (max-width: 944px) {
+  .bubble1 {
+    margin-left: 5em;
+  }
+  .bubble2 {
+    margin-right: 5em;
+  }
+  .bubble3 {
+    margin-left: 2.5em;
+  }
+}

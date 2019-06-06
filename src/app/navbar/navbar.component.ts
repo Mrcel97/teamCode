@@ -1,4 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 import { NavbarService } from '../services/navbar.service';
 import { WorkspaceService } from './../services/workspace.service';
@@ -25,6 +27,7 @@ export class NavbarComponent implements OnInit {
   //notIdle: NotIdle;
 
   constructor(
+    private router: Router,
     public navbarService: NavbarService,
     private workspaceService: WorkspaceService
   ) {
@@ -76,5 +79,11 @@ export class NavbarComponent implements OnInit {
 
   isWorkspaceRoute() {
     return this.navbarService.section == 'workspace';
+  }
+
+  searchForProject(message, event?) {
+    if ((event == null || event.keyCode == 13) && message != null) {
+      this.workspaceService.getPublicWorkspaces(message);
+    }
   }
 }

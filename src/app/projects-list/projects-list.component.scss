@@ -1,0 +1,118 @@
+@import "../../assets/themes/dark.scss";
+
+.highlight {
+  color: $accent-color;
+}
+
+.main-title {
+  color: $text-color;
+  margin-left: 2em;
+  margin-top: -1em;
+  h1 {
+    font-size: 40px;
+  }
+}
+
+.title-highlight {
+  color: $accent-color;
+  font-weight: 400;
+}
+
+.content {
+  width: 100%;
+}
+
+.bloquer {
+  min-height: 5em;
+}
+
+.welcome-text {
+  position: absolute;
+}
+
+.background {
+  background-image: url("../../assets/media/home.jpg");
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  height: 100vh;
+
+  padding-top: 1em;
+}
+
+.website-info {
+  background-color: transparent;
+  top: 30vh;
+  user-select: none;
+
+  color: $text-color;
+  text-align: center;
+}
+
+.website-subinfo {
+  margin-top: 2em;
+  user-select: none;
+
+  color: $text-color;
+  text-align: center;
+}
+
+h1, .h1 {
+  font-size: 6vh;
+}
+
+.hidden {
+  display: none;
+}
+
+.project-card {
+  padding: 1.5em;
+  border: solid $primary-color-variant 2px;
+  border-radius: 6px;
+  border-radius: 5px;
+  background-color: rgba($primary-color, .85);
+  transition: .2s;
+  text-align: left;
+  margin-top: 2em;
+
+  h4 {
+    transition: .5s;
+  }
+
+  .item {
+    transition: .5s;
+    margin-right: .4em;
+  }
+}
+
+.info-card {
+  padding: 1.5em;
+  border: solid $primary-color-variant 2px;
+  border-radius: 6px;
+  border-radius: 5px;
+  background-color: rgba($primary-color, .85);
+  transition: .2s;
+  text-align: left;
+  user-select: text;
+}
+
+.project-card:hover {
+  cursor: pointer;
+  background-color: rgba($primary-color, .95);
+  border: solid #3f3f3f 2px;
+  transform: scale(1.05);
+
+  h4 {
+    color: $accent-color;
+  }
+
+  .item {
+    color: $accent-color;
+  }
+}
+
+.inline {
+  display: inline-block;
+}

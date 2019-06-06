@@ -5,11 +5,11 @@
     <links>
         <ul [ngClass]="{'notVisible': isWorkspaceRoute()}" class="navbar-nav mr-auto mt-lg-0">
             <li class="nav-item">
-                <a [ngClass]="{'active': checkActivePath('')}" class="nav-link" (click)="navigate('')" mdbWavesEffect>About us</a>
+                <a [ngClass]="{'active': checkActivePath('about-us')}" class="nav-link" (click)="navigate('about-us')" mdbWavesEffect>About us</a>
             </li>
             <li class="divider-vertical"></li>
             <li class="nav-item">
-                <a [ngClass]="{'active': checkActivePath('collaborators')}" class="nav-link" (click)="navigate('collaborators')" mdbWavesEffect>Collaborators</a>
+                <a [ngClass]="{'active': checkActivePath('interface')}" class="nav-link" (click)="navigate('interface')" mdbWavesEffect>My interface</a>
             </li>
             <li class="divider-vertical"></li>
             <li class="nav-item">
@@ -25,7 +25,8 @@
 
         <form class="form-inline waves-light spaced" mdbWavesEffect>
             <div class="md-form my-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search for a Project..."><i class="fas fa-search"></i>
+                <input #input class="form-control mr-sm-2" type="text" placeholder="Search for a Project..." (keypress)="searchForProject(input.value, $event)">
+                <i class="fas fa-search" (click)="searchForProject(input.value)"></i>
             </div>
         </form>
 

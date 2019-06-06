@@ -12,6 +12,7 @@ export class Workspace {
     public collaborators: string[],
     public files: File[],
     public writerRequests: Map<string, Number>,
+    public privacy?: boolean,
     public id?: string,
   ){}
 }
