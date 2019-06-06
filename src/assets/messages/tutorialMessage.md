@@ -19,6 +19,8 @@
      - Interface Feed
      - Interface Statistics
      - IDE Settings
+     - Project Chat
+     - Projects Privacy
      - GitHub Toolbox
 
 ## Entry level tutorial
@@ -163,6 +165,64 @@ A setting file was added into StackBlitz project. You can access it by going to:
 At this point a ".vscode" folder with a "settings.json" file will be created in your project explorer.
 
 If you want to change any settings, you only have to uncomment the line (Ctrl + K + U) or delete the "/**/" anotation and then change the value.
+
+### Project Chat
+Project Chat is a feature only available for the project Owner and project Collaborators. This chat provides essential comunication between teammates while they are working.
+
+You can access the chat by pressing the "Chat-icon" on the bottom-right corner of your IDE screen.
+
+<p align="center">
+  <img src="https://i.imgur.com/Z6Da7uS.png"/>
+</p>
+
+![Chat-icon](https://i.imgur.com/Z6Da7uS.png)
+
+Once the chat is open you'll be able to see the messages sent by your project collaborators. You will be able to write in the input section. You can also send messages by pressing "Enter" key or pressing "Play button" next to the text input section. Input section let us to resize it if we place the cursor at right-bottom corner of the input box.
+
+<p align="center">
+  <img src="https://i.imgur.com/diNshs1.png?1"/>
+</p>
+
+![Project-Chat](https://i.imgur.com/diNshs1.png?1)
+
+Chat also includes a "silent-mode" to don't disturb users while they are coding. This feature will add a green dot over the chat icon as a soft-incoming-messages report.
+
+<p align="center">
+  <img src="https://i.imgur.com/08IJ5zo.png"/>
+</p>
+
+![Chat-notification](https://i.imgur.com/08IJ5zo.png)
+
+### Projects Privacy
+As an extra feature to increase the collaborations in projects, TeamCode provides options to make your project public or private. Each property will modify the visivility of your project.
+
+  - Public projects:
+    - Visible for every user (even non-registered users).
+    - Only Workspace Collaborators can "Ask to write" or use the "Project Chat".
+    - You can share this type of project providing the project URL to your teammates or providing the project name.
+  
+  - Private projects:
+    - Only visible for Workspace Collaborators.
+    - You can share this type of project providing the project URL to your teammates.
+
+You can change the project privacy at any moment going to "Options > Make project -state-". Where -state- will become the new privacy state of the project. Here we provide the two views:
+
+  - Public projects view:
+  
+    <p align="center">
+      <img src="https://i.imgur.com/Qk0a0ha.png"/>
+    </p>
+
+    ![Make-project-private](https://i.imgur.com/Qk0a0ha.png)
+
+  - Private projects view:
+
+    <p align="center">
+      <img src="https://i.imgur.com/HG8y4rL.png"/>
+    </p>
+
+    ![Make-project-public](https://i.imgur.com/HG8y4rL.png)
+
 
 ### GitHub Toolbox
 This Feature is only available to the project Writer. The reason is because this feature grants write permissions over the project. We can access the GitHub toolbox by pressing the GitHub button on bottom-right corner of the TeamCode project view.
