@@ -35,6 +35,7 @@ import { TooltipModule, ButtonsModule, WavesModule } from 'angular-bootstrap-md'
 import { firebaseConfig } from '../assets/configs/firebaseConfig';
 import { toasterConfig } from './../assets/configs/toasterConfig';
 import { IdeChatComponent } from './ide/ide-chat/ide-chat.component';
+import { ProjectsListComponent } from './projects-list/projects-list.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { IdeChatComponent } from './ide/ide-chat/ide-chat.component';
     AuthAddCollaboratorModalComponent,
     AuthCollaboratorsModalComponent,
     IdeChatComponent,
+    ProjectsListComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

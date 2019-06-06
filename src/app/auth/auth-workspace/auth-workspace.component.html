@@ -13,6 +13,8 @@
           <a *ngFor="let request of requests" class="dropdown-item nested-item waves-light" mdbWavesEffect (click)="makeWriter(request)">{{request.length>20 ? (request | slice:0:20)+'...' : request}}</a>
         </li>
       </div>
+      <a *ngIf="isOwner && isPrivate" class="dropdown-item waves-light" mdbWavesEffect (click)="swapWorkspacePrivacy()">Make project public</a>
+      <a *ngIf="isOwner && !isPrivate" class="dropdown-item waves-light" mdbWavesEffect (click)="swapWorkspacePrivacy()">Make project private</a>
     </div>
   </li>
 </div>

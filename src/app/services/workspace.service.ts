@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -29,6 +29,7 @@ export class WorkspaceService {
   workingFile: BehaviorSubject<File> = new BehaviorSubject(null);
   workingFileContent: BehaviorSubject<Map<string, string>> = new BehaviorSubject(null);
   localIsWriter: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  localIsPrivate: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   private user: FirebaseUser;
   private userEmail: string;
@@ -109,6 +110,7 @@ export class WorkspaceService {
       this.localWorkspaceCopy = workspace;
       this.localWorkspace.next(workspace);
       this.localWriteRequests.next(new Map());
+      this.localIsPrivate.next(workspace.privacy);
       this.modificationsService.loadWorkspaceFiles(this.localWorkspace.getValue());
       //this.setWorkingFile(workspace.files.filter(file => file.name == "README.md")[0].id);
     });
@@ -183,6 +185,14 @@ export class WorkspaceService {
     }
   }
 
+  swapWorkspacePrivacy(workspaceId: string, userId: string) {
+    const headers = new HttpHeaders({'userId': userId, 'Content-Type': 'application/json'});
+    console.log(headers)
+
+    this.http.patch(backendURL + '/api/workspaceSwapPrivacy?id=' + workspaceId, {}, {headers: headers})
+    .subscribe((privacy: boolean) => this.localIsPrivate.next(privacy));
+  }
+
   parseRequest(writeRequestData: WriteRequestData) {
     if (this.userEmail == null || writeRequestData == null || this.localIsWriter.getValue() == null) return;
 
@@ -238,6 +248,10 @@ export class WorkspaceService {
       this.localWriteRequests.next(workspace.writerRequests);
     });
     return this.localWriteRequests;
+  }
+
+  getPublicWorkspaces() {
+    return this.http.get(backendURL + '/api/workspaceGetPublic', httpOptions);
   }
 
   private contentModification(content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>}) {
