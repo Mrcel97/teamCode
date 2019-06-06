@@ -44,6 +44,7 @@ export class AuthWorkspaceComponent implements OnInit, OnDestroy {
     this.hearRoute();
     this.hearWriteRequests();
     this.hearUser();
+    this.workspaceId = this.router.url.split('/')[2];
   }
 
   ngOnInit() {
@@ -73,8 +74,10 @@ export class AuthWorkspaceComponent implements OnInit, OnDestroy {
   }
 
   swapWorkspacePrivacy() {
-    if (this.workspaceId == null || this.userEmail == null) return;
-    this.workspaceService.swapWorkspacePrivacy(this.workspaceId, this.userId);
+    if (this.userEmail == null) return;
+    var workspaceId = this.router.url.split('/')[2];
+
+    this.workspaceService.swapWorkspacePrivacy(workspaceId, this.userId);
     this.toasterMessages.swapWorkspacePrivacy(!this.isPrivate);
   }
 

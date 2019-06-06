@@ -36,6 +36,7 @@ import { firebaseConfig } from '../assets/configs/firebaseConfig';
 import { toasterConfig } from './../assets/configs/toasterConfig';
 import { IdeChatComponent } from './ide/ide-chat/ide-chat.component';
 import { ProjectsListComponent } from './projects-list/projects-list.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ProjectsListComponent } from './projects-list/projects-list.component';
     AuthCollaboratorsModalComponent,
     IdeChatComponent,
     ProjectsListComponent,
+    AboutUsComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(firebaseConfig),

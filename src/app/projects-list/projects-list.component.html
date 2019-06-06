@@ -17,5 +17,12 @@
         <li *ngFor="let collaborator of workspace.collaborators">{{collaborator}}</li>
       </ul>
     </div>
+    <div class="info-card" *ngIf="workspaces.length == 0" style="text-align: center">
+      <h5>No public projects were found :(</h5>
+      <div style="margin-top: 1.5em">
+        <img src="../../assets/media/pacman.svg" alt="no-projects-found" style="height: 150px; margin-top: 1em">
+        <img src="../../assets/media/signo-de-interrogacion.svg" alt="question-mark" style="position: absolute; height: 40px">
+      </div>
+    </div>
   </div>
 </div>

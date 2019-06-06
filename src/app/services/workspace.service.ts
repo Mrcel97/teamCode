@@ -34,6 +34,7 @@ export class WorkspaceService {
   private user: FirebaseUser;
   private userEmail: string;
   private localWorkspaceCopy: Workspace;
+  private localPublicProjects: BehaviorSubject<Array<Workspace>> = new BehaviorSubject<Array<Workspace>>(null);
 
   constructor(
     private router: Router,
@@ -187,7 +188,6 @@ export class WorkspaceService {
 
   swapWorkspacePrivacy(workspaceId: string, userId: string) {
     const headers = new HttpHeaders({'userId': userId, 'Content-Type': 'application/json'});
-    console.log(headers)
 
     this.http.patch(backendURL + '/api/workspaceSwapPrivacy?id=' + workspaceId, {}, {headers: headers})
     .subscribe((privacy: boolean) => this.localIsPrivate.next(privacy));
@@ -250,8 +250,13 @@ export class WorkspaceService {
     return this.localWriteRequests;
   }
 
-  getPublicWorkspaces() {
-    return this.http.get(backendURL + '/api/workspaceGetPublic', httpOptions);
+  getPublicWorkspaces(filter: string = '') {
+    this.http.get<Array<Workspace>>(backendURL + '/api/workspaceGetPublic?name=' + filter, httpOptions)
+    .subscribe(workspaces => {
+      this.localPublicProjects.next(workspaces);
+      return this.localPublicProjects;
+    });
+    return this.localPublicProjects;
   }
 
   private contentModification(content: {additions: Array<File>, supresions: Array<File>, contentUpdated: Array<File>}) {

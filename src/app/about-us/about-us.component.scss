@@ -38,6 +38,7 @@
   background-size: cover;
   
   height: 100vh;
+  min-width: 944px;
 
   padding-top: 1em;
 }
@@ -67,52 +68,96 @@ h1, .h1 {
   display: none;
 }
 
-.project-card {
+.basic-bubble {
   padding: 1.5em;
   border: solid $primary-color-variant 2px;
-  border-radius: 6px;
-  border-radius: 5px;
+  border-radius: 50%;
+  height: 30em;
+  width: 30em;
   background-color: rgba($primary-color, .85);
   transition: .2s;
-  text-align: left;
-  margin-top: 2em;
+  text-align: center;
+}
 
-  h4 {
-    transition: .5s;
-  }
+.bubble1 {
+  margin-left: 15vw;
 
-  .item {
-    transition: .5s;
-    margin-right: .4em;
+  h1 {
+    font-size: 40px;
+    margin-top: 1.5em;
   }
 }
 
-.info-card {
-  padding: 1.5em;
-  border: solid $primary-color-variant 2px;
-  border-radius: 6px;
-  border-radius: 5px;
-  background-color: rgba($primary-color, .85);
-  transition: .2s;
-  text-align: left;
-  user-select: text;
+.bubble2 {
+  margin-top: -5em;
+  margin-right: 15vw;
+
+  h1 {
+    font-size: 40px;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
 }
 
-.project-card:hover {
-  cursor: pointer;
+.bubble1:hover, .bubble2:hover, .bubble3:hover {
   background-color: rgba($primary-color, .95);
-  border: solid #3f3f3f 2px;
+  border: solid #777777 2px;
   transform: scale(1.05);
-
-  h4 {
-    color: $accent-color;
-  }
-
-  .item {
-    color: $accent-color;
-  }
 }
 
 .inline {
   display: inline-block;
+}
+
+.bubble3 {
+  height: 20em;
+  width: 20em;
+  margin-top: -15em;
+  margin-left: 10vw;
+
+  h1 {
+    font-size: 40px;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+}
+
+.github-icon:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 1108px) {
+  .bubble1 {
+    margin-left: 10vw;
+  }
+  .bubble2 {
+    margin-right: 10vw;
+  }
+  .bubble3 {
+    margin-left: 5vw;
+  }
+}
+
+@media (max-width: 975px) {
+  .bubble1 {
+    margin-left: 5vw;
+  }
+  .bubble2 {
+    margin-right: 5vw;
+  }
+  .bubble3 {
+    margin-left: 2.5vw;
+  }
+}
+
+@media (max-width: 944px) {
+  .bubble1 {
+    margin-left: 5em;
+  }
+  .bubble2 {
+    margin-right: 5em;
+  }
+  .bubble3 {
+    margin-left: 2.5em;
+  }
 }
