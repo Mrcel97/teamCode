@@ -15,7 +15,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
      - Interface Projects
      - Project Collaborators
      - User Status
-  2. Advanced level Tutorial
+  2. Advanced level tutorial
      - TeamCode 💗 Git
      - Interface Feed
      - Interface Statistics
@@ -27,7 +27,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Entry level tutorial
 ### What is TeamCode?
-eamCode is an online coding tool centred in provide an in-real-time communication between a team conformed by an Owner, a Writer and Auditors.
+TeamCode is an online coding tool centred in provide an in-real-time communication between a team conformed by an Owner, a Writer and Auditors.
 
 TeamCode provides you with the tools to upload your projects and share or discuss changes while you are live sharing these modifications with your teammates.
 
@@ -86,7 +86,7 @@ Inside the project, we already know the "Writer" and "Collaborator" roles. Apart
 There is a reason why Auditors can still write even if their changes are not uploaded into the TeamCode project. To introduce the aim of this feature we need to introduce first the "Secret Folders/Files".
 
 #### Secret Folders/Files
-eamCode has an extra feature for the most advanced users. Secret Feature allows you to create files and folder which will **NEVER** be uploaded to the server or shared to the rest of the team by only adding a dot "." before the file or folder name. 
+TeamCode has an extra feature for the most advanced users. Secret Feature allows you to create files and folders which will **NEVER** be uploaded to the server or shared to the rest of the team by only adding a dot "." before the file or folder name. 
 This feature consists of two aims:
   - Provide the users with the tools to avoid uploading extra-large files into the server and collapse their user-disk space. While they will still be able to work with this file locally.
   - Provide users with the tools to recreate a Git Structure.
